@@ -2,3 +2,5 @@
 .project
 .settings
 .classpath
+WebContent
+.DS_Store
