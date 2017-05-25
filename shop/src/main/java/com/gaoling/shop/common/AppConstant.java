@@ -56,6 +56,7 @@ public class AppConstant {
 	public static final int SMS_SEND_FAILURE = 102;
 	public static final int CHECK_CODE_INCORRECT = 103;
 	public static final int USER_NOT_EXISTS = 104;
+	public static final int NOT_MYSELF_OPERATE = 105;
 
 	static {
 		ALIDAYU_SMS_URL = PropertiesUtil.getProperty("alidayu_sms_url");

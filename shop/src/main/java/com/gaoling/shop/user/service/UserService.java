@@ -62,6 +62,7 @@ public class UserService extends CommonService{
 		User user=getUserByOpenId(openId);
 		if(null==user){
 			user=new User();
+			user.setUuid(DataUtil.buildUUID());
 			user.setCellphone(mobile);
 			user.setCreateTime(DateUtil.nowDate());
 			user.setHeadImg("");
@@ -101,6 +102,12 @@ public class UserService extends CommonService{
 	//依据openId查询用户
 	public User getUserByOpenId(String openId){
 		List<User> users=queryUsers(DataUtil.mapOf("openId",openId));
+		return users.size()>0?users.get(0):null;
+	}
+	
+	//依据UUID查询用户
+	public User getUserByUUID(String uuid){
+		List<User> users=queryUsers(DataUtil.mapOf("uuid",uuid));
 		return users.size()>0?users.get(0):null;
 	}
 	

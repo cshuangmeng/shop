@@ -1,16 +1,20 @@
 package com.gaoling.shop.user.action;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.gaoling.shop.common.AppConstant;
 import com.gaoling.shop.system.pojo.Result;
 import com.gaoling.shop.system.service.CommonService;
 import com.gaoling.shop.user.service.UserService;
 
 @RestController
 @RequestMapping("/user")
+@CrossOrigin(methods = RequestMethod.POST, origins = AppConstant.TRUST_CROSS_ORIGINS)
 public class UserController extends CommonService{
 	
 	@Autowired

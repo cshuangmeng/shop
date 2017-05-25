@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gaoling.shop.user.dao.AddressDao">
+
+	<!-- 表头 -->
+	<sql id="addressHead">
+		select id,user_id userId,area_id areaId,area_name areaName,address,consigner,mobile
+		,is_default isDefault,post_code postCode,state,create_time createTime from address t where t.state=1
+	</sql>
+
+	<!-- 查询地址 -->
+	<select id="queryAddresses" resultType="com.gaoling.shop.user.pojo.Address">
+		<include refid="addressHead"/>
+		<trim prefix="and" prefixOverrides="and">
+			<if test="param.id!=null">
+				and t.id=#{param.id}
+			</if>
+			<if test="param.userId!=null">
+				and t.user_id=#{param.userId}
+			</if>
+		</trim>
+	</select>
+	
+	<!-- 保存地址 -->
+	<insert id="addAddress" keyProperty="id" useGeneratedKeys="true" parameterType="com.gaoling.shop.user.pojo.Address">
+		insert into address(user_id,area_id,area_name,address,consigner,mobile,is_default,post_code,state,create_time)
+		values(#{userId},#{areaId},#{areaName},#{address},#{consigner},#{mobile},#{isDefault},#{postCode},#{state},#{createTime})
+	</insert>
+	
+	<!-- 更新地址 -->
+	<update id="updateAddress" parameterType="com.gaoling.shop.user.pojo.Address">
+		update address set area_id=#{areaId},area_name=#{areaName},address=#{address}
+		,consigner=#{consigner},mobile=#{mobile},is_default=#{isDefault},post_code=#{postCode},state=#{state} where id=#{id}
+	</update>
+	
+</mapper>  

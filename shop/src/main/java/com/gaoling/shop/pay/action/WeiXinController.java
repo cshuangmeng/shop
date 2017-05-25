@@ -16,6 +16,7 @@ import com.gaoling.shop.system.pojo.Result;
 
 @RestController
 @RequestMapping("/wx")
+@CrossOrigin(methods = RequestMethod.POST, origins = AppConstant.TRUST_CROSS_ORIGINS)
 public class WeiXinController {
 
 	@Autowired
@@ -23,7 +24,6 @@ public class WeiXinController {
 
 	// 参数签名
 	@RequestMapping("/sign")
-	@CrossOrigin(methods = RequestMethod.POST, origins = AppConstant.TRUST_CROSS_ORIGINS)
 	public Result weiXinSign(@RequestParam("url") String url, HttpServletRequest request) {
 		Result result=null;
 		try {
@@ -38,7 +38,6 @@ public class WeiXinController {
 	// 获取openId
 	@ResponseBody
 	@RequestMapping("/oa")
-	@CrossOrigin(methods = RequestMethod.POST, origins = AppConstant.TRUST_CROSS_ORIGINS)
 	public Result getOAAccessToken(@RequestParam String code, HttpServletRequest request) {
 		Result result=null;
 		try {
