@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gaoling.shop.goods.dao.ShopDao">
+
+	<!-- 表头 -->
+	<sql id="shopHead">
+		select id,`name`,head_img headImg,area_id areaId,area_name areaName,address,contact,telephone
+		,introduction,state,create_time createTime from shop t where t.state=1
+	</sql>
+
+	<!-- 查询所有订单 -->
+	<select id="queryShops" resultType="com.gaoling.shop.goods.pojo.Shop">
+		<include refid="shopHead"/>
+		<if test="param.id!=null">
+			and t.id=#{param.id}
+		</if>
+	</select>
+
+</mapper>  

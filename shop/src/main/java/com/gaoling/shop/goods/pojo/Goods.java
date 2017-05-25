@@ -2,6 +2,13 @@ package com.gaoling.shop.goods.pojo;
 
 import java.util.Date;
 
+import org.apache.commons.lang3.StringUtils;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.gaoling.shop.common.AppConstant;
+
 public class Goods {
 
 	private int id;
@@ -11,10 +18,14 @@ public class Goods {
 	private int price;
 	private int cashDiscount;
 	private String details;
+	@JsonProperty("images")
+	private String fullImages;
+	@JsonIgnore
 	private String images;
 	private int coinEnable;
 	private int pointEnable;
 	private int state;
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	private Date createTime;
 
 	public int getId() {
@@ -111,6 +122,17 @@ public class Goods {
 
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
+	}
+
+	public String getFullImages() {
+		StringBuffer urls=new StringBuffer();
+		if(StringUtils.isNotEmpty(images)){
+			for(String images:images.split(",")){
+				urls.append(urls.length()>0?",":"");
+				urls.append(AppConstant.OSS_CDN_SERVER+images);
+			}
+		}
+		return urls.toString().length()>0?urls.toString():images;
 	}
 
 }

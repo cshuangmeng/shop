@@ -4,43 +4,30 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 
-import org.apache.commons.lang3.StringUtils;
-
 import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.model.ObjectMetadata;
-
-import net.sf.json.JSONObject;
 
 public class OSSUtil {
 
 	// 上传本地文件至OSS存储
-	public static void uploadFileToOSS(String file, String saveName, JSONObject json) throws Exception {
-		OSSClient client = new OSSClient(json.getString("endpoint"), json.getString("accesskeyid"),
-				json.getString("secretaccesskey"));
-		InputStream is = new FileInputStream(file);
-		ObjectMetadata meta = new ObjectMetadata();
-		meta.setContentLength(is.available());
-		saveName = StringUtils.isNotEmpty(saveName) ? saveName : file.substring(file.lastIndexOf("/") + 1);
-		if (DataUtil.isImg(saveName)) {
-			client.putObject(json.getString("bucketname"), json.getString("imgDir") + "/" + saveName, is, meta);
-		} else if (DataUtil.isVideo(saveName)) {
-			client.putObject(json.getString("bucketname"), json.getString("videoDir") + "/" + saveName, is, meta);
+	public static boolean uploadFileToOSS(File file,String fileName) {
+		try {
+			OSSClient client = new OSSClient(AppConstant.OSS_ENDPOINT, AppConstant.OSS_ACCESSKEYID,
+					AppConstant.OSS_SECRETACCESSKEY);
+			InputStream is = new FileInputStream(file);
+			ObjectMetadata meta = new ObjectMetadata();
+			meta.setContentLength(is.available());
+			client.putObject(AppConstant.OSS_BUCKETNAME, fileName, is, meta);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+		return false;
 	}
 	
-	// 上传本地文件至OSS存储
-	public static void uploadFileToOSS(File file, String saveName, JSONObject json) throws Exception {
-		OSSClient client = new OSSClient(json.getString("endpoint"), json.getString("accesskeyid"),
-				json.getString("secretaccesskey"));
-		InputStream is = new FileInputStream(file);
-		ObjectMetadata meta = new ObjectMetadata();
-		meta.setContentLength(is.available());
-		saveName = StringUtils.isNotEmpty(saveName) ? saveName : file.getName().substring(file.getName().lastIndexOf("/") + 1);
-		if (DataUtil.isImg(saveName)) {
-			client.putObject(json.getString("bucketname"), json.getString("imgDir") + "/" + saveName, is, meta);
-		} else if (DataUtil.isVideo(saveName)) {
-			client.putObject(json.getString("bucketname"), json.getString("videoDir") + "/" + saveName, is, meta);
-		}
+	public static void main(String[] args) {
+		boolean result=uploadFileToOSS(new File("/Users/huangmeng/Downloads/headImg.jpg"), "goods/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS")+DataUtil.createNums(6)+".jpg");
+		System.out.println(result);
 	}
-
+	
 }

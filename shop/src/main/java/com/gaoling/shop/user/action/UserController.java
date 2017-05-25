@@ -33,7 +33,7 @@ public class UserController extends CommonService{
 		return userService.register(code, mobile, openId);
 	}
 	
-	//下发验证码
+	//用户登录
 	@RequestMapping("/login")
 	public Result login(@RequestParam(required=false) String openId){
 		return userService.login(openId);

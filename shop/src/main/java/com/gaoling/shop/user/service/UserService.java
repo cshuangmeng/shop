@@ -70,7 +70,7 @@ public class UserService extends CommonService{
 			user.setNickname("");
 			user.setOpenId(openId);
 			user.setPassword("");
-			user.setState(User.STATE_TYPE_ENUM.INACTIVE.getState());
+			user.setState(User.STATE_TYPE_ENUM.ACTIVATED.getState());
 			addUser(user);
 		}
 		return putResult(user);

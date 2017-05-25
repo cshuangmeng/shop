@@ -22,7 +22,7 @@ public class DateUtil {
 		SimpleDateFormat format = new SimpleDateFormat(pattern);
 		return format.format(new Date());
 	}
-
+	
 	// 日期加减
 	public static String getDateOfInterval(String date, int interval, String pattern) throws Exception {
 		SimpleDateFormat sdf = new SimpleDateFormat(pattern);

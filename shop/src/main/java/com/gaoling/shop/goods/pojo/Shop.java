@@ -2,18 +2,31 @@ package com.gaoling.shop.goods.pojo;
 
 import java.util.Date;
 
+import org.apache.commons.lang3.StringUtils;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.gaoling.shop.common.AppConstant;
+
 public class Shop {
 
 	private int id;
 	private String name;
+	@JsonProperty("headImg")
+	private String fullHeadImg;
+	@JsonIgnore
 	private String headImg;
 	private int areaId;
 	private String areaName;
 	private String address;
+	@JsonIgnore
 	private String contact;
+	@JsonIgnore
 	private String telephone;
 	private String introduction;
 	private int state;
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	private Date createTime;
 
 	public int getId() {
@@ -102,6 +115,10 @@ public class Shop {
 
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
+	}
+
+	public String getFullHeadImg() {
+		return StringUtils.isNotEmpty(headImg)?AppConstant.OSS_CDN_SERVER+headImg:headImg;
 	}
 
 }

@@ -48,6 +48,12 @@ public class AppConstant {
 	public static String WEIXIN_TEMPLATE_SEND;// 微信模板消息发送接口
 
 	public static String MEMCACHED_ADDR;// Memcached服务器配置
+	
+	public static String OSS_BUCKETNAME;// OSS图片存储目录
+	public static String OSS_ENDPOINT;// OSS图片存储地址
+	public static String OSS_ACCESSKEYID;// OSSAPI调用账户
+	public static String OSS_SECRETACCESSKEY;// OSSAPI调用密匙
+	public static String OSS_CDN_SERVER;// OSS加速域名
 
 	// 全局错误码
 	public static final int SYSTEM_ERROR_CODE = 500;
@@ -57,6 +63,8 @@ public class AppConstant {
 	public static final int CHECK_CODE_INCORRECT = 103;
 	public static final int USER_NOT_EXISTS = 104;
 	public static final int NOT_MYSELF_OPERATE = 105;
+	public static final int GOODS_NOT_EXISTS = 106;
+	public static final int SHOP_NOT_EXISTS = 107;
 
 	static {
 		ALIDAYU_SMS_URL = PropertiesUtil.getProperty("alidayu_sms_url");
@@ -93,6 +101,12 @@ public class AppConstant {
 		WEIXIN_TEMPLATE_SEND = PropertiesUtil.getProperty("wxapi.weixin_template_send");
 
 		MEMCACHED_ADDR = PropertiesUtil.getProperty("memcached.addr");
+		
+		OSS_BUCKETNAME=PropertiesUtil.getProperty("cdn.oss_bucketname");
+		OSS_ENDPOINT=PropertiesUtil.getProperty("cdn.oss_endpoint");
+		OSS_ACCESSKEYID=PropertiesUtil.getProperty("cdn.oss_accesskeyid");
+		OSS_SECRETACCESSKEY=PropertiesUtil.getProperty("cdn.oss_secretaccesskey");
+		OSS_CDN_SERVER=PropertiesUtil.getProperty("cdn.oss_cdn_server");
 	}
 
 }
