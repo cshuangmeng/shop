@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.gaoling.shop.user.dao.OrderDao">
+<mapper namespace="com.gaoling.shop.order.dao.OrderDao">
 
 	<!-- 查询所有订单 -->
-	<select id="queryAllOrder" resultType="com.gaoling.shop.user.pojo.Order">
+	<select id="queryAllOrder" resultType="com.gaoling.shop.order.pojo.Order">
 		select id,good_id goodId from `order`
 	</select>
 
