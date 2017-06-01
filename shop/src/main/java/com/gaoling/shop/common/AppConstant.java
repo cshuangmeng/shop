@@ -110,5 +110,19 @@ public class AppConstant {
 		OSS_SECRETACCESSKEY=PropertiesUtil.getProperty("cdn.oss_secretaccesskey");
 		OSS_CDN_SERVER=PropertiesUtil.getProperty("cdn.oss_cdn_server");
 	}
+	
+	// 是/否
+	public static enum YES_OR_NO_ENUM {
+		NO(0), YES(1);
+		private int state;
+
+		private YES_OR_NO_ENUM(int state) {
+			this.state = state;
+		}
+
+		public int getState() {
+			return state;
+		}
+	}
 
 }

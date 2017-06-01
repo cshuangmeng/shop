@@ -19,7 +19,12 @@ public class Shop {
 	private String fullHeadImg;
 	@JsonIgnore
 	private String headImg;
+	@JsonProperty("infoImgs")
+	private String fullInfoImgs;
+	@JsonIgnore
+	private String infoImgs;
 	private int areaId;
+	private int isShow;
 	private int flowers;
 	private int followers;
 	private String areaName;
@@ -138,8 +143,42 @@ public class Shop {
 		this.createTime = createTime;
 	}
 
+	public String getInfoImgs() {
+		return infoImgs;
+	}
+
+	public void setInfoImgs(String infoImgs) {
+		this.infoImgs = infoImgs;
+	}
+
+	public int getIsShow() {
+		return isShow;
+	}
+
+	public void setIsShow(int isShow) {
+		this.isShow = isShow;
+	}
+
 	public String getFullHeadImg() {
-		return StringUtils.isNotEmpty(headImg) ? AppConstant.OSS_CDN_SERVER + headImg : headImg;
+		StringBuffer urls = new StringBuffer();
+		if (StringUtils.isNotEmpty(headImg)) {
+			for (String images : headImg.split(",")) {
+				urls.append(urls.length() > 0 ? "," : "");
+				urls.append(AppConstant.OSS_CDN_SERVER + images);
+			}
+		}
+		return urls.toString().length() > 0 ? urls.toString() : headImg;
+	}
+
+	public String getFullInfoImgs() {
+		StringBuffer urls = new StringBuffer();
+		if (StringUtils.isNotEmpty(infoImgs)) {
+			for (String images : infoImgs.split(",")) {
+				urls.append(urls.length() > 0 ? "," : "");
+				urls.append(AppConstant.OSS_CDN_SERVER + images);
+			}
+		}
+		return urls.toString().length() > 0 ? urls.toString() : infoImgs;
 	}
 
 	public Map<String, Object> getExtras() {

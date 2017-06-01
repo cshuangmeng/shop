@@ -29,13 +29,26 @@ public class ShopService extends CommonService{
 	private UserService userService;
 	
 	//查询店铺详情
-	public Result loadShopDetail(int id){
+	public Result loadShopDetail(int id,String uuid){
 		Shop shop=getShop(id);
 		if(null!=shop){
 			shop.setFollowers(shop.getFollowers()+shopFollowerService.queryFollowersOfShop(shop.getId()
 					, ShopFollower.STATE_TYPE_ENUM.FOLLOWED.getState()));
 		}
+		if(StringUtils.isNotEmpty(uuid)){
+			User user=userService.getUserByUUID(uuid);
+			if(null!=user){
+				ShopFollower follower=shopFollowerService.getShopFollower(user.getId(),shop.getId()
+						,ShopFollower.STATE_TYPE_ENUM.FOLLOWED.getState());
+				shop.getExtras().put("isFollowed", null!=follower?1:0);
+			}
+		}
 		return putResult(shop);
+	}
+	
+	//查询品牌店铺
+	public Result loadShowShops(){
+		return putResult(queryShops(DataUtil.mapOf("isShow",AppConstant.YES_OR_NO_ENUM.YES.getState())));
 	}
 	
 	//查询店铺

@@ -37,16 +37,16 @@ public class DataUtil {
 		}
 		return code;
 	}
-	
-	//拼装Map
+
+	// 拼装Map
 	@SuppressWarnings("unchecked")
-	public static <K,V> Map<K,V> mapOf(Object... v){
-		Map<K,V> ret = new HashMap<K,V>(); 
-		if(null == v){
+	public static <K, V> Map<K, V> mapOf(Object... v) {
+		Map<K, V> ret = new HashMap<K, V>();
+		if (null == v) {
 			return ret;
 		}
-		for(int i = 0; i < v.length; i ++){
-			ret.put((K)v[i], (V)v[++i]);
+		for (int i = 0; i < v.length; i++) {
+			ret.put((K) v[i], (V) v[++i]);
 		}
 		return ret;
 	}
@@ -188,7 +188,7 @@ public class DataUtil {
 	public static boolean isJSONObject(String str) {
 		return JSONUtils.mayBeJSON(str);
 	}
-	
+
 	// JSONArray校验
 	public static boolean isJSONArray(String str) {
 		return JSONUtils.isArray(str);
@@ -238,7 +238,7 @@ public class DataUtil {
 		}
 		return convert;
 	}
-	
+
 	// 图片格式判断
 	public static boolean isImg(String img) {
 		return Pattern.matches("[^\\s]+\\.(jpg|gif|png|bmp)", img.toLowerCase());
@@ -248,5 +248,10 @@ public class DataUtil {
 	public static boolean isVideo(String img) {
 		return Pattern.matches("[^\\s]+\\.(mp4|avi)", img.toLowerCase());
 	}
-	
+
+	// 字符串是否未空
+	public static boolean isEmpty(Object str) {
+		return null == str || StringUtils.isEmpty(str.toString());
+	}
+
 }

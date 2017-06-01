@@ -5,7 +5,7 @@
 
 	<!-- 表头 -->
 	<sql id="shopHead">
-		select id,`name`,head_img headImg,area_id areaId,area_name areaName,address,contact,telephone
+		select id,`name`,head_img headImg,info_imgs infoImgs,area_id areaId,is_show isShow,area_name areaName,address,contact,telephone
 		,introduction,state,create_time createTime from shop t where t.state=1
 	</sql>
 
@@ -14,6 +14,9 @@
 		<include refid="shopHead"/>
 		<if test="param.id!=null">
 			and t.id=#{param.id}
+		</if>
+		<if test="param.isShow!=null">
+			and t.is_show=#{param.isShow}
 		</if>
 	</select>
 

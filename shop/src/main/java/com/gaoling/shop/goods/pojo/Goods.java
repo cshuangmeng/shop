@@ -18,14 +18,22 @@ public class Goods {
 	private int price;
 	private int cashDiscount;
 	private String details;
-	@JsonProperty("images")
-	private String fullImages;
+	@JsonProperty("headImg")
+	private String fullHeadImg;
 	@JsonIgnore
-	private String images;
+	private String headImg;
+	@JsonProperty("infoImgs")
+	private String fullInfoImgs;
+	@JsonIgnore
+	private String infoImgs;
+	@JsonProperty("detailImgs")
+	private String fullDetailImgs;
+	@JsonIgnore
+	private String detailImgs;
 	private int coinEnable;
 	private int pointEnable;
 	private int state;
-	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date createTime;
 
 	public int getId() {
@@ -84,14 +92,6 @@ public class Goods {
 		this.details = details;
 	}
 
-	public String getImages() {
-		return images;
-	}
-
-	public void setImages(String images) {
-		this.images = images;
-	}
-
 	public int getCoinEnable() {
 		return coinEnable;
 	}
@@ -124,15 +124,61 @@ public class Goods {
 		this.createTime = createTime;
 	}
 
-	public String getFullImages() {
-		StringBuffer urls=new StringBuffer();
-		if(StringUtils.isNotEmpty(images)){
-			for(String images:images.split(",")){
-				urls.append(urls.length()>0?",":"");
-				urls.append(AppConstant.OSS_CDN_SERVER+images);
+	public String getHeadImg() {
+		return headImg;
+	}
+
+	public void setHeadImg(String headImg) {
+		this.headImg = headImg;
+	}
+
+	public String getInfoImgs() {
+		return infoImgs;
+	}
+
+	public void setInfoImgs(String infoImgs) {
+		this.infoImgs = infoImgs;
+	}
+
+	public String getDetailImgs() {
+		return detailImgs;
+	}
+
+	public void setDetailImgs(String detailImgs) {
+		this.detailImgs = detailImgs;
+	}
+
+	public String getFullHeadImg() {
+		StringBuffer urls = new StringBuffer();
+		if (StringUtils.isNotEmpty(headImg)) {
+			for (String images : headImg.split(",")) {
+				urls.append(urls.length() > 0 ? "," : "");
+				urls.append(AppConstant.OSS_CDN_SERVER + images);
 			}
 		}
-		return urls.toString().length()>0?urls.toString():images;
+		return urls.toString().length() > 0 ? urls.toString() : headImg;
+	}
+
+	public String getFullInfoImgs() {
+		StringBuffer urls = new StringBuffer();
+		if (StringUtils.isNotEmpty(infoImgs)) {
+			for (String images : infoImgs.split(",")) {
+				urls.append(urls.length() > 0 ? "," : "");
+				urls.append(AppConstant.OSS_CDN_SERVER + images);
+			}
+		}
+		return urls.toString().length() > 0 ? urls.toString() : infoImgs;
+	}
+
+	public String getFullDetailImgs() {
+		StringBuffer urls = new StringBuffer();
+		if (StringUtils.isNotEmpty(detailImgs)) {
+			for (String images : detailImgs.split(",")) {
+				urls.append(urls.length() > 0 ? "," : "");
+				urls.append(AppConstant.OSS_CDN_SERVER + images);
+			}
+		}
+		return urls.toString().length() > 0 ? urls.toString() : detailImgs;
 	}
 
 }
