@@ -65,6 +65,8 @@ public class AppConstant {
 	public static final int NOT_MYSELF_OPERATE = 105;
 	public static final int GOODS_NOT_EXISTS = 106;
 	public static final int SHOP_NOT_EXISTS = 107;
+	public static final int USER_ALREADY_FOLLOWED = 108;
+	public static final int USER_NO_FOLLOWED = 109;
 
 	static {
 		ALIDAYU_SMS_URL = PropertiesUtil.getProperty("alidayu_sms_url");

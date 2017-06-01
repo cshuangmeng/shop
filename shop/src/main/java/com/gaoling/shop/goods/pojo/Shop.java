@@ -1,6 +1,8 @@
 package com.gaoling.shop.goods.pojo;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -18,6 +20,8 @@ public class Shop {
 	@JsonIgnore
 	private String headImg;
 	private int areaId;
+	private int flowers;
+	private int followers;
 	private String areaName;
 	private String address;
 	@JsonIgnore
@@ -26,8 +30,9 @@ public class Shop {
 	private String telephone;
 	private String introduction;
 	private int state;
-	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date createTime;
+	private Map<String, Object> extras = new HashMap<String, Object>();
 
 	public int getId() {
 		return id;
@@ -59,6 +64,22 @@ public class Shop {
 
 	public void setAreaId(int areaId) {
 		this.areaId = areaId;
+	}
+
+	public int getFlowers() {
+		return flowers;
+	}
+
+	public void setFlowers(int flowers) {
+		this.flowers = flowers;
+	}
+
+	public int getFollowers() {
+		return followers;
+	}
+
+	public void setFollowers(int followers) {
+		this.followers = followers;
 	}
 
 	public String getAreaName() {
@@ -118,7 +139,11 @@ public class Shop {
 	}
 
 	public String getFullHeadImg() {
-		return StringUtils.isNotEmpty(headImg)?AppConstant.OSS_CDN_SERVER+headImg:headImg;
+		return StringUtils.isNotEmpty(headImg) ? AppConstant.OSS_CDN_SERVER + headImg : headImg;
+	}
+
+	public Map<String, Object> getExtras() {
+		return extras;
 	}
 
 }

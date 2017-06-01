@@ -47,6 +47,19 @@ public class AddressController {
 		return result;
 	}
 	
+	//添加用户地址
+	@RequestMapping("/detail")
+	public Result getAddresses(@RequestParam(required=false)String uuid,@RequestParam(defaultValue="0")String id){
+		Result result=null;
+		try {
+			result=addressService.getAddressInfo(uuid, Integer.parseInt(id));
+		} catch (Exception e) {
+			result=addressService.putResult(AppConstant.SYSTEM_ERROR_CODE);
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
 	//更新用户地址
 	@RequestMapping("/update")
 	public Result updateAddresses(@RequestParam(required=false)String uuid,@ModelAttribute Address address){

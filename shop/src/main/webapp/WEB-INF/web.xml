@@ -3,7 +3,7 @@
     xmlns="http://java.sun.com/xml/ns/javaee"
     xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
     id="schedule-console" version="3.0">
-	<display-name>vodka</display-name>
+	<display-name>shop</display-name>
 	<!-- 请求和响应编码拦截器 -->
 	<filter>
 		<filter-name>encodingFilter</filter-name>
@@ -52,7 +52,7 @@
 	<!-- 防止工程冲突 -->
 	<context-param>
 		<param-name>webAppRootKey</param-name>
-		<param-value>futeplus.vodka.root</param-value>
+		<param-value>tangseng.shop.root</param-value>
 	</context-param>
 	<!-- 会话超时设置 -->
 	<session-config>

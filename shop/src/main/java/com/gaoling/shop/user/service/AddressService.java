@@ -56,6 +56,25 @@ public class AddressService extends CommonService{
 		return putResult();
 	}
 	
+	//新增地址
+	public Result getAddressInfo(String uuid,int id){
+		//检查参数
+		if(StringUtils.isEmpty(uuid)){
+			return putResult(AppConstant.PARAM_IS_NULL);
+		}
+		//加载用户
+		User user=userService.getUserByUUID(uuid);
+		if(null==user){
+			return putResult(AppConstant.USER_NOT_EXISTS);
+		}
+		//检查是否修改的自己的地址
+		Address oldAddress=getAddress(id);
+		if(null==oldAddress||oldAddress.getUserId()!=user.getId()){
+			return putResult(AppConstant.NOT_MYSELF_OPERATE);
+		}
+		return putResult(oldAddress);
+	}
+	
 	//修改地址
 	public Result updateOldAddress(Address address,String uuid){
 		//检查参数

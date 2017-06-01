@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gaoling.shop.common.AppConstant;
+import com.gaoling.shop.goods.pojo.ShopFollower;
 import com.gaoling.shop.goods.service.ShopService;
 import com.gaoling.shop.system.pojo.Result;
 
@@ -25,6 +26,32 @@ public class ShopController {
 		Result result=null;
 		try {
 			result=shopService.loadShopDetail(Integer.parseInt(id));
+		} catch (Exception e) {
+			result=shopService.putResult(AppConstant.SYSTEM_ERROR_CODE);
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	//关注门店
+	@RequestMapping("/sub")
+	public Result subscribeShop(@RequestParam(defaultValue="0")String shopId,@RequestParam(required=false)String uuid){
+		Result result=null;
+		try {
+			result=shopService.followShop(Integer.parseInt(shopId), uuid, ShopFollower.STATE_TYPE_ENUM.FOLLOWED.getState());
+		} catch (Exception e) {
+			result=shopService.putResult(AppConstant.SYSTEM_ERROR_CODE);
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	//取消关注门店
+	@RequestMapping("/unsub")
+	public Result unsubscribeShop(@RequestParam(defaultValue="0")String shopId,@RequestParam(required=false)String uuid){
+		Result result=null;
+		try {
+			result=shopService.followShop(Integer.parseInt(shopId), uuid, ShopFollower.STATE_TYPE_ENUM.CANCEL.getState());
 		} catch (Exception e) {
 			result=shopService.putResult(AppConstant.SYSTEM_ERROR_CODE);
 			e.printStackTrace();
