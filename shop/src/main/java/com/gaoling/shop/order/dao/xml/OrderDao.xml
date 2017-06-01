@@ -3,9 +3,46 @@
 
 <mapper namespace="com.gaoling.shop.order.dao.OrderDao">
 
+	<!-- 表头 -->
+	<sql id="orderHead">
+		select id,user_id userId,goods_id goodsId,pay_way payWay,list_price listPrice,price,coin
+		,`point`,ref_id refId,trade_no tradeNo,out_trade_no outTradeNo,address_id addressId
+		,express_number expressNumber,state,create_time createTime,sign_time signTime from `order` t
+	</sql>
+
 	<!-- 查询所有订单 -->
-	<select id="queryAllOrder" resultType="com.gaoling.shop.order.pojo.Order">
-		select id,good_id goodId from `order`
+	<select id="queryOrders" resultType="com.gaoling.shop.order.pojo.Order">
+		<include refid="orderHead"/>
+		<trim prefix="where" prefixOverrides="and">
+			<if test="param.userId!=null">
+				and t.user_id=#{param.userId}
+			</if>
+			<if test="param.refId!=null">
+				and t.ref_id=#{param.refId}
+			</if>
+			<if test="param.state!=null">
+				and t.state=#{param.state}
+			</if>
+			<if test="param.tradeNo!=null">
+				and t.trade_no=#{param.tradeNo}
+			</if>
+			<if test="param.outtradeNo!=null">
+				and t.out_trade_no=#{param.outTradeNo}
+			</if>
+		</trim>
 	</select>
+	
+	<!-- 保存订单 -->
+	<insert id="addOrder" keyProperty="id" useGeneratedKeys="true" parameterType="com.gaoling.shop.order.pojo.Order">
+		insert into `order`(user_id,goods_id,pay_way,list_price,price,coin,`point`,ref_id,trade_no,address_id,state,create_time)
+		values(#{userId},#{goodsId},#{payWay},#{listPrice},#{price},#{coin},#{point},#{refId},#{tradeNo},#{addressId},#{state},#{createTime})
+	</insert>
+	
+	<!-- 更新订单信息 -->
+	<update id="updateOrder" parameterType="com.gaoling.shop.order.pojo.Order">
+		update `order` set pay_way=#{payWay},list_price=#{listPrice},price=#{price},coin=#{coin},`point`=#{point},ref_id=#{refId}
+		,trade_no=#{tradeNo},out_trade_no=#{outTradeNo},address_id=#{addressId},state=#{state},express_number=#{expressNumber}
+		,express_time=#{expressTime},sign_time=#{signTime} where id=#{id}
+	</update>
 
 </mapper>  
