@@ -1,6 +1,8 @@
 package com.gaoling.shop.goods.pojo;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -15,8 +17,8 @@ public class Goods {
 	private String name;
 	private int typeId;
 	private int shopId;
-	private int price;
-	private int cashDiscount;
+	private float price;
+	private float cashDiscount;
 	private String details;
 	@JsonProperty("headImg")
 	private String fullHeadImg;
@@ -35,6 +37,7 @@ public class Goods {
 	private int state;
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date createTime;
+	private Map<String, Object> extras = new HashMap<String, Object>();
 
 	public int getId() {
 		return id;
@@ -68,19 +71,19 @@ public class Goods {
 		this.shopId = shopId;
 	}
 
-	public int getPrice() {
+	public float getPrice() {
 		return price;
 	}
 
-	public void setPrice(int price) {
+	public void setPrice(float price) {
 		this.price = price;
 	}
 
-	public int getCashDiscount() {
+	public float getCashDiscount() {
 		return cashDiscount;
 	}
 
-	public void setCashDiscount(int cashDiscount) {
+	public void setCashDiscount(float cashDiscount) {
 		this.cashDiscount = cashDiscount;
 	}
 
@@ -179,6 +182,24 @@ public class Goods {
 			}
 		}
 		return urls.toString().length() > 0 ? urls.toString() : detailImgs;
+	}
+
+	public Map<String, Object> getExtras() {
+		return extras;
+	}
+
+	// 商品状态
+	public static enum STATE_TYPE_ENUM {
+		SUBMITTED(0), PASSED(1), REFUSED(2);
+		private int state;
+
+		private STATE_TYPE_ENUM(int state) {
+			this.state = state;
+		}
+
+		public int getState() {
+			return state;
+		}
 	}
 
 }

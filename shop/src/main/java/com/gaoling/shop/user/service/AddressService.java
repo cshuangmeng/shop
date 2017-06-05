@@ -96,6 +96,12 @@ public class AddressService extends CommonService{
 		return putResult();
 	}
 	
+	//获取用户的默认地址
+	public Address getDefaultAddresses(int userId){
+		List<Address> addresses=queryAddresses(DataUtil.mapOf("userId",userId,"isDefault",1));
+		return addresses.size()>0?addresses.get(0):null;
+	}
+	
 	//查询地址
 	public List<Address> queryAddresses(Map<Object,Object> param){
 		return addressDao.queryAddresses(param);

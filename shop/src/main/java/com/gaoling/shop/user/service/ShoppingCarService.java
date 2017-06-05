@@ -2,10 +2,12 @@ package com.gaoling.shop.user.service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.gaoling.shop.common.AppConstant;
 import com.gaoling.shop.common.DataUtil;
@@ -39,7 +41,7 @@ public class ShoppingCarService extends CommonService{
 		if(null==user){
 			return putResult(AppConstant.USER_NOT_EXISTS);
 		}
-		List<Map<String,Object>> goods=shoppingCarDao.queryMyShoppingCar(user.getId());
+		List<Map<String,Object>> goods=shoppingCarDao.queryMyShoppingCar(user.getId(),null);
 		for(Map<String,Object> g:goods){
 			StringBuffer urls = new StringBuffer();
 			if (!DataUtil.isEmpty(g.get("headImg"))) {
@@ -50,10 +52,35 @@ public class ShoppingCarService extends CommonService{
 			}
 			g.put("headImg", urls.toString().length() > 0 ? urls.toString() : g.get("headImg").toString());
 		}
+		//按照店铺分组
+		Map<String,List<Map<String,Object>>> result=goods.stream().collect(Collectors
+				.groupingBy(r->r.get("shopName")+"_"+r.get("shopId"),Collectors.toList()));
+		List<Map<Object,Object>> car=result.entrySet().stream().map(k->DataUtil.mapOf("shopName",k.getKey().split("_")[0]
+				,"shopId",k.getKey().split("_")[1],"goods",k.getValue())).collect(Collectors.toList());
+		return putResult(car);
+	}
+	
+	//查看我的购物商品
+	public List<Map<String,Object>> queryMyShoppingCar(int userId,List<Integer> goodsIds){
+		return shoppingCarDao.queryMyShoppingCar(userId, goodsIds);
+	}
+	
+	//一次添加多个商品
+	@Transactional
+	public Result addMultiGoodsToShoppingCar(String items,String uuid){
+		if(StringUtils.isEmpty(items)){
+			return putResult(AppConstant.PARAM_IS_NULL);
+		}
+		String[] data=null;
+		for(String item:items.split("_")){
+			data=item.split(",");
+			addGoodsToShoppingCar(Integer.parseInt(data[0]), uuid, Integer.parseInt(data[1]));
+		}
 		return putResult();
 	}
 	
 	//添加购物车
+	@Transactional
 	public Result addGoodsToShoppingCar(int goodsId,String uuid,int amount){
 		//检查参数
 		if(StringUtils.isEmpty(uuid)){
@@ -88,6 +115,7 @@ public class ShoppingCarService extends CommonService{
 	}
 	
 	//移除购物车
+	@Transactional
 	public Result removeGoodsFromShoppingCar(String uuid,int goodsId){
 		//检查参数
 		if(StringUtils.isEmpty(uuid)){
@@ -100,6 +128,16 @@ public class ShoppingCarService extends CommonService{
 		}
 		shoppingCarDao.removeGoodsFromShoppingCar(user.getId(), goodsId);
 		return putResult();
+	}
+	
+	//查询购物车
+	public List<ShoppingCar> queryShoppingCars(Map<Object,Object> param){
+		return shoppingCarDao.queryShoppingCars(param);
+	}
+	
+	//查询购物车商品数量
+	public void updateAmountOfShoppingCar(int userId,int goodsId,int amount){
+		shoppingCarDao.updateAmountOfShoppingCar(userId, goodsId, amount);
 	}
 	
 }

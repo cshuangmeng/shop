@@ -2,23 +2,31 @@ package com.gaoling.shop.order.pojo;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class Order {
 
 	private int id;
 	private int userId;
 	private int goodsId;
 	private int payWay;
-	private int list_price;
-	private int price;
+	private float listPrice;
+	private int amount;
+	private float price;
 	private int coin;
 	private int point;
+	private int refId;
+	private int tribeId;
 	private String tradeNo;
 	private String outTradeNo;
 	private int addressId;
 	private String expressNumber;
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date expressTime;
 	private int state;
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date createTime;
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date signTime;
 
 	public int getId() {
@@ -53,19 +61,27 @@ public class Order {
 		this.payWay = payWay;
 	}
 
-	public int getList_price() {
-		return list_price;
+	public float getListPrice() {
+		return listPrice;
 	}
 
-	public void setList_price(int list_price) {
-		this.list_price = list_price;
+	public void setListPrice(float listPrice) {
+		this.listPrice = listPrice;
 	}
 
-	public int getPrice() {
+	public int getAmount() {
+		return amount;
+	}
+
+	public void setAmount(int amount) {
+		this.amount = amount;
+	}
+
+	public float getPrice() {
 		return price;
 	}
 
-	public void setPrice(int price) {
+	public void setPrice(float price) {
 		this.price = price;
 	}
 
@@ -83,6 +99,22 @@ public class Order {
 
 	public void setPoint(int point) {
 		this.point = point;
+	}
+
+	public int getRefId() {
+		return refId;
+	}
+
+	public void setRefId(int refId) {
+		this.refId = refId;
+	}
+
+	public int getTribeId() {
+		return tribeId;
+	}
+
+	public void setTribeId(int tribeId) {
+		this.tribeId = tribeId;
 	}
 
 	public String getTradeNo() {
@@ -147,6 +179,20 @@ public class Order {
 
 	public void setSignTime(Date signTime) {
 		this.signTime = signTime;
+	}
+
+	// 订单状态
+	public static enum STATE_TYPE_ENUM {
+		NOPAY(0), NOSEND(1), NORECEIVE(2), NOCOMMENT(3), CANCELED(4);
+		private int state;
+
+		private STATE_TYPE_ENUM(int state) {
+			this.state = state;
+		}
+
+		public int getState() {
+			return state;
+		}
 	}
 
 }

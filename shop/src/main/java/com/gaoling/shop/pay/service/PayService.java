@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.http.entity.ContentType;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,12 +17,16 @@ import com.gaoling.shop.common.AppConstant;
 import com.gaoling.shop.common.HttpClientUtil;
 import com.gaoling.shop.common.SignUtil;
 import com.gaoling.shop.common.XMLUtil;
+import com.gaoling.shop.order.service.OrderService;
 import com.gaoling.shop.system.pojo.PayParam;
 
 import net.sf.json.JSONObject;
 
 @Service
 public class PayService {
+	
+	@Autowired
+	private OrderService orderService;
 	
 	//处理用户支付请求
 	public Map<String,Object> operateUserPayRequest(PayParam param)throws Exception{
@@ -96,6 +101,10 @@ public class PayService {
 			if(SignUtil.signValue(paramMap, "MD5", AppConstant.USERMP_PAY_SECRET_KEY).toUpperCase().equals(sign)){
 				if(paramMap.get("return_code").toString().equalsIgnoreCase("SUCCESS")){
 					if(paramMap.get("result_code").toString().equalsIgnoreCase("SUCCESS")){
+						int amount=Integer.parseInt(paramMap.get("total_fee").toString());
+						String outTradeNo=paramMap.get("transaction_id").toString();
+						String tradeNo=paramMap.get("out_trade_no").toString();
+						orderService.operatePayNotify(tradeNo, outTradeNo, amount/100f);
 						resultMap.put("return_code", "SUCCESS");
 						resultMap.put("return_msg", "OK");
 					}

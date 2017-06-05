@@ -11,6 +11,9 @@ public class AppConstant {
 	public static final int COIN_PAY_WAY = 3;
 	public static final int POINT_PAY_WAY = 4;
 
+	// 微信公众号支付方式
+	public static final String WEIXIN_TRADE_TYPE_JSAPI = "JSAPI";
+
 	public static String ALIDAYU_SMS_URL;// 阿里大于短信发送地址
 	public static String ALIDAYU_APP_KEY;// 阿里大于appKey
 	public static String ALIDAYU_APP_SECRET;// 阿里大于appSecret
@@ -48,7 +51,7 @@ public class AppConstant {
 	public static String WEIXIN_TEMPLATE_SEND;// 微信模板消息发送接口
 
 	public static String MEMCACHED_ADDR;// Memcached服务器配置
-	
+
 	public static String OSS_BUCKETNAME;// OSS图片存储目录
 	public static String OSS_ENDPOINT;// OSS图片存储地址
 	public static String OSS_ACCESSKEYID;// OSSAPI调用账户
@@ -67,6 +70,10 @@ public class AppConstant {
 	public static final int SHOP_NOT_EXISTS = 107;
 	public static final int USER_ALREADY_FOLLOWED = 108;
 	public static final int USER_NO_FOLLOWED = 109;
+	public static final int OPERATE_FAILURE = 110;
+	public static final int PAY_PRICE_INCORRECT = 111;
+	public static final int ACCOUNT_BALANCE_INADEQUATE = 112;
+	public static final int TRIBE_NOT_EXISTS = 113;
 
 	static {
 		ALIDAYU_SMS_URL = PropertiesUtil.getProperty("alidayu_sms_url");
@@ -103,14 +110,14 @@ public class AppConstant {
 		WEIXIN_TEMPLATE_SEND = PropertiesUtil.getProperty("wxapi.weixin_template_send");
 
 		MEMCACHED_ADDR = PropertiesUtil.getProperty("memcached.addr");
-		
-		OSS_BUCKETNAME=PropertiesUtil.getProperty("cdn.oss_bucketname");
-		OSS_ENDPOINT=PropertiesUtil.getProperty("cdn.oss_endpoint");
-		OSS_ACCESSKEYID=PropertiesUtil.getProperty("cdn.oss_accesskeyid");
-		OSS_SECRETACCESSKEY=PropertiesUtil.getProperty("cdn.oss_secretaccesskey");
-		OSS_CDN_SERVER=PropertiesUtil.getProperty("cdn.oss_cdn_server");
+
+		OSS_BUCKETNAME = PropertiesUtil.getProperty("cdn.oss_bucketname");
+		OSS_ENDPOINT = PropertiesUtil.getProperty("cdn.oss_endpoint");
+		OSS_ACCESSKEYID = PropertiesUtil.getProperty("cdn.oss_accesskeyid");
+		OSS_SECRETACCESSKEY = PropertiesUtil.getProperty("cdn.oss_secretaccesskey");
+		OSS_CDN_SERVER = PropertiesUtil.getProperty("cdn.oss_cdn_server");
 	}
-	
+
 	// 是/否
 	public static enum YES_OR_NO_ENUM {
 		NO(0), YES(1);

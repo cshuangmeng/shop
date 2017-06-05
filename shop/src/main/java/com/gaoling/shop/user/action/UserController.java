@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gaoling.shop.common.AppConstant;
+import com.gaoling.shop.pay.service.UserTradeLogService;
 import com.gaoling.shop.system.pojo.Result;
 import com.gaoling.shop.system.service.CommonService;
 import com.gaoling.shop.user.service.ShoppingCarService;
@@ -22,6 +23,8 @@ public class UserController extends CommonService{
 	private UserService userService;
 	@Autowired
 	private ShoppingCarService shoppingCarService;
+	@Autowired
+	private UserTradeLogService userTradeLogService;
 
 	//下发验证码
 	@RequestMapping("/code")
@@ -96,6 +99,32 @@ public class UserController extends CommonService{
 		Result result=null;
 		try {
 			result=shoppingCarService.removeGoodsFromShoppingCar(uuid, Integer.parseInt(goodsId));
+		} catch (Exception e) {
+			result=userService.putResult(AppConstant.SYSTEM_ERROR_CODE);
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	//一次添加多个商品至购物车
+	@RequestMapping("/addMultiGoods")
+	public Result addMultiShoppingCar(@RequestParam(required=false)String uuid,@RequestParam(required=false)String items){
+		Result result=null;
+		try {
+			result=shoppingCarService.addMultiGoodsToShoppingCar(items, uuid);
+		} catch (Exception e) {
+			result=userService.putResult(AppConstant.SYSTEM_ERROR_CODE);
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	//删除购物车内的商品
+	@RequestMapping("/tradeLog")
+	public Result userTradeLog(@RequestParam(required=false)String uuid){
+		Result result=null;
+		try {
+			result=userTradeLogService.queryUserTradeLogs(uuid);
 		} catch (Exception e) {
 			result=userService.putResult(AppConstant.SYSTEM_ERROR_CODE);
 			e.printStackTrace();

@@ -19,6 +19,9 @@
 			<if test="param.userId!=null">
 				and t.user_id=#{param.userId}
 			</if>
+			<if test="param.isDefault!=null">
+				and t.is_default=#{param.isDefault}
+			</if>
 		</trim>
 	</select>
 	

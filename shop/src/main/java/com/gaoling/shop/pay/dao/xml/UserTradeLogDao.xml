@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gaoling.shop.pay.dao.UserTradeLogDao">
+
+	<!-- 查询支付退款汇总信息 -->
+	<select id="queryUserTradeLogs" resultType="java.util.Map">
+		select t.user_id userId,t.amount,t.pay_way payWay,date_format(t.create_time,'%Y-%m-%d %H:%i:%s') createTime
+		,t.trade_type tradeType,t.trade_id tradeId,t.trade_no tradeNo,t1.name goodsName from user_trade_log t left join goods t1 on (t.trade_id=t1.id)
+		where t.user_id=#{userId} order by createTime desc,t.id desc
+	</select>
+	
+	<!-- 增加支付退款汇总信息 -->
+	<insert id="addUserTradeLog" keyProperty="id" useGeneratedKeys="true" parameterType="com.gaoling.shop.pay.pojo.UserTradeLog">
+		insert into user_trade_log(user_id,amount,pay_way,cash,coin,`point`,trade_type,trade_no,trade_id,create_time,remark)
+		values(#{userId},#{amount},#{payWay},#{cash},#{coin},#{point},#{tradeType},#{tradeNo},#{tradeId},#{createTime},#{remark})
+	</insert>
+	
+</mapper>  

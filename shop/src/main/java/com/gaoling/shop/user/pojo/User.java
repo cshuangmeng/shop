@@ -1,13 +1,14 @@
 package com.gaoling.shop.user.pojo;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class User {
 
-	@JsonIgnore
 	private int id;
 	private String uuid;
 	private String nickname;
@@ -23,6 +24,7 @@ public class User {
 	private Date createTime;
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date loginTime;
+	private Map<String, Object> extras = new HashMap<String, Object>();
 
 	public int getId() {
 		return id;
@@ -118,6 +120,10 @@ public class User {
 
 	public void setLoginTime(Date loginTime) {
 		this.loginTime = loginTime;
+	}
+
+	public Map<String, Object> getExtras() {
+		return extras;
 	}
 
 	// 用户状态

@@ -2,17 +2,15 @@ package com.gaoling.shop.tribe.pojo;
 
 import java.util.Date;
 
-public class Tribe {
+public class TribeMember {
 
 	private int id;
-	private String nickname;
 	private int userId;
-	private String headImg;
-	private int level;
-	private int coin;
-	private int point;
+	private int tribeId;
 	private int state;
 	private Date createTime;
+	private Date joinTime;
+	private Date quitTime;
 
 	public int getId() {
 		return id;
@@ -20,14 +18,6 @@ public class Tribe {
 
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	public String getNickname() {
-		return nickname;
-	}
-
-	public void setNickname(String nickname) {
-		this.nickname = nickname;
 	}
 
 	public int getUserId() {
@@ -38,36 +28,20 @@ public class Tribe {
 		this.userId = userId;
 	}
 
-	public String getHeadImg() {
-		return headImg;
+	public int getTribeId() {
+		return tribeId;
 	}
 
-	public void setHeadImg(String headImg) {
-		this.headImg = headImg;
+	public void setTribeId(int tribeId) {
+		this.tribeId = tribeId;
 	}
 
-	public int getLevel() {
-		return level;
+	public Date getJoinTime() {
+		return joinTime;
 	}
 
-	public void setLevel(int level) {
-		this.level = level;
-	}
-
-	public int getCoin() {
-		return coin;
-	}
-
-	public void setCoin(int coin) {
-		this.coin = coin;
-	}
-
-	public int getPoint() {
-		return point;
-	}
-
-	public void setPoint(int point) {
-		this.point = point;
+	public void setJoinTime(Date joinTime) {
+		this.joinTime = joinTime;
 	}
 
 	public int getState() {
@@ -85,10 +59,18 @@ public class Tribe {
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
+
+	public Date getQuitTime() {
+		return quitTime;
+	}
+
+	public void setQuitTime(Date quitTime) {
+		this.quitTime = quitTime;
+	}
 	
-	// 部落状态
+	// 加入状态
 	public static enum STATE_TYPE_ENUM {
-		INACTIVE(0), ACTIVATED(1), DISABLED(2);
+		NOJOIN(0), JOINED(1), EXITED(2);
 		private int state;
 
 		private STATE_TYPE_ENUM(int state) {
@@ -99,5 +81,5 @@ public class Tribe {
 			return state;
 		}
 	}
-	
+
 }
