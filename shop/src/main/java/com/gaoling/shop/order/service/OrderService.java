@@ -100,10 +100,10 @@ public class OrderService extends CommonService{
 			List<Map<Object,Object>> goods=k.getValue().stream().map(v->DataUtil.mapOf("id",v.get("goodsId"),"name"
 					,v.get("goodsName"),"headImg",AppConstant.OSS_CDN_SERVER+v.get("headImg"),"amount",v.get("amount"))).collect(Collectors.toList());
 			float totalPrice=k.getValue().stream().map(v->Float.parseFloat(v.get("price").toString())).reduce((a,b)->a+b).get();
-			return DataUtil.mapOf("orderId",mainOrder.get("orderId"),"tradeNo",k.getKey(),"totalPrice",totalPrice,"goods",goods
-					,"state",mainOrder.get("state"),"point",mainOrder.get("point"),"coin",mainOrder.get("coin")
-					,"payWay",mainOrder.get("payWay"));
-		}).collect(Collectors.toList());
+			return DataUtil.mapOf("orderId",mainOrder.get("orderId"),"createTime",mainOrder.get("createTime")
+					,"tradeNo",k.getKey(),"totalPrice",totalPrice,"goods",goods,"state",mainOrder.get("state")
+					,"point",mainOrder.get("point"),"coin",mainOrder.get("coin"),"payWay",mainOrder.get("payWay"));
+		}).sorted((a,b)->b.get("createTime").toString().compareTo(a.get("createTime").toString())).collect(Collectors.toList());
 		return putResult(DataUtil.mapOf("orders",result));
 	}
 	
@@ -124,6 +124,13 @@ public class OrderService extends CommonService{
 		List<ShoppingCar> cars=shoppingCarService.queryShoppingCars(DataUtil.mapOf("goodsIds",ids,"userId",user.getId()));
 		if(cars.size()<=0){
 			return putResult(AppConstant.GOODS_NOT_EXISTS);
+		}
+		//检查部落番号
+		if(param.getTribeId()>0){
+			Tribe t=tribeService.getTribe(param.getTribeId());
+			if(null==t){
+				return putResult(AppConstant.TRIBE_NOT_EXISTS);
+			}
 		}
 		//拼装订单信息
 		List<Order> orders=new ArrayList<Order>();
@@ -289,6 +296,7 @@ public class OrderService extends CommonService{
 	}
 	
 	//处理支付回调请求
+	@Transactional
 	public void operatePayNotify(String tradeNo,String outTradeNo,float amount)throws Exception{
 		List<Order> orders=queryOrders(DataUtil.mapOf("tradeNo",tradeNo));
 		Order mainOrder=orders.stream().filter(o->o.getRefId()<=0).findFirst().get();
@@ -302,19 +310,20 @@ public class OrderService extends CommonService{
 		//获取主订单
 		Order mainOrder=orders.stream().filter(o->o.getRefId()<=0).findFirst().get();
 		//对比现金支付部分是否正确
-		float totalPrice=orders.stream().map(o->o.getPrice()).reduce((a,b)->a+b).get();
 		float totalListPrice=orders.stream().map(o->o.getListPrice()).reduce((a,b)->a+b).get();
+		float totalPrice=totalListPrice-mainOrder.getPoint()-mainOrder.getCoin();
 		if(totalPrice==amount){
 			//扣除部落分、部落币
 			userService.operateAccount(mainOrder.getUserId(), -mainOrder.getPoint(), -mainOrder.getCoin());
 			//记录流水
 			UserTradeLog log=new UserTradeLog();
-			log.setAmount(totalListPrice);
-			log.setCash(totalPrice);
-			log.setCoin(mainOrder.getCoin());
+			log.setAmount(-totalListPrice);
+			log.setCash(-totalPrice);
+			log.setCoin(-mainOrder.getCoin());
 			log.setCreateTime(DateUtil.nowDate());
 			log.setPayWay(mainOrder.getPayWay());
-			log.setPoint(mainOrder.getPoint());
+			log.setPoint(-mainOrder.getPoint());
+			log.setRemark("");
 			log.setTradeId(mainOrder.getId());
 			log.setTradeNo(mainOrder.getTradeNo().replaceAll(getString("goods_trade_no_prefix"), ""));
 			log.setTradeType(PayRefundSummary.TRADE_TYPE_ENUM.GOODSPAY.getState());
@@ -322,10 +331,10 @@ public class OrderService extends CommonService{
 			userTradeLogService.addUserTradeLog(log);
 			//记录支付退款汇总信息
 			PayRefundSummary summary=new PayRefundSummary();
-			summary.setAmount(log.getAmount());
-			summary.setCash(log.getCash());
-			summary.setCoin(log.getCoin());
-			summary.setPoint(log.getPoint());
+			summary.setAmount(Math.abs(log.getAmount()));
+			summary.setCash(Math.abs(log.getCash()));
+			summary.setCoin(Math.abs(log.getCoin()));
+			summary.setPoint(Math.abs(log.getPoint()));
 			summary.setTradeType(log.getTradeType());
 			summary.setTradeId(log.getTradeId());
 			payRefundSummaryService.addPayRefundSummary(summary);
@@ -337,6 +346,9 @@ public class OrderService extends CommonService{
 			}
 			//赠送部落币
 			giveInviteReward(mainOrder.getUserId(), mainOrder.getTribeId());
+			//将商品从购物车内清除
+			List<Integer> goodsIds=orders.stream().map(o->o.getGoodsId()).collect(Collectors.toList());
+			shoppingCarService.removeGoodsFromShoppingCar(mainOrder.getUserId(), goodsIds);
 			return true;
 		}
 		return false;

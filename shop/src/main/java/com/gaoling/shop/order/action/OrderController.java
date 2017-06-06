@@ -90,18 +90,4 @@ public class OrderController {
 		return result;
 	}
 	
-	//订单详情
-	@RequestMapping("/test")
-	public Result test(@RequestParam int userId,@RequestParam int tribeId)throws Exception{
-		Result result=null;
-		try {
-			orderService.giveInviteReward(userId, tribeId);
-			result=orderService.putResult();
-		} catch (Exception e) {
-			result=orderService.putResult(AppConstant.SYSTEM_ERROR_CODE);
-			e.printStackTrace();
-		}
-		return result;
-	}
-	
 }

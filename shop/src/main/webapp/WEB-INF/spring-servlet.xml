@@ -33,6 +33,14 @@
 	<!-- 启用缓存注解功能 -->
 	<cache:annotation-driven />
 	
+	<mvc:interceptors>
+		<!-- 用户端非法请求拦截器 -->
+		<mvc:interceptor>
+			<mvc:mapping path="/**/**"/>
+			<bean class="com.gaoling.shop.filter.ParameterFilter" />
+		</mvc:interceptor>
+	</mvc:interceptors>
+	
 	<!-- 启用缓存管理器 -->
 	<bean id="cacheManager" class="org.springframework.cache.support.SimpleCacheManager">
 		<property name="caches">

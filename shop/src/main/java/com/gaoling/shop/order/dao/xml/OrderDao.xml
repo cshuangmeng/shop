@@ -51,7 +51,7 @@
 	<select id="queryOrderList" resultType="java.util.Map">
 		select t.id orderId,t.goods_id goodsId,replace(coalesce(t2.trade_no,t.trade_no),'goods_','') tradeNo,t.ref_id refId,t1.head_img headImg
 		,t1.name goodsName,t1.price,t.amount,(select `value` from dict_info where `name`=concat('order_state_',t.state)) state
-		,t.point,t.coin,t.list_price listPrice,t.pay_way payWay
+		,t.point,t.coin,t.list_price listPrice,t.pay_way payWay,date_format(t.create_time,'%Y-%m-%d %H:%i:%s') createTime
 		from `order` t inner join goods t1 on (t.goods_id=t1.id) left join `order` t2 on (t.ref_id=t2.id)
 		where t.user_id=#{userId}
 		<if test="state>=0">
@@ -77,8 +77,17 @@
 	<!-- 更新订单信息 -->
 	<update id="updateOrder" parameterType="com.gaoling.shop.order.pojo.Order">
 		update `order` set pay_way=#{payWay},list_price=#{listPrice},amount=#{amount},price=#{price},coin=#{coin},`point`=#{point},ref_id=#{refId}
-		,tribe_id=#{tribeId},trade_no=#{tradeNo},out_trade_no=#{outTradeNo},address_id=#{addressId},state=#{state},express_number=#{expressNumber}
-		,express_time=#{expressTime},sign_time=#{signTime} where id=#{id}
+		,tribe_id=#{tribeId},trade_no=#{tradeNo},out_trade_no=#{outTradeNo},address_id=#{addressId},state=#{state}
+		<if test="expressNumber!=null">
+			,express_number=#{expressNumber}
+		</if>
+		<if test="expressTime!=null">
+			,express_time=#{expressTime}
+		</if>
+		<if test="signTime!=null">
+			,sign_time=#{signTime}
+		</if>
+		where id=#{id}
 	</update>
 
 </mapper>  

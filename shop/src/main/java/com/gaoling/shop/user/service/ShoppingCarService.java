@@ -1,5 +1,6 @@
 package com.gaoling.shop.user.service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -74,7 +75,10 @@ public class ShoppingCarService extends CommonService{
 		String[] data=null;
 		for(String item:items.split("_")){
 			data=item.split(",");
-			addGoodsToShoppingCar(Integer.parseInt(data[0]), uuid, Integer.parseInt(data[1]));
+			Result r=addGoodsToShoppingCar(Integer.parseInt(data[0]), uuid, Integer.parseInt(data[1]));
+			if(r.getCode()>0){
+				return r;
+			}
 		}
 		return putResult();
 	}
@@ -126,7 +130,7 @@ public class ShoppingCarService extends CommonService{
 		if(null==user){
 			return putResult(AppConstant.USER_NOT_EXISTS);
 		}
-		shoppingCarDao.removeGoodsFromShoppingCar(user.getId(), goodsId);
+		shoppingCarDao.removeGoodsFromShoppingCar(user.getId(), Arrays.asList(goodsId));
 		return putResult();
 	}
 	
@@ -138,6 +142,11 @@ public class ShoppingCarService extends CommonService{
 	//查询购物车商品数量
 	public void updateAmountOfShoppingCar(int userId,int goodsId,int amount){
 		shoppingCarDao.updateAmountOfShoppingCar(userId, goodsId, amount);
+	}
+	
+	//移除购物车
+	public void removeGoodsFromShoppingCar(int userId, List<Integer> goodsIds){
+		shoppingCarDao.removeGoodsFromShoppingCar(userId, goodsIds);
 	}
 	
 }
