@@ -4,11 +4,16 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.gaoling.shop.common.AppConstant;
 import com.gaoling.shop.common.DataUtil;
+import com.gaoling.shop.common.DateUtil;
+import com.gaoling.shop.common.OSSUtil;
 import com.gaoling.shop.goods.dao.GoodsDao;
 import com.gaoling.shop.goods.pojo.Goods;
 import com.gaoling.shop.goods.pojo.Shop;
@@ -67,6 +72,38 @@ public class GoodsService extends CommonService{
 		}else{
 			return putResult(DataUtil.mapOf("goods",goods));
 		}
+	}
+	
+	//保存商品信息
+	@Transactional
+	public Result saveGoodsByUpload(Goods goods,MultipartFile headImg,MultipartFile[] infoImg,MultipartFile[] detailImg)throws Exception{
+		//上传头像
+		String fileName="goods/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS"+DataUtil.createNums(6));
+		fileName+=headImg.getOriginalFilename().substring(headImg.getOriginalFilename().lastIndexOf("."));
+		OSSUtil.uploadFileToOSS(headImg.getInputStream(), fileName);
+		goods.setHeadImg(fileName);
+		//上传描述
+		for(MultipartFile ii:infoImg){
+			if(!ii.isEmpty()){
+				fileName="goods/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS"+DataUtil.createNums(6));
+				fileName+=ii.getOriginalFilename().substring(ii.getOriginalFilename().lastIndexOf("."));
+				OSSUtil.uploadFileToOSS(ii.getInputStream(), fileName);
+				goods.setInfoImgs(StringUtils.isNotEmpty(goods.getInfoImgs())?goods.getInfoImgs()+","+fileName:fileName);
+			}
+		}
+		//上传详情
+		for(MultipartFile di:detailImg){
+			if(!di.isEmpty()){
+				fileName="goods/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS"+DataUtil.createNums(6));
+				fileName+=di.getOriginalFilename().substring(di.getOriginalFilename().lastIndexOf("."));
+				OSSUtil.uploadFileToOSS(di.getInputStream(), fileName);
+				goods.setDetailImgs(StringUtils.isNotEmpty(goods.getDetailImgs())?goods.getDetailImgs()+","+fileName:fileName);
+			}
+		}
+		goods.setState(Goods.STATE_TYPE_ENUM.PASSED.getState());
+		goods.setCreateTime(DateUtil.nowDate());
+		goodsDao.addGoods(goods);
+		return putResult(goods);
 	}
 	
 	//查询商品

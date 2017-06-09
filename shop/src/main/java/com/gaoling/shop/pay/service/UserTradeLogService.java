@@ -58,7 +58,7 @@ public class UserTradeLogService extends CommonService{
 				log.put("item", config.get("invite_title"));
 				log.put("desc",config.get("pay_success_info"));
 			}else if(tradeType==PayRefundSummary.TRADE_TYPE_ENUM.GOODSPAY.getState()){
-				List<Order> orders=orderService.queryOrders(DataUtil.mapOf("allOrders",true,"id",tradeId));
+				List<Order> orders=orderService.queryOrders(DataUtil.mapOf("allOrders",true,"mainOrderId",tradeId));
 				log.put("item", goodsName);
 				if(orders.size()>1){
 					log.put("item", String.format(config.getString("goods_title"),goodsName,orders.size()));

@@ -9,7 +9,7 @@
 		,coin_enable coinEnable,point_enable pointEnable,state,create_time createTime from goods t where t.state=1
 	</sql>
 
-	<!-- 查询所有订单 -->
+	<!-- 查询所有商品 -->
 	<select id="queryGoods" resultType="com.gaoling.shop.goods.pojo.Goods">
 		<include refid="goodsHead"/>
 		<if test="param.typeId!=null">
@@ -28,5 +28,11 @@
 			limit #{param.page}*#{param.limit},#{param.limit}
 		</if>
 	</select>
-
+	
+	<!-- 保存商品信息 -->
+	<insert id="addGoods" keyProperty="id" useGeneratedKeys="true" parameterType="com.gaoling.shop.goods.pojo.Goods">
+		insert into goods(name,type_id,shop_id,price,cash_discount,details,head_img,info_imgs,detail_imgs,coin_enable,point_enable,state,create_time)
+		values(#{name},#{typeId},#{shopId},#{price},#{cashDiscount},#{details},#{headImg},#{infoImgs},#{detailImgs},#{coinEnable},#{pointEnable},#{state},#{createTime})
+	</insert>
+	
 </mapper>  

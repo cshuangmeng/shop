@@ -43,7 +43,7 @@ public class PayService {
 		paramMap.put("appid",AppConstant.USERMP_APP_ID);
 		paramMap.put("mch_id",AppConstant.USERMP_MCH_ID);
 		paramMap.put("body",param.getBody());
-		paramMap.put("total_fee",param.getAmount()*100);//单位为分
+		paramMap.put("total_fee",Math.round(param.getAmount()*100));//单位为分
 		paramMap.put("nonce_str",param.getNonceStr());
 		paramMap.put("out_trade_no",param.getTradeNo());
 		paramMap.put("spbill_create_ip",param.getIp());
@@ -134,10 +134,10 @@ public class PayService {
 			paramMap.put("appid",AppConstant.USERMP_APP_ID);
 			paramMap.put("mch_id",AppConstant.USERMP_MCH_ID);
 			paramMap.put("nonce_str",param.getNonceStr());
-			paramMap.put("out_trade_no", param.getOutTradeNo());
+			paramMap.put("transaction_id", param.getOutTradeNo());
 			paramMap.put("out_refund_no", param.getTradeNo());
-			paramMap.put("total_fee",param.getAmount()*100);
-			paramMap.put("refund_fee", param.getRefund()*100);
+			paramMap.put("total_fee",Math.round(param.getAmount()*100));//单位为分
+			paramMap.put("refund_fee", Math.round(param.getRefund()*100));//单位为分
 			paramMap.put("op_user_id", param.getOperator());
 			paramMap.put("sign", SignUtil.signValue(paramMap, "MD5",AppConstant.USERMP_PAY_SECRET_KEY).toUpperCase());
 			Logger.getLogger("file").info("<------微信退款请求参数----->"+JSONObject.fromObject(paramMap).toString());

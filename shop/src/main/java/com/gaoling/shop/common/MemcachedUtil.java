@@ -85,5 +85,9 @@ public class MemcachedUtil {
 		}
 		return def;
 	}
+	
+	public static void main(String[] args) {
+		MemcachedUtil.getInstance().setData("cc_18310137109", "0000", 360);
+	}
 
 }

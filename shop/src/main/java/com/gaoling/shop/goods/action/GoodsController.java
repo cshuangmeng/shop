@@ -4,12 +4,15 @@ import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.gaoling.shop.common.AppConstant;
+import com.gaoling.shop.goods.pojo.Goods;
 import com.gaoling.shop.goods.service.GoodsService;
 import com.gaoling.shop.system.pojo.Result;
 
@@ -40,6 +43,20 @@ public class GoodsController {
 		Result result=null;
 		try {
 			result=goodsService.loadGoodsDetail(Integer.parseInt(id));
+		} catch (Exception e) {
+			result=goodsService.putResult(AppConstant.SYSTEM_ERROR_CODE);
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	//加载商品详情
+	@RequestMapping("/upload")
+	public Result loadGoodsDetail(@ModelAttribute Goods goods,@RequestParam MultipartFile img
+			,@RequestParam MultipartFile[] infoImg,@RequestParam MultipartFile[] detailImg){
+		Result result=null;
+		try {
+			result=goodsService.saveGoodsByUpload(goods, img, infoImg, detailImg);
 		} catch (Exception e) {
 			result=goodsService.putResult(AppConstant.SYSTEM_ERROR_CODE);
 			e.printStackTrace();

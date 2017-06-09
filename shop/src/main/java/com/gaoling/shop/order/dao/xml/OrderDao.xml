@@ -41,8 +41,8 @@
 			<if test="param.goodsId!=null">
 				and t.goods_id=#{param.goodsId}
 			</if>
-			<if test="param.allOrders!=null and param.allOrders and param.id!=null">
-				and (t.id=#{param.id} or t.ref_id=#{param.id})
+			<if test="param.allOrders!=null and param.allOrders and param.mainOrderId!=null">
+				and (t.id=#{param.mainOrderId} or t.ref_id=#{param.mainOrderId})
 			</if>
 		</trim>
 	</select>
@@ -50,7 +50,7 @@
 	<!-- 查询订单列表 -->
 	<select id="queryOrderList" resultType="java.util.Map">
 		select t.id orderId,t.goods_id goodsId,replace(coalesce(t2.trade_no,t.trade_no),'goods_','') tradeNo,t.ref_id refId,t1.head_img headImg
-		,t1.name goodsName,t1.price,t.amount,(select `value` from dict_info where `name`=concat('order_state_',t.state)) state
+		,t1.name goodsName,t.price,t.amount,(select `value` from dict_info where `name`=concat('order_state_',t.state)) state
 		,t.point,t.coin,t.list_price listPrice,t.pay_way payWay,date_format(t.create_time,'%Y-%m-%d %H:%i:%s') createTime
 		from `order` t inner join goods t1 on (t.goods_id=t1.id) left join `order` t2 on (t.ref_id=t2.id)
 		where t.user_id=#{userId}

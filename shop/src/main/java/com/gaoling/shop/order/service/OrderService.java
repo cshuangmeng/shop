@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -99,7 +100,12 @@ public class OrderService extends CommonService{
 			Map<String,Object> mainOrder=k.getValue().stream().filter(v->Integer.parseInt(v.get("refId").toString())==0).findFirst().get();
 			List<Map<Object,Object>> goods=k.getValue().stream().map(v->DataUtil.mapOf("id",v.get("goodsId"),"name"
 					,v.get("goodsName"),"headImg",AppConstant.OSS_CDN_SERVER+v.get("headImg"),"amount",v.get("amount"))).collect(Collectors.toList());
-			float totalPrice=k.getValue().stream().map(v->Float.parseFloat(v.get("price").toString())).reduce((a,b)->a+b).get();
+			float totalPrice=k.getValue().stream().map(v->{
+				float price=Float.parseFloat(v.get("listPrice").toString());
+				int point=Integer.parseInt(v.get("point").toString());
+				int coin=Integer.parseInt(v.get("coin").toString());
+				return price-point/getInteger("point_to_cash_rate")-coin/getInteger("coin_to_cash_rate");
+			}).reduce((a,b)->a+b).get();
 			return DataUtil.mapOf("orderId",mainOrder.get("orderId"),"createTime",mainOrder.get("createTime")
 					,"tradeNo",k.getKey(),"totalPrice",totalPrice,"goods",goods,"state",mainOrder.get("state")
 					,"point",mainOrder.get("point"),"coin",mainOrder.get("coin"),"payWay",mainOrder.get("payWay"));
@@ -218,7 +224,7 @@ public class OrderService extends CommonService{
 		if(null==user){
 			return putResult(AppConstant.USER_NOT_EXISTS);
 		}
-		List<Order> orders=queryOrders(DataUtil.mapOf("allOrders",true,"id",orderId));
+		List<Order> orders=queryOrders(DataUtil.mapOf("allOrders",true,"mainOrderId",orderId));
 		Order mainOrder=orders.size()>0?orders.stream().filter(o->o.getRefId()==0).findFirst().get():null;
 		if(null==mainOrder||mainOrder.getUserId()!=user.getId()){
 			return putResult(AppConstant.NOT_MYSELF_OPERATE);
@@ -285,13 +291,17 @@ public class OrderService extends CommonService{
 		float totalMiniPrice=goods.stream().map(g->{
 			float cashDiscount=Float.parseFloat(g.get("cashDiscount").toString());
 			float price=Float.parseFloat(g.get("price").toString());
+			int amount=Integer.parseInt(g.get("amount").toString());
 			int coinEnable=Integer.parseInt(g.get("coinEnable").toString());
 			int pointEnable=Integer.parseInt(g.get("pointEnable").toString());
-			return coinEnable>0||pointEnable>0?cashDiscount*price*0.1f:price;
+			return coinEnable>0||pointEnable>0?cashDiscount*price*amount*0.1f:price*amount;
 		}).reduce((a,b)->a+b).get();
+		int coinRate=goods.stream().filter(g->Integer.parseInt(g.get("coinEnable").toString())>0).findAny().isPresent()
+				?getInteger("coin_to_cash_rate"):0;
+		int pointRate=goods.stream().filter(g->Integer.parseInt(g.get("pointEnable").toString())>0).findAny().isPresent()
+				?getInteger("point_to_cash_rate"):0;
 		Map<String,Object> result=DataUtil.mapOf("goods",car,"address",address,"totalMiniPrice",totalMiniPrice
-			,"point",user.getPoint(),"coin",user.getCoin(),"pointRate",getInteger("point_to_cash_rate"),"coinRate"
-			,getInteger("coin_to_cash_rate"));
+			,"point",user.getPoint(),"coin",user.getCoin(),"pointRate",pointRate,"coinRate",coinRate);
 		return putResult(result);
 	}
 	
@@ -306,52 +316,61 @@ public class OrderService extends CommonService{
 	//商品订单支付成功
 	@Transactional
 	public boolean goodsPaySuccess(int orderId,String outTradeNo,float amount)throws Exception{
-		List<Order> orders=queryOrders(DataUtil.mapOf("allOrders",true,"id",orderId));
+		List<Order> orders=queryOrders(DataUtil.mapOf("allOrders",true,"mainOrderId",orderId));
 		//获取主订单
 		Order mainOrder=orders.stream().filter(o->o.getRefId()<=0).findFirst().get();
 		//对比现金支付部分是否正确
 		float totalListPrice=orders.stream().map(o->o.getListPrice()).reduce((a,b)->a+b).get();
-		float totalPrice=totalListPrice-mainOrder.getPoint()-mainOrder.getCoin();
-		if(totalPrice==amount){
-			//扣除部落分、部落币
-			userService.operateAccount(mainOrder.getUserId(), -mainOrder.getPoint(), -mainOrder.getCoin());
-			//记录流水
-			UserTradeLog log=new UserTradeLog();
-			log.setAmount(-totalListPrice);
-			log.setCash(-totalPrice);
-			log.setCoin(-mainOrder.getCoin());
-			log.setCreateTime(DateUtil.nowDate());
-			log.setPayWay(mainOrder.getPayWay());
-			log.setPoint(-mainOrder.getPoint());
-			log.setRemark("");
-			log.setTradeId(mainOrder.getId());
-			log.setTradeNo(mainOrder.getTradeNo().replaceAll(getString("goods_trade_no_prefix"), ""));
-			log.setTradeType(PayRefundSummary.TRADE_TYPE_ENUM.GOODSPAY.getState());
-			log.setUserId(mainOrder.getUserId());
-			userTradeLogService.addUserTradeLog(log);
-			//记录支付退款汇总信息
-			PayRefundSummary summary=new PayRefundSummary();
-			summary.setAmount(Math.abs(log.getAmount()));
-			summary.setCash(Math.abs(log.getCash()));
-			summary.setCoin(Math.abs(log.getCoin()));
-			summary.setPoint(Math.abs(log.getPoint()));
-			summary.setTradeType(log.getTradeType());
-			summary.setTradeId(log.getTradeId());
-			payRefundSummaryService.addPayRefundSummary(summary);
-			//更新订单状态
-			for(Order order:orders){
-				order.setOutTradeNo(outTradeNo);
-				order.setState(Order.STATE_TYPE_ENUM.NOSEND.getState());
-				updateOrder(order);
-			}
-			//赠送部落币
-			giveInviteReward(mainOrder.getUserId(), mainOrder.getTribeId());
-			//将商品从购物车内清除
-			List<Integer> goodsIds=orders.stream().map(o->o.getGoodsId()).collect(Collectors.toList());
-			shoppingCarService.removeGoodsFromShoppingCar(mainOrder.getUserId(), goodsIds);
-			return true;
+		float totalPrice=totalListPrice-mainOrder.getPoint()/getInteger("point_to_cash_rate")-mainOrder.getCoin()/getInteger("coin_to_cash_rate");
+		//检查订单状态是否是待支付
+		if(mainOrder.getState()!=Order.STATE_TYPE_ENUM.NOPAY.getState()){
+			Logger.getLogger("file").info("goodsPaySuccess | 订单状态不是待支付状态 | orderId="+orderId+",outTradeNo="
+					+outTradeNo+",state="+mainOrder.getState());
+			return false;
 		}
-		return false;
+		//检查订单金额是否正确
+		if(totalPrice!=amount){
+			Logger.getLogger("file").info("goodsPaySuccess | 订单应付金额不正确 | orderId="+orderId+",outTradeNo="
+					+outTradeNo+",state="+mainOrder.getState());
+			return false;
+		}
+		//扣除部落分、部落币
+		userService.operateAccount(mainOrder.getUserId(), -mainOrder.getPoint(), -mainOrder.getCoin());
+		//记录流水
+		UserTradeLog log=new UserTradeLog();
+		log.setAmount(-totalListPrice);
+		log.setCash(-totalPrice);
+		log.setCoin(-mainOrder.getCoin());
+		log.setCreateTime(DateUtil.nowDate());
+		log.setPayWay(mainOrder.getPayWay());
+		log.setPoint(-mainOrder.getPoint());
+		log.setRemark("");
+		log.setTradeId(mainOrder.getId());
+		log.setTradeNo(mainOrder.getTradeNo().replaceAll(getString("goods_trade_no_prefix"), ""));
+		log.setTradeType(PayRefundSummary.TRADE_TYPE_ENUM.GOODSPAY.getState());
+		log.setUserId(mainOrder.getUserId());
+		userTradeLogService.addUserTradeLog(log);
+		//记录支付退款汇总信息
+		PayRefundSummary summary=new PayRefundSummary();
+		summary.setAmount(Math.abs(log.getAmount()));
+		summary.setCash(Math.abs(log.getCash()));
+		summary.setCoin(Math.abs(log.getCoin()));
+		summary.setPoint(Math.abs(log.getPoint()));
+		summary.setTradeType(log.getTradeType());
+		summary.setTradeId(log.getTradeId());
+		payRefundSummaryService.addPayRefundSummary(summary);
+		//更新订单状态
+		for(Order order:orders){
+			order.setOutTradeNo(outTradeNo);
+			order.setState(Order.STATE_TYPE_ENUM.NOSEND.getState());
+			updateOrder(order);
+		}
+		//赠送部落币
+		giveInviteReward(mainOrder.getUserId(), mainOrder.getTribeId());
+		//将商品从购物车内清除
+		List<Integer> goodsIds=orders.stream().map(o->o.getGoodsId()).collect(Collectors.toList());
+		shoppingCarService.removeGoodsFromShoppingCar(mainOrder.getUserId(), goodsIds);
+		return true;
 	}
 	
 	//进入部落

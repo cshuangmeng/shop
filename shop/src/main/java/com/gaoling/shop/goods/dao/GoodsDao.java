@@ -12,5 +12,6 @@ import com.gaoling.shop.goods.pojo.Goods;
 public interface GoodsDao {
 
 	List<Goods> queryGoods(@Param("param")Map<Object,Object> param);
+	void addGoods(Goods goods);
 	
 }

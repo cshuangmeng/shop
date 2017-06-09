@@ -2,8 +2,8 @@ package com.gaoling.shop.system.pojo;
 
 public class PayParam {
 
-	private int amount;
-	private int refund;
+	private float amount;
+	private float refund;
 	private String operator;
 	private String tradeNo;
 	private String outTradeNo;
@@ -16,11 +16,11 @@ public class PayParam {
 	private String tradeType;
 	private String body;
 
-	public int getAmount() {
+	public float getAmount() {
 		return amount;
 	}
 
-	public void setAmount(int amount) {
+	public void setAmount(float amount) {
 		this.amount = amount;
 	}
 
@@ -96,11 +96,11 @@ public class PayParam {
 		this.body = body;
 	}
 
-	public int getRefund() {
+	public float getRefund() {
 		return refund;
 	}
 
-	public void setRefund(int refund) {
+	public void setRefund(float refund) {
 		this.refund = refund;
 	}
 
