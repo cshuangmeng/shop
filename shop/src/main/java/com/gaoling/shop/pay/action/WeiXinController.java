@@ -61,4 +61,16 @@ public class WeiXinController {
 		return null;
 	}
 	
+	// 通过微信发送的服务器合法性验证
+	@ResponseBody
+	@RequestMapping("/share")
+	public Result getShareConfig(HttpServletRequest request) {
+		try {
+			return weiXinService.getShareConfig(request);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 }

@@ -77,7 +77,7 @@ public class ShopController {
 		return result;
 	}
 	
-	//商户合作
+	//品牌商户列表
 	@RequestMapping("/stars")
 	public Result loadShowShops(){
 		Result result=null;

@@ -168,6 +168,7 @@ public class OrderService extends CommonService{
 			orders.add(order);
 		}
 		//检查应付金额是否正确
+		float totalMiniPrice=orders.stream().map(t->t.getPrice()).reduce((a,b)->a+b).get();
 		float totalPrice=orders.stream().map(t->t.getListPrice()).reduce((a,b)->a+b).get();
 		int coinCash=param.getCoin()/getInteger("coin_to_cash_rate");
 		int pointCash=param.getPoint()/getInteger("point_to_cash_rate");
@@ -175,7 +176,7 @@ public class OrderService extends CommonService{
 		if(user.getCoin()<param.getCoin()||user.getPoint()<param.getPoint()){
 			return putResult(AppConstant.ACCOUNT_BALANCE_INADEQUATE);
 		}
-		if(param.getPrice()+coinCash+pointCash!=totalPrice){
+		if(param.getPrice()<totalMiniPrice||(param.getPrice()+coinCash+pointCash!=totalPrice)){
 			return putResult(AppConstant.PAY_PRICE_INCORRECT);
 		}
 		//预生成支付信息

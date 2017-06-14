@@ -11,6 +11,13 @@ public class AppConstant {
 	public static final int COIN_PAY_WAY = 3;
 	public static final int POINT_PAY_WAY = 4;
 
+	// 页面埋点
+	public static final int GOODS_DETAIL_PAGE = 20;// 商品详情页面
+	public static final int SHOP_DETAIL_PAGE = 7;// 商铺详情页面
+	public static final int COOPERATOR_DETAIL_PAGE = 11;// 合作商铺详情页面
+	public static final int MY_TRIBE_PAGE = 23;// 我的部落页面
+	public static final int STORE_DETAIL_PAGE = 19;// 商城介绍页面
+
 	// 微信公众号支付方式
 	public static final String WEIXIN_TRADE_TYPE_JSAPI = "JSAPI";
 

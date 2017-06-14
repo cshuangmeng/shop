@@ -15,6 +15,7 @@ public class ParameterFilter extends HandlerInterceptorAdapter {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
+		System.out.println("------------->进入拦截器");
 		//拼装请求参数
 		String queryString="";
 		Enumeration<?> pNames = request.getParameterNames();
@@ -25,6 +26,7 @@ public class ParameterFilter extends HandlerInterceptorAdapter {
             queryString+=queryString.length()>0?"&"+pName+"="+request.getParameter(pName):pName+"="+request.getParameter(pName);
         }
 		Logger.getLogger("file").info(request.getRequestURI()+(queryString.length()>0?"?"+queryString:""));
+		System.out.println("------------->退出拦截器");
 		return true;
 	}
 	
