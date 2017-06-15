@@ -7,9 +7,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.gaoling.shop.common.AppConstant;
 import com.gaoling.shop.goods.pojo.Cooperation;
+import com.gaoling.shop.goods.pojo.Shop;
 import com.gaoling.shop.goods.pojo.ShopFollower;
 import com.gaoling.shop.goods.service.CooperationService;
 import com.gaoling.shop.goods.service.ShopService;
@@ -83,6 +85,19 @@ public class ShopController {
 		Result result=null;
 		try {
 			result=shopService.loadShowShops();
+		} catch (Exception e) {
+			result=shopService.putResult(AppConstant.SYSTEM_ERROR_CODE);
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	//品牌商户列表
+	@RequestMapping("/upload")
+	public Result saveShopByUpload(@ModelAttribute Shop shop,@RequestParam MultipartFile headImgFile,@RequestParam MultipartFile[] infoImgFile){
+		Result result=null;
+		try {
+			result=shopService.saveShopByUpload(shop, headImgFile, infoImgFile);
 		} catch (Exception e) {
 			result=shopService.putResult(AppConstant.SYSTEM_ERROR_CODE);
 			e.printStackTrace();

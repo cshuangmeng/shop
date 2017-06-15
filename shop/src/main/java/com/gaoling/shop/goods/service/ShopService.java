@@ -6,10 +6,13 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.gaoling.shop.common.AppConstant;
 import com.gaoling.shop.common.DataUtil;
 import com.gaoling.shop.common.DateUtil;
+import com.gaoling.shop.common.OSSUtil;
 import com.gaoling.shop.goods.dao.ShopDao;
 import com.gaoling.shop.goods.pojo.Shop;
 import com.gaoling.shop.goods.pojo.ShopFollower;
@@ -107,6 +110,29 @@ public class ShopService extends CommonService{
 			}
 		}
 		return putResult();
+	}
+	
+	//保存商铺信息
+	@Transactional
+	public Result saveShopByUpload(Shop shop,MultipartFile headImgFile,MultipartFile[] infoImgFile)throws Exception{
+		//上传头像
+		String fileName="shop/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS"+DataUtil.createNums(6));
+		fileName+=headImgFile.getOriginalFilename().substring(headImgFile.getOriginalFilename().lastIndexOf("."));
+		OSSUtil.uploadFileToOSS(headImgFile.getInputStream(), fileName);
+		shop.setHeadImg(fileName);
+		//上传描述
+		shop.setInfoImgs("");
+		for(MultipartFile ii:infoImgFile){
+			if(!ii.isEmpty()){
+				fileName="shop/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS"+DataUtil.createNums(6));
+				fileName+=ii.getOriginalFilename().substring(ii.getOriginalFilename().lastIndexOf("."));
+				OSSUtil.uploadFileToOSS(ii.getInputStream(), fileName);
+				shop.setInfoImgs(StringUtils.isNotEmpty(shop.getInfoImgs())?shop.getInfoImgs()+","+fileName:fileName);
+			}
+		}
+		shop.setCreateTime(DateUtil.nowDate());
+		shopDao.addShop(shop);
+		return putResult(shop);
 	}
 	
 }
