@@ -93,9 +93,9 @@ public class PayRefundSummary {
 		this.tradeId = tradeId;
 	}
 
-	// 商品状态
+	// 交易类型
 	public static enum TRADE_TYPE_ENUM {
-		GOODSPAY(1), INVITE(2), GOODSREFUND(3);
+		GOODSPAY(1), INVITE(2), GOODSREFUND(3), REWARD(4);
 		private int state;
 
 		private TRADE_TYPE_ENUM(int state) {

@@ -14,11 +14,11 @@ public class Test {
 	
 	public static void main(String[] args) {
 		try {
-			String[] str={"4003022001201706094994127567"};
+			String[] str={"4003022001201706186275734163"};
 			PayParam pay=new PayParam();
 			for(String no:str){
-				pay.setAmount(2);
-				pay.setRefund(1.99f);
+				pay.setAmount(59);
+				pay.setRefund(59f);
 				pay.setNonceStr(DataUtil.createLetters(32));
 				pay.setOperator(AppConstant.USERMP_MCH_ID);
 				pay.setTradeType(AppConstant.WEIXIN_TRADE_TYPE_JSAPI);

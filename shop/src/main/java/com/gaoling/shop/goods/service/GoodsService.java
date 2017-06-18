@@ -45,7 +45,7 @@ public class GoodsService extends CommonService{
 		int sellAmount=orderService.queryOrders(DataUtil.mapOf("goodsId",id,"states"
 				,Arrays.asList(Order.STATE_TYPE_ENUM.NOSEND.getState(),Order.STATE_TYPE_ENUM.NORECEIVE.getState()
 				,Order.STATE_TYPE_ENUM.NOCOMMENT.getState()))).size();
-		float miniPrice=goods.getCoinEnable()>0||goods.getPointEnable()>0?goods.getPrice()*goods.getCashDiscount()*0.1f:goods.getPrice();
+		float miniPrice=goods.getCoinEnable()>0||goods.getPointEnable()>0?Math.round(goods.getPrice()*goods.getCashDiscount()):goods.getPrice();
 		goods.getExtras().put("miniPrice", miniPrice);
 		goods.getExtras().put("freight", getInteger("freight"));
 		goods.getExtras().put("sellAmount", sellAmount);
@@ -60,7 +60,7 @@ public class GoodsService extends CommonService{
 		JSONObject json=JSONObject.fromObject(getString("prepare_sell_recommend"));
 		List<Goods> goods=queryGoods(param);
 		goods.stream().forEach(g->{
-			float miniPrice=g.getCoinEnable()>0||g.getPointEnable()>0?g.getPrice()*g.getCashDiscount()*0.1f:g.getPrice();
+			float miniPrice=g.getCoinEnable()>0||g.getPointEnable()>0?Math.round(g.getPrice()*g.getCashDiscount()):g.getPrice();
 			g.getExtras().put("miniPrice", miniPrice);
 		});
 		if(json.containsKey("goods_type_"+typeId)){

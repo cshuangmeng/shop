@@ -202,4 +202,18 @@ public class Goods {
 		}
 	}
 
+	// 商品类型
+	public static enum GOODS_TYPE_ENUM {
+		LIVE(1), WELCOME(2), HEALTH(3), PRESALE(4);
+		private int type;
+
+		private GOODS_TYPE_ENUM(int type) {
+			this.type = type;
+		}
+
+		public int getType() {
+			return type;
+		}
+	}
+
 }

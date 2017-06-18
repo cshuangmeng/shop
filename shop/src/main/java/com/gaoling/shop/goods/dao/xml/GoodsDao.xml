@@ -24,6 +24,12 @@
 		<if test="param.shopId!=null">
 			and t.shop_id=#{param.shopId}
 		</if>
+		<if test="param.ids!=null and param.ids.size()>0">
+			and t.id in
+			<foreach collection="param.ids" item="id" open="(" separator="," close=")">
+				#{id}
+			</foreach>
+		</if>
 		<if test="param.limit!=null and param.limit>0">
 			limit #{param.page}*#{param.limit},#{param.limit}
 		</if>
