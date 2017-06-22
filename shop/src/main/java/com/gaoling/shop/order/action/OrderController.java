@@ -77,12 +77,25 @@ public class OrderController {
 		return result;
 	}
 	
-	//订单详情
+	//订单再支付
 	@RequestMapping("/pay")
 	public Result orderPay(@RequestParam(required=false)String uuid,@RequestParam(defaultValue="0")String orderId,HttpServletRequest request)throws Exception{
 		Result result=null;
 		try {
 			result=orderService.orderPay(uuid, Integer.parseInt(orderId), DataUtil.getIpAddr(request));
+		} catch (Exception e) {
+			result=orderService.putResult(AppConstant.SYSTEM_ERROR_CODE);
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	//删除订单
+	@RequestMapping("/delete")
+	public Result deleteOrder(@RequestParam(required=false)String uuid,@RequestParam(defaultValue="0")String orderId)throws Exception{
+		Result result=null;
+		try {
+			result=orderService.deleteOrder(uuid, Integer.parseInt(orderId));
 		} catch (Exception e) {
 			result=orderService.putResult(AppConstant.SYSTEM_ERROR_CODE);
 			e.printStackTrace();

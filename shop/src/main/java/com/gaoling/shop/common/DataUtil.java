@@ -187,8 +187,8 @@ public class DataUtil {
 	}
 
 	// JSONObject校验
-	public static boolean isJSONObject(String str) {
-		return JSONUtils.mayBeJSON(str);
+	public static boolean isJSONObject(Object str) {
+		return null!=str?JSONUtils.mayBeJSON(str.toString()):false;
 	}
 
 	// JSONArray校验

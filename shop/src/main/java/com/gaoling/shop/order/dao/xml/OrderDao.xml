@@ -14,6 +14,7 @@
 	<select id="queryOrders" resultType="com.gaoling.shop.order.pojo.Order">
 		<include refid="orderHead"/>
 		<trim prefix="where" prefixOverrides="and">
+			and t.state!=5
 			<if test="param.userId!=null">
 				and t.user_id=#{param.userId}
 			</if>
@@ -53,9 +54,21 @@
 		,t1.name goodsName,t.price,t.amount,(select `value` from dict_info where `name`=concat('order_state_',t.state)) state
 		,t.point,t.coin,t.list_price listPrice,t.pay_way payWay,date_format(t.create_time,'%Y-%m-%d %H:%i:%s') createTime
 		from `order` t inner join goods t1 on (t.goods_id=t1.id) left join `order` t2 on (t.ref_id=t2.id)
-		where t.user_id=#{userId}
-		<if test="state>=0">
-			and t.state=#{state}
+		where t.state!=5
+		<if test="param.userId!=null">
+			and t.user_id=#{param.userId}
+		</if>
+		<if test="param.states!=null and param.states.size()>0">
+			and t.state in
+			<foreach collection="param.states" item="state" open="(" separator="," close=")">
+				#{state}
+			</foreach>
+		</if>
+		<if test="param.typeIds!=null and param.typeIds.size()>0">
+			and t1.type_id in
+			<foreach collection="param.typeIds" item="typeId" open="(" separator="," close=")">
+				#{typeId}
+			</foreach>
 		</if>
 		order by t.create_time desc,t.id desc
 	</select>

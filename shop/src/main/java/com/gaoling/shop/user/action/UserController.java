@@ -79,7 +79,7 @@ public class UserController extends CommonService{
 		return result;
 	}
 	
-	//删除购物车内的商品
+	//增加指定数量的商品至购物车中
 	@RequestMapping("/addGoods")
 	public Result addShoppingCar(@RequestParam(required=false) String uuid
 			,@RequestParam(defaultValue="0")String goodsId,@RequestParam(defaultValue="0")String amount){

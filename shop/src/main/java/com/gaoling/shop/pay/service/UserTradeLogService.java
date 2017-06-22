@@ -72,7 +72,7 @@ public class UserTradeLogService extends CommonService{
 				log.put("item", goodsName);
 				log.put("desc",config.get("refund_success_info"));
 			}else if(tradeType==PayRefundSummary.TRADE_TYPE_ENUM.REWARD.getState()){
-				log.put("item", config.get("reward_title"));
+				log.put("item", payWay==AppConstant.COIN_PAY_WAY?config.get("coin_reward_title"):config.get("point_reward_title"));
 				log.put("desc",config.get("trade_success_info"));
 			}
 			//组装金额

@@ -93,7 +93,7 @@ public class OrderService extends CommonService{
 		if(null==user){
 			return putResult(AppConstant.USER_NOT_EXISTS);
 		}
-		List<Map<String,Object>> orders=orderDao.queryOrderList(user.getId(), state);
+		List<Map<String,Object>> orders=orderDao.queryOrderList(DataUtil.mapOf("userId",user.getId(),"states",Arrays.asList(state)));
 		//按照订单号分组订单
 		Map<String,List<Map<String,Object>>> orderMap=orders.stream().collect(Collectors
 				.groupingBy(r->r.get("tradeNo").toString(),Collectors.toList()));
@@ -428,6 +428,31 @@ public class OrderService extends CommonService{
 			users.add(t.getUserId());
 		}
 		return users;
+	}
+	
+	//删除订单
+	public Result deleteOrder(String uuid,int orderId){
+		//检查参数
+		if(StringUtils.isEmpty(uuid)||orderId<=0){
+			return putResult(AppConstant.PARAM_IS_NULL);
+		}
+		//加载用户
+		User user=userService.getUserByUUID(uuid);
+		if(null==user){
+			return putResult(AppConstant.USER_NOT_EXISTS);
+		}
+		Order order=getOrder(orderId, false);
+		//判断是否本人操作
+		if(null==order||order.getUserId()!=user.getId()){
+			return putResult(AppConstant.NOT_MYSELF_OPERATE);
+		}
+		//只有待处理订单才可以删除
+		if(order.getState()!=Order.STATE_TYPE_ENUM.NOPAY.getState()){
+			return putResult(AppConstant.ORDER_STATE_INCORRECT);
+		}
+		order.setState(Order.STATE_TYPE_ENUM.DELETED.getState());
+		updateOrder(order);
+		return putResult();
 	}
 	
 	//给予相关推荐人部落币奖励

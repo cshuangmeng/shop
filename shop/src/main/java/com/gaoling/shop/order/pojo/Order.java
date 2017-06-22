@@ -1,6 +1,8 @@
 package com.gaoling.shop.order.pojo;
 
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -181,9 +183,13 @@ public class Order {
 		this.signTime = signTime;
 	}
 
+	// 正常订单
+	public static final List<Integer> NORMALORDERSTATES = Arrays.asList(STATE_TYPE_ENUM.NOSEND.getState(),
+			STATE_TYPE_ENUM.NORECEIVE.getState(), STATE_TYPE_ENUM.NOCOMMENT.getState());
+
 	// 订单状态
 	public static enum STATE_TYPE_ENUM {
-		NOPAY(0), NOSEND(1), NORECEIVE(2), NOCOMMENT(3), CANCELED(4);
+		NOPAY(0), NOSEND(1), NORECEIVE(2), NOCOMMENT(3), CANCELED(4), DELETED(5);
 		private int state;
 
 		private STATE_TYPE_ENUM(int state) {

@@ -52,6 +52,15 @@ public class ShoppingCarService extends CommonService{
 				}
 			}
 			g.put("headImg", urls.toString().length() > 0 ? urls.toString() : g.get("headImg").toString());
+			g.put("buyEnable", 1);
+			//检查商品是否可购买
+			int buyAmount=goodsService.getEnableBuyAmount(user.getId(), Integer.parseInt(g.get("goodsId").toString()));
+			if(buyAmount>0){
+				g.put("buyAmount", buyAmount);
+			}else if(buyAmount==0){
+				g.put("buyEnable", 0);
+				g.put("buyAmount", buyAmount);
+			}
 		}
 		//按照店铺分组
 		Map<String,List<Map<String,Object>>> result=goods.stream().collect(Collectors
@@ -59,11 +68,6 @@ public class ShoppingCarService extends CommonService{
 		List<Map<Object,Object>> car=result.entrySet().stream().map(k->DataUtil.mapOf("shopName",k.getKey().split("_")[0]
 				,"shopId",k.getKey().split("_")[1],"goods",k.getValue())).collect(Collectors.toList());
 		return putResult(car);
-	}
-	
-	//查看我的购物商品
-	public List<Map<String,Object>> queryMyShoppingCar(int userId,List<Integer> goodsIds){
-		return shoppingCarDao.queryMyShoppingCar(userId, goodsIds);
 	}
 	
 	//一次添加多个商品
@@ -100,6 +104,11 @@ public class ShoppingCarService extends CommonService{
 		Goods goods=goodsService.getGoods(goodsId);
 		if(null==goods){
 			return putResult(AppConstant.GOODS_NOT_EXISTS);
+		}
+		//判断用户是否可添加该商品
+		int buyAmount=goodsService.getEnableBuyAmount(user.getId(), goodsId);
+		if(buyAmount>=0&&amount>buyAmount){
+			return putResult(AppConstant.OPERATE_FAILURE);
 		}
 		//是否已添加
 		List<ShoppingCar> cars=shoppingCarDao.queryShoppingCars(DataUtil.mapOf("userId",user.getId(),"goodsId",goods.getId()));
@@ -139,7 +148,7 @@ public class ShoppingCarService extends CommonService{
 		return shoppingCarDao.queryShoppingCars(param);
 	}
 	
-	//查询购物车商品数量
+	//更新购物车商品数量
 	public void updateAmountOfShoppingCar(int userId,int goodsId,int amount){
 		shoppingCarDao.updateAmountOfShoppingCar(userId, goodsId, amount);
 	}
@@ -147,6 +156,17 @@ public class ShoppingCarService extends CommonService{
 	//移除购物车
 	public void removeGoodsFromShoppingCar(int userId, List<Integer> goodsIds){
 		shoppingCarDao.removeGoodsFromShoppingCar(userId, goodsIds);
+	}
+	
+	//查看我的购物商品
+	public List<Map<String,Object>> queryMyShoppingCar(int userId,List<Integer> goodsIds){
+		return shoppingCarDao.queryMyShoppingCar(userId, goodsIds);
+	}
+	
+	//查看我的购物商品
+	public ShoppingCar queryShoppingCars(int userId,int goodsId){
+		List<ShoppingCar> cars=queryShoppingCars(DataUtil.mapOf("userId",userId,"goodsId",goodsId));
+		return cars.size()>0?cars.get(0):null;
 	}
 	
 }

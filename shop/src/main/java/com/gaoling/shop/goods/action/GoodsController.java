@@ -39,10 +39,10 @@ public class GoodsController {
 	
 	//加载商品详情
 	@RequestMapping("/info")
-	public Result loadGoodsDetail(@RequestParam(defaultValue="0")String id){
+	public Result loadGoodsDetail(@RequestParam(defaultValue="0")String id,@RequestParam(required=false)String uuid){
 		Result result=null;
 		try {
-			result=goodsService.loadGoodsDetail(Integer.parseInt(id));
+			result=goodsService.loadGoodsDetail(Integer.parseInt(id),uuid);
 		} catch (Exception e) {
 			result=goodsService.putResult(AppConstant.SYSTEM_ERROR_CODE);
 			e.printStackTrace();
