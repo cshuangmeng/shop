@@ -287,8 +287,17 @@ public class OrderService extends CommonService{
 		List<Map<Object,Object>> car=shopMap.entrySet().stream().map(k->{
 			float totalPrice=k.getValue().stream().map(v->Float.parseFloat(v.get("price").toString())
 					*Float.parseFloat(v.get("amount").toString())).reduce((a,b)->a+b).get();
+			float totalPoint=k.getValue().stream().map(v->{
+				int typeId=Integer.parseInt(v.get("typeId").toString());
+				float price=0;
+				//欢迎大礼包不赠送部落分
+				if(typeId!=Goods.GOODS_TYPE_ENUM.WELCOME.getType()){
+					price=Float.parseFloat(v.get("price").toString());
+				}
+				return price*Float.parseFloat(v.get("amount").toString());
+			}).reduce((a,b)->a+b).get();
 			return DataUtil.mapOf("shopName",k.getKey().split("_")[0],"shopId",k.getKey().split("_")[1]
-					,"goods",k.getValue(),"totalPrice",totalPrice,"totalPoint",Math.round(totalPrice));
+					,"goods",k.getValue(),"totalPrice",totalPrice,"totalPoint",totalPoint);
 		}).collect(Collectors.toList());
 		//获取用户的默认地址
 		Address address=addressService.getDefaultAddresses(user.getId());
@@ -340,7 +349,7 @@ public class OrderService extends CommonService{
 			return false;
 		}
 		//扣除部落分、部落币
-		userService.operateAccount(mainOrder.getUserId(), -mainOrder.getPoint(), -mainOrder.getCoin());
+		userService.operateUserAccount(mainOrder.getUserId(), -mainOrder.getPoint(), -mainOrder.getCoin());
 		//记录流水
 		UserTradeLog log=new UserTradeLog();
 		log.setAmount(-totalListPrice);
@@ -373,33 +382,40 @@ public class OrderService extends CommonService{
 		//赠送部落币
 		List<Integer> ids=orders.stream().map(o->o.getGoodsId()).collect(Collectors.toList());
 		List<Goods> goods=goodsService.queryGoods(DataUtil.mapOf("ids",ids));
-		Optional<Goods> g=goods.stream().filter(o->o.getTypeId()==Goods.GOODS_TYPE_ENUM.WELCOME.getType()).findAny();
-		if(g.isPresent()){
+		List<Goods> welcomes=goods.stream().filter(o->o.getTypeId()==Goods.GOODS_TYPE_ENUM.WELCOME.getType()).collect(Collectors.toList());
+		List<Order> wos=orders.stream().filter(o->{
+			Optional<Goods> ip=welcomes.stream().filter(g->g.getId()==o.getGoodsId()).findAny();
+			return ip.isPresent();
+		}).collect(Collectors.toList());
+		if(welcomes.size()>0){
 			giveInviteReward(mainOrder.getUserId(), mainOrder.getTribeId());
 		}
-		//赠送部落分
-		userService.operateAccount(mainOrder.getUserId(), Math.round(amount), 0);
-		//记录流水
-		log=new UserTradeLog();
-		log.setAmount(amount);
-		log.setCash(0);
-		log.setCoin(0);
-		log.setCreateTime(DateUtil.nowDate());
-		log.setPayWay(AppConstant.POINT_PAY_WAY);
-		log.setPoint(Math.round(amount));
-		log.setRemark("");
-		log.setTradeId(0);
-		log.setTradeNo(DateUtil.getCurrentTime("yyyyMMddHHmmssSSS")+DataUtil.createNums(3));
-		log.setTradeType(PayRefundSummary.TRADE_TYPE_ENUM.REWARD.getState());
-		log.setUserId(mainOrder.getUserId());
-		userTradeLogService.addUserTradeLog(log);
+		//计算赠送的部落币,去除掉购买欢迎大礼包所花的现金金额
+		amount-=wos.size()>0?wos.stream().map(o->o.getListPrice()).reduce((a,b)->a+b).get():0;
+		if(amount>0){
+			userService.operateUserAccount(mainOrder.getUserId(), Math.round(amount), 0);
+			//记录流水
+			log=new UserTradeLog();
+			log.setAmount(amount);
+			log.setCash(0);
+			log.setCoin(0);
+			log.setCreateTime(DateUtil.nowDate());
+			log.setPayWay(AppConstant.POINT_PAY_WAY);
+			log.setPoint(Math.round(amount));
+			log.setRemark("");
+			log.setTradeId(0);
+			log.setTradeNo(DateUtil.getCurrentTime("yyyyMMddHHmmssSSS")+DataUtil.createNums(3));
+			log.setTradeType(PayRefundSummary.TRADE_TYPE_ENUM.REWARD.getState());
+			log.setUserId(mainOrder.getUserId());
+			userTradeLogService.addUserTradeLog(log);
+		}
 		//将商品从购物车内清除
 		List<Integer> goodsIds=orders.stream().map(o->o.getGoodsId()).collect(Collectors.toList());
 		shoppingCarService.removeGoodsFromShoppingCar(mainOrder.getUserId(), goodsIds);
 		return true;
 	}
 	
-	//进入部落
+	//查找上级推荐关系
 	public List<Integer> findInviter(int userId,int tribeId){
 		List<Integer> users=new ArrayList<Integer>();
 		//查找推荐人
@@ -419,39 +435,13 @@ public class OrderService extends CommonService{
 	public boolean giveInviteReward(int userId,int tribeId)throws Exception{
 		//检查参数是否正确
 		if(userId<=0){
-			Logger.getLogger("file").info("giveInviteReward | userId="+userId+",参数错误");
+			Logger.getLogger("file").info("giveInviteReward | userId="+userId+",tribeId="+tribeId+" 参数错误");
 			return false;
 		}
 		//检查是否已经发放过奖励
 		if(null!=tribeService.getTribeByUserId(userId)){
 			Logger.getLogger("file").info("giveInviteReward | 用户已已领取过礼包,放弃操作");
 			return false;
-		}
-		//发放部落币
-		List<Integer> users=findInviter(userId, tribeId);
-		users.add(userId);
-		int level=getInteger("invite_reward_level");
-		int coin=getInteger("invite_reward_coin_amount");
-		for(int i=0;i<level;i++){
-			if(i>users.size()-1){
-				break;
-			}
-			userService.operateAccount(users.get(users.size()-1-i), 0, coin);
-			//记录流水
-			UserTradeLog log=new UserTradeLog();
-			log.setAmount(coin);
-			log.setCash(0);
-			log.setCoin(coin);
-			log.setCreateTime(DateUtil.nowDate());
-			log.setPayWay(AppConstant.COIN_PAY_WAY);
-			log.setPoint(0);
-			log.setRemark("");
-			log.setTradeId(0);
-			log.setTradeNo(DateUtil.getCurrentTime("yyyyMMddHHmmssSSS")+DataUtil.createNums(3));
-			log.setTradeType(users.size()>1?PayRefundSummary.TRADE_TYPE_ENUM.INVITE.getState()
-					:PayRefundSummary.TRADE_TYPE_ENUM.REWARD.getState());
-			log.setUserId(userId);
-			userTradeLogService.addUserTradeLog(log);
 		}
 		//创建自己的部落
 		Tribe tribe=new Tribe();
@@ -464,8 +454,35 @@ public class OrderService extends CommonService{
 		tribe.setState(Tribe.STATE_TYPE_ENUM.ACTIVATED.getState());
 		tribe.setUserId(userId);
 		tribeService.addTribe(tribe);
-		//加入部落
+		//只有用户填写了部落ID时,才发放部落币奖励
 		if(tribeId>0){
+			//发放部落币奖励
+			List<Integer> users=findInviter(userId, tribeId);
+			users.add(userId);
+			int level=getInteger("invite_reward_level");
+			int coin=getInteger("invite_reward_coin_amount");
+			for(int i=0;i<level;i++){
+				if(i>users.size()-1){
+					break;
+				}
+				userService.operateUserAccount(users.get(users.size()-1-i), 0, coin);
+				//记录流水
+				UserTradeLog log=new UserTradeLog();
+				log.setAmount(coin);
+				log.setCash(0);
+				log.setCoin(coin);
+				log.setCreateTime(DateUtil.nowDate());
+				log.setPayWay(AppConstant.COIN_PAY_WAY);
+				log.setPoint(0);
+				log.setRemark("");
+				log.setTradeId(0);
+				log.setTradeNo(DateUtil.getCurrentTime("yyyyMMddHHmmssSSS")+DataUtil.createNums(3));
+				log.setTradeType(users.size()>1?PayRefundSummary.TRADE_TYPE_ENUM.INVITE.getState()
+						:PayRefundSummary.TRADE_TYPE_ENUM.REWARD.getState());
+				log.setUserId(userId);
+				userTradeLogService.addUserTradeLog(log);
+			}
+			//加入部落
 			TribeMember member=new TribeMember();
 			member.setUserId(userId);
 			member.setTribeId(tribeId);
@@ -473,6 +490,8 @@ public class OrderService extends CommonService{
 			member.setCreateTime(DateUtil.nowDate());
 			member.setJoinTime(DateUtil.nowDate());
 			tribeMemberService.addTribeMember(member);
+			//增加推荐人部落的部落币
+			tribeService.operateTribeAccount(tribeId, 0, coin);
 		}
 		return true;
 	}

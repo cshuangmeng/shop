@@ -119,7 +119,7 @@ public class UserController extends CommonService{
 		return result;
 	}
 	
-	//删除购物车内的商品
+	//下发用户交易记录
 	@RequestMapping("/tradeLog")
 	public Result userTradeLog(@RequestParam(required=false)String uuid){
 		Result result=null;

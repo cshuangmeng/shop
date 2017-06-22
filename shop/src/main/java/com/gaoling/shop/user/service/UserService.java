@@ -122,7 +122,7 @@ public class UserService extends CommonService{
 	
 	//扣除/增加用户部落币、部落分
 	@Transactional
-	public boolean operateAccount(int userId,int point,int coin)throws Exception{
+	public boolean operateUserAccount(int userId,int point,int coin)throws Exception{
 		User user=getUser(userId, true);
 		boolean flag=true;
 		if(null!=user){

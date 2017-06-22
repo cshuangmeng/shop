@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.gaoling.shop.common.AppConstant;
 import com.gaoling.shop.common.DataUtil;
@@ -63,6 +64,33 @@ public class TribeService extends CommonService{
 		tribe.setNickname(name);
 		updateTribe(tribe);
 		return putResult();
+	}
+	
+	//扣除/增加部落部落币、部落分
+	@Transactional
+	public boolean operateTribeAccount(int tribeId,int point,int coin)throws Exception{
+		Tribe tribe=getTribe(tribeId);
+		boolean flag=true;
+		if(null!=tribe){
+			if((point<0&&tribe.getPoint()+point>=0)||point>=0){
+				tribe.setPoint(tribe.getPoint()+point);
+			}else{
+				flag=false;
+			}
+			if((coin<0&&tribe.getCoin()+coin>=0)||coin>=0){
+				tribe.setCoin(tribe.getCoin()+coin);
+			}else{
+				flag=false;
+			}
+		}else{
+			flag=false;
+		}
+		if(flag){
+			updateTribe(tribe);
+		}else{
+			throw new Exception("Tribe Account Balance Inadequate!");
+		}
+		return false;
 	}
 	
 	//获取部落信息

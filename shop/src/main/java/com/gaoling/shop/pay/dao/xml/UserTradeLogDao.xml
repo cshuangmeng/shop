@@ -6,7 +6,8 @@
 	<!-- 查询支付退款汇总信息 -->
 	<select id="queryUserTradeLogs" resultType="java.util.Map">
 		select t.user_id userId,t.amount,t.pay_way payWay,date_format(t.create_time,'%Y-%m-%d %H:%i:%s') createTime
-		,t.trade_type tradeType,t.trade_id tradeId,t.trade_no tradeNo,t1.name goodsName from user_trade_log t left join goods t1 on (t.trade_id=t1.id)
+		,t.trade_type tradeType,t.trade_id tradeId,t.trade_no tradeNo,t2.name goodsName from user_trade_log t
+		left join `order` t1 on (t.trade_id=t1.id) left join goods t2 on (t1.goods_id=t2.id)
 		where t.user_id=#{userId} order by createTime desc,t.id desc
 	</select>
 	
