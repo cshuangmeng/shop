@@ -82,6 +82,7 @@ public class AppConstant {
 	public static final int ACCOUNT_BALANCE_INADEQUATE = 112;
 	public static final int TRIBE_NOT_EXISTS = 113;
 	public static final int ORDER_STATE_INCORRECT = 114;
+	public static final int OUT_OF_BOUNDS = 115;
 
 	static {
 		ALIDAYU_SMS_URL = PropertiesUtil.getProperty("alidayu_sms_url");

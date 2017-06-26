@@ -39,11 +39,19 @@ public class CommonService {
 	}
 	
 	//设置返回结果
-	public Result putResult(int code,Object data){
+	public Result putResult(int code,Object data,String msg){
 		Result result=new Result();
 		result.setCode(code);
 		result.setData(data);
-		result.setMsg(responseInfoDao.queryResponseTextCn(CommonService.class.getSimpleName(), code));
+		result.setMsg(msg);
+		return result;
+	}
+	
+	//设置返回结果
+	public Result putResult(int code,Object... params){
+		Result result=new Result();
+		result.setCode(code);
+		result.setMsg(String.format(responseInfoDao.queryResponseTextCn(CommonService.class.getSimpleName(), code), params));
 		return result;
 	}
 	

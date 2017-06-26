@@ -151,6 +151,11 @@ public class OrderService extends CommonService{
 			if(null==goods||goods.getState()!=Goods.STATE_TYPE_ENUM.PASSED.getState()){
 				return putResult(AppConstant.GOODS_NOT_EXISTS);
 			}
+			//判断用户是否可添加该商品
+			int buyAmount=goodsService.getEnableBuyAmount(user.getId(), goods.getId());
+			if(buyAmount>=0&&car.getAmount()>buyAmount){
+				return putResult(AppConstant.OUT_OF_BOUNDS,new Object[]{goodsService.getTotalBuyAmount(user.getId(), goods.getId())});
+			}
 			order=new Order();
 			order.setAddressId(order.getAddressId());
 			order.setAmount(car.getAmount());
@@ -233,6 +238,13 @@ public class OrderService extends CommonService{
 		Order mainOrder=orders.size()>0?orders.stream().filter(o->o.getRefId()==0).findFirst().get():null;
 		if(null==mainOrder||mainOrder.getUserId()!=user.getId()){
 			return putResult(AppConstant.NOT_MYSELF_OPERATE);
+		}
+		//判断用户是否可添加该商品
+		for(Order order:orders){
+			int buyAmount=goodsService.getEnableBuyAmount(user.getId(), order.getGoodsId());
+			if(buyAmount>=0&&order.getAmount()>buyAmount){
+				return putResult(AppConstant.OUT_OF_BOUNDS,new Object[]{goodsService.getTotalBuyAmount(user.getId(), order.getGoodsId())});
+			}
 		}
 		//计算应付金额
 		float totalListPrice=orders.stream().map(o->o.getListPrice()).reduce((a,b)->a+b).get();

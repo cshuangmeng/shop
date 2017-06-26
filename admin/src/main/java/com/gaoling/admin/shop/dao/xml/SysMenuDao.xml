@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.futeplus.vms.dao.SysMenuDao">
+
+	<!-- 添加菜单 -->
+	<insert id="addMenu" parameterType="com.futeplus.vms.entity.SysMenu">
+		insert into sys_menu(menuId,menuUrl,menuName,enabled,orderIndex,parentId,icon,createTime)
+		values(#{menuId},#{menuUrl},#{menuName},#{enabled},#{orderIndex},#{parentId},#{icon},#{createTime})
+	</insert>
+	
+	<!-- 更新菜单 -->
+	<update id="updateMenu" parameterType="com.futeplus.vms.entity.SysMenu">
+		update sys_menu set menuUrl=#{menuUrl},menuName=#{menuName},enabled=#{enabled},orderIndex=#{orderIndex}
+		,parentId=#{parentId},icon=#{icon} where id=#{id}
+	</update>
+
+	<!-- 获取指定的菜单 -->
+	<select id="getMenu" resultType="com.futeplus.vms.entity.SysMenu">	
+		select * from sys_menu where id=#{id}
+	</select>
+	
+	<!-- 删除菜单 -->
+	<delete id="deleteMenu">
+		delete from sys_menu where id=#{id}
+	</delete>
+	
+	<!-- 获取菜单 -->
+	<select id="getMenuByName" resultType="com.futeplus.vms.entity.SysMenu">
+		select * from sys_menu where menuName=#{menuName}
+	</select>
+	
+	<!-- 获取所有的菜单 -->
+	<select id="getMenus" resultType="com.futeplus.vms.entity.SysMenu">	
+		select * from sys_menu where parentId=#{parentId} order by orderIndex
+	</select>
+	
+	<!-- 查询角色所拥有的菜单列表 -->
+	<select id="getMenusOfRole" resultType="java.util.HashMap">
+		select t.id,t.menuName from sys_menu t inner join sys_role_menu t1 on (t.id=t1.mid) where t1.rid=#{rid}
+	</select>
+	
+	<!-- 加载所有用户 -->
+	<select id="loadAllMenus" resultType="java.util.HashMap">
+		select t.*,(select menuName from sys_menu where id=t.parentId) as parentName
+		,case when t.parentId=0 then concat(t.id,'-',t.parentId) else concat(t.parentId,'-',t.orderIndex) end as orderby
+		from sys_menu t order by orderby
+	</select>
+
+</mapper>
+

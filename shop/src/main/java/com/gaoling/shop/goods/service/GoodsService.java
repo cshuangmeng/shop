@@ -21,9 +21,7 @@ import com.gaoling.shop.order.pojo.Order;
 import com.gaoling.shop.order.service.OrderService;
 import com.gaoling.shop.system.pojo.Result;
 import com.gaoling.shop.system.service.CommonService;
-import com.gaoling.shop.user.pojo.ShoppingCar;
 import com.gaoling.shop.user.pojo.User;
-import com.gaoling.shop.user.service.ShoppingCarService;
 import com.gaoling.shop.user.service.UserService;
 
 import net.sf.json.JSONObject;
@@ -39,8 +37,6 @@ public class GoodsService extends CommonService{
 	private ShopService shopService;
 	@Autowired
 	private UserService userService;
-	@Autowired
-	private ShoppingCarService shoppingCarService;
 	
 	//查询商品详情
 	public Result loadGoodsDetail(int id,String uuid){
@@ -77,26 +73,33 @@ public class GoodsService extends CommonService{
 	//检查商品是否还可购买
 	public int getEnableBuyAmount(int userId,int goodsId){
 		int buyAmount=-1;
+		int buyTotal=getTotalBuyAmount(userId, goodsId);
+		if(buyTotal>=0){
+			//查询已成功购买的数量
+			Goods goods=getGoods(goodsId);
+			List<Order> orders=orderService.queryOrders(DataUtil.mapOf("userId",userId,"typeIds"
+					,Arrays.asList(goods.getTypeId()),"states",Order.NORMALORDERSTATES));
+			int currentAmount=orders.size();
+			//检查是否可购买
+			buyAmount=currentAmount<buyTotal?buyTotal-currentAmount:0;
+		}
+		return buyAmount;
+	}
+	
+	//检查商品可购买总件数
+	public int getTotalBuyAmount(int userId,int goodsId){
+		//默认无上限
+		int buyTotal=-1;
 		Goods goods=getGoods(goodsId);
 		//检查商品是否可购买
 		JSONObject json=JSONObject.fromObject(getString("prepare_sell_recommend"));
 		if(DataUtil.isJSONObject(json.get("goods_type_"+goods.getTypeId()))){
 			JSONObject config=json.getJSONObject("goods_type_"+goods.getTypeId());
 			if(config.containsKey("max_buy_amount")){
-				//查找用户已购买此类型商品的数量
-				List<Order> orders=orderService.queryOrders(DataUtil.mapOf("userId",userId,"typeIds"
-						,Arrays.asList(goods.getTypeId()),"states",Order.NORMALORDERSTATES));
-				//加上购物车中已添加的商品数量
-				ShoppingCar car=shoppingCarService.queryShoppingCars(userId, goodsId);
-				int currentAmount=orders.size()+(null!=car?car.getAmount():0);
-				if(currentAmount>=config.getInt("max_buy_amount")){
-					buyAmount=0;
-				}else{
-					buyAmount=config.getInt("max_buy_amount")-currentAmount;
-				}
+				buyTotal=config.getInt("max_buy_amount");
 			}
 		}
-		return buyAmount;
+		return buyTotal;
 	}
 	
 	//查询商品列表

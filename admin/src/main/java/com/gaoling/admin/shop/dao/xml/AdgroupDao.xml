@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.futeplus.vms.dao.AdgroupDao">
+
+	<!-- 新增广告组 -->
+	<insert id="addAdgroup" useGeneratedKeys="true" keyProperty="id" parameterType="com.futeplus.vms.entity.Adgroup">
+		insert into adgroup(adverid,grouptype,groupname,begindate,enddate,begintime,endtime,os,city,status,createtime)
+		values(#{adverId},#{groupType},#{groupName},#{beginDate},#{endDate},#{beginTime},#{endTime},#{os},#{city}
+		,#{status},#{createTime})
+	</insert>
+	
+	<!-- 更新广告组 -->
+	<update id="updateAdgroup" parameterType="com.futeplus.vms.entity.Adgroup">
+		update adgroup set adverid=#{adverId},grouptype=#{groupType},groupname=#{groupName},begindate=#{beginDate}
+		,enddate=#{endDate},begintime=#{beginTime},endtime=#{endTime},os=#{os},city=#{city},status=#{status}
+		,updatetime=#{updateTime} where id=#{id}
+	</update>
+	
+	<!-- 删除广告组 -->
+	<delete id="deleteAdgroup">
+		delete from adgroup where id=#{id}
+	</delete>
+	
+	<!-- 获取广告组信息 -->
+	<select id="getAdgroup" resultType="java.util.HashMap">
+		select t.id,t.adverId,t1.adverName,t.groupType,(select dictname from dictinfo where dictcode='ad_group_type'
+		and dictvalue=t.grouptype) as groupTypeName,t.groupName,t.beginDate,t.endDate,t.beginTime,t.endTime,t.os
+		,t.city,(select city from areainfo where substring(areacode,1,2)=t.city and capital=1) as cityName,t.status
+		,(select dictname from dictinfo where dictcode='auditing_status' and dictvalue=t.status) as statusName
+		,t.createTime,t.updateTime from adgroup t inner join advertiser t1 on (t.adverid=t1.id) where t.id=#{id}
+	</select>
+	
+	<!-- 修改广告组当前状态 -->
+	<update id="updateAdgroupStatus">
+		update adgroup set status=#{status} where id=#{id}
+	</update>
+	
+	<!-- 查询广告组 -->
+	<select id="queryAdgroup" resultType="java.util.HashMap" parameterType="com.futeplus.vms.entity.Adgroup">
+		select t.id,t1.adverName,(select dictname from dictinfo where dictcode='ad_group_type'
+		and dictvalue=t.grouptype) as groupTypeName,t.groupName,t.beginDate,t.endDate,t.os
+		,(select city from areainfo where substring(areacode,1,2)=t.city and capital=1) as cityName
+		,(select dictname from dictinfo where dictcode='auditing_status' and dictvalue=t.status) as statusName
+		,(select count(id) from adcreative where groupid=t.id) as creativeCount
+		,t.createTime,t.updateTime from adgroup t inner join advertiser t1 on (t.adverid=t1.id)
+		<trim prefix="where" prefixOverrides="and">
+			<if test="adverId &gt; 0">
+				and t.adverId=#{adverId}
+			</if>
+			<if test="groupType &gt; 0">
+				and t.groupType=#{groupType}
+			</if>
+			<if test="beginDate != ''">
+				and t.beginDate &gt;= #{beginDate}
+			</if>
+			<if test="endDate != ''">
+				and t.endDate &lt;= #{endDate}
+			</if>
+			<if test="beginTime != ''">
+				and t.beginTime &gt;= #{beginTime}
+			</if>
+			<if test="endTime != ''">
+				and t.endTime &lt;= #{endTime}
+			</if>
+			<if test="os != ''">
+				and t.os = #{os}
+			</if>
+			<if test="city != ''">
+				and t.city = #{city}
+			</if>
+			<if test="status &gt; 0">
+				and t.status = #{status}
+			</if>
+			<if test="groupName != ''">
+				and t.groupName like concat('%',#{groupName},'%')
+			</if>
+		</trim>
+	</select>
+
+</mapper>  

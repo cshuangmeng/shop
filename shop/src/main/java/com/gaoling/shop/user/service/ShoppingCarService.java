@@ -108,7 +108,7 @@ public class ShoppingCarService extends CommonService{
 		//判断用户是否可添加该商品
 		int buyAmount=goodsService.getEnableBuyAmount(user.getId(), goodsId);
 		if(buyAmount>=0&&amount>buyAmount){
-			return putResult(AppConstant.OPERATE_FAILURE);
+			return putResult(AppConstant.OUT_OF_BOUNDS,new Object[]{goodsService.getTotalBuyAmount(user.getId(), goodsId)});
 		}
 		//是否已添加
 		List<ShoppingCar> cars=shoppingCarDao.queryShoppingCars(DataUtil.mapOf("userId",user.getId(),"goodsId",goods.getId()));

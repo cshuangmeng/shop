@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.futeplus.vms.dao.EmployeeDao">
+
+	<!-- 保存员工信息 -->
+	<insert id="addEmployee" parameterType="com.futeplus.vms.entity.EmployeeInfo">
+		insert into employeeInfo(employeeId,sid,openId,unionName,unionPwd,unionState,createTime)
+		values(#{employeeId},#{sid},#{openId},#{unionName},#{unionPwd},#{unionState},#{createTime})
+	</insert>
+
+	<!-- 更新员工信息 -->
+	<update id="updateEmployee" parameterType="com.futeplus.vms.entity.EmployeeInfo">
+		update employeeInfo set unionName=#{unionName},unionPwd=#{unionPwd},unionState=#{unionState} where id=#{id}
+	</update>
+	
+	<!-- 加载员工信息信息 -->
+	<select id="getEmployee" resultType="com.futeplus.vms.entity.EmployeeInfo">
+		select * from employeeInfo where id=#{id} for update
+	</select>
+
+	<!-- 加载员工信息 -->
+	<select id="getEmployeeByUnionName" resultType="com.futeplus.vms.entity.EmployeeInfo">
+		select * from employeeInfo where unionName=#{unionName}
+	</select>
+	
+	<!-- 获取商户员工信息 -->
+	<select id="loadAllEmployees" resultType="java.util.HashMap">
+		select t1.storeName,t.id,t.unionName,t.unionPwd,t.createTime
+		,(select dictName from dictInfo where dictCode='bd_account_state' and dictValue=t.unionState) as unionState
+		from employeeInfo t inner join storeInfo t1 on (t.sid=t1.id) order by t1.storeName,t1.createTime desc
+	</select>
+
+</mapper>  

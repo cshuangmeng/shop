@@ -1,0 +1,34 @@
+package com.gaoling.admin.util;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+public class DateUtil {
+
+	//获取系统当前时间
+	public static String getCurrentTime(){
+		SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		return format.format(new Date());
+	}
+	
+	//格式化时间
+	public static String getFormatTime(Date date){
+		SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		return format.format(date);
+	}
+	
+	//计算两个时间之间的分钟数
+	public static int getMinsIntervalOfTime(String time1,String time2){
+		try {
+			SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			Date date1=format.parse(time1);
+			Date date2=format.parse(time2);
+			long mins=(date2.getTime()-date1.getTime())/(60*1000);
+			return (int)mins;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return -1;
+	}
+	
+}

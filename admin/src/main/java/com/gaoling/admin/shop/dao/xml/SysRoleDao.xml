@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.futeplus.vms.dao.SysRoleDao">
+	
+	<!-- 新增角色 -->
+	<insert id="addRole" parameterType="com.futeplus.vms.entity.SysRole" useGeneratedKeys="true" keyProperty="id">
+		insert into sys_role(roleId,roleName,enabled,description,createTime)
+		values(#{roleId},#{roleName},#{enabled},#{description},#{createTime})
+	</insert>
+	
+	<!-- 更新角色 -->
+	<update id="updateRole" parameterType="com.futeplus.vms.entity.SysRole">
+		update sys_role set roleName=#{roleName},enabled=#{enabled},description=#{description} where id=#{id}
+	</update>
+	
+	<!-- 查询角色 -->
+	<select id="getRole" resultType="com.futeplus.vms.entity.SysRole">	
+		select * from sys_role where id=#{id}
+	</select>
+	
+	<!-- 通过角色名查询角色 -->
+	<select id="getRoleByRoleName" resultType="com.futeplus.vms.entity.SysRole">	
+		select * from sys_role where roleName=#{roleName}
+	</select>
+	
+	<!-- 删除角色 -->
+	<delete id="deleteRole">
+		delete from sys_role where id=#{id}
+	</delete>
+	
+	<!--添加角色权限 -->
+	<insert id="addMenuForRole">
+		insert into sys_role_menu(rid,mid)values(#{rid},#{mid});
+	</insert>
+	
+	<!-- 删除角色权限 -->
+	<delete id="deleteMenusOfRole">
+		delete from sys_role_menu
+		<choose>
+			<when test="mid &gt; 0 and rid &gt; 0">
+				where rid=#{rid} and mid=#{mid}
+			</when>
+			<when test="mid &gt; 0">
+				where mid=#{mid}
+			</when>
+			<when test="rid &gt; 0">
+				where rid=#{rid}
+			</when>
+		</choose>
+	</delete>
+	
+	<!-- 查询用户所拥有的角色列表 -->
+	<select id="getRolesOfUser" resultType="java.util.HashMap">
+		select t.id,t.roleName from sys_role t inner join sys_user_role t1 on (t.id=t1.rid) where t1.uid=#{uid}
+	</select>
+	
+	<!-- 加载所有角色列表 -->
+	<select id="getAllRoles" resultType="com.futeplus.vms.entity.SysRole">
+		select * from sys_role
+		<if test="enabled &gt;= 0">
+			where enabled=#{enabled}
+		</if>
+		order by createTime desc
+	</select>
+	
+</mapper>
+

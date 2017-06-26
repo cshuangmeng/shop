@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.futeplus.vms.dao.StoreDetailDao">
+
+	<!-- 增加商户详细信息 -->
+	<insert id="addStoreDetail" useGeneratedKeys="true" keyProperty="id" parameterType="com.futeplus.vms.entity.StoreDetail">
+		insert into
+		storeDetail(sid,linkman,telephone,servicePhone,logoImg,enviImg,licenseImg,contractImg,businessHours,reason,description)
+		value(#{sid},#{linkman},#{telephone},#{servicePhone},#{logoImg},#{enviImg},#{licenseImg},#{contractImg}
+		,#{businessHours},#{reason},#{description})
+	</insert>
+	
+	<!-- 更新商户详细信息 -->
+	<update id="updateStoreDetail" parameterType="com.futeplus.vms.entity.StoreDetail">
+		update storeDetail set linkman=#{linkman},telephone=#{telephone},servicePhone=#{servicePhone},logoImg=#{logoImg}
+		,enviImg=#{enviImg},licenseImg=#{licenseImg},contractImg=#{contractImg},businessHours=#{businessHours}
+		,reason=#{reason},description=#{description} where id=#{id}
+	</update>
+	
+	<!-- 获取商户详细信息 -->
+	<select id="getStoreDetailByStoreId" resultType="com.futeplus.vms.entity.StoreDetail">
+		select * from storeDetail where sid=#{sid}
+	</select>
+	
+</mapper>  

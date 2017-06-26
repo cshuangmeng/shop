@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.futeplus.vms.dao.AdcreativeDao">
+
+	<!-- 新增广告素材 -->
+	<insert id="addAdcreative" useGeneratedKeys="true" keyProperty="id" parameterType="com.futeplus.vms.entity.Adcreative">
+		insert into adcreative(adverId,groupId,imgUrl,title,actionTarget,actionType,status,shareContent
+		,orderIndex,needLogin,createTime)values(#{adverId},#{groupId},#{imgUrl},#{title},#{actionTarget}
+		,#{actionType},#{status},#{shareContent},#{orderIndex},#{needLogin},#{createTime})
+	</insert>
+	
+	<!-- 更新广告素材 -->
+	<update id="updateAdcreative" parameterType="com.futeplus.vms.entity.Adcreative">
+		update adcreative set adverId=#{adverId},groupId=#{groupId},imgUrl=#{imgUrl},title=#{title}
+		,actionTarget=#{actionTarget},actionType=#{actionType},status=#{status},shareContent=#{shareContent}
+		,orderIndex=#{orderIndex},needLogin=#{needLogin},updateTime=#{updateTime} where id=#{id}
+	</update>
+	
+	<!-- 删除广告素材 -->
+	<delete id="deleteAdcreative">
+		delete from adcreative where id=#{id}
+	</delete>
+	
+	<!-- 获取广告素材 -->
+	<select id="getAdcreative" resultType="java.util.HashMap">
+		select t.*
+		,(select dictname from dictinfo where dictcode='ad_click_open_type' and dictvalue=t.actionType) as actionTypeName
+		from adcreative t where id=#{id}
+	</select>
+	
+	<!-- 删除广告组中的所有广告素材 -->
+	<delete id="deleteAdcreativeByGroupId">
+		delete from adcreative where groupid=#{groupId}
+	</delete>
+	
+	<!-- 查询广告组中所有素材 -->
+	<select id="loadAdcreativeByGroupId" resultType="java.util.HashMap">
+		select t.id,imgUrl,title,actionTarget,orderIndex,createTime,updateTime
+		,(select dictname from dictinfo where dictcode='ad_click_open_type' and dictvalue=t.actionType) as actionTypeName
+		from adcreative t where groupId=#{groupId}
+	</select>
+
+</mapper>  

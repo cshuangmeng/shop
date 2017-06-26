@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.futeplus.vms.dao.AreaDao">
+
+	<!-- 加载地市列表 -->
+	<select id="loadCityList" resultType="java.util.HashMap">
+		select city,areacode from areaInfo where capital
+	</select>
+	
+	<!-- 加载行政区划列表 -->
+	<select id="loadRegionList" resultType="java.util.HashMap">
+		select region,areacode from areaInfo t where cityCode=#{cityCode} and !capital
+	</select>
+	
+	<!-- 加载城市信息 -->
+	<select id="getAreaByAreacode" resultType="com.futeplus.vms.entity.AreaInfo">
+		select * from areaInfo where areacode=#{areacode}
+	</select>
+	
+	<!-- 加载城市信息 -->
+	<select id="getAreaByRegion" resultType="com.futeplus.vms.entity.AreaInfo">
+		select * from areaInfo where region=#{region}
+	</select>
+
+</mapper>  

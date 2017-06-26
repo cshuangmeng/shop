@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.futeplus.vms.dao.CooRequestDao">
+
+	<!-- 加载合作请求总条数 -->
+	<select id="getCooRequestSize" resultType="Integer">
+		select count(1) from cooRequest
+		<trim prefix="where" prefixOverrides="and">
+			<if test="fullname != null and fullname != ''">
+				fullname like concat('%',#{fullname},'%') 
+			</if>
+		</trim>
+	</select>
+	
+	<!-- 加载合作请求 -->
+	<select id="loadCooRequestList" resultType="com.futeplus.vms.entity.CooRequest">
+		select * from cooRequest
+		<trim prefix="where" prefixOverrides="and">
+			<if test="fullname != null and fullname != ''">
+				fullname like concat('%',#{fullname},'%')
+			</if>
+		</trim>
+		order by createTime desc
+		<if test="limit &gt; 0">
+			limit #{offset},#{limit}
+		</if>
+	</select>
+	
+</mapper>  
