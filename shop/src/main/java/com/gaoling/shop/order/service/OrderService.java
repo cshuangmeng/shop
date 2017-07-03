@@ -157,7 +157,7 @@ public class OrderService extends CommonService{
 				return putResult(AppConstant.OUT_OF_BOUNDS,new Object[]{goodsService.getTotalBuyAmount(user.getId(), goods.getId())});
 			}
 			order=new Order();
-			order.setAddressId(order.getAddressId());
+			order.setAddressId(param.getAddressId());
 			order.setAmount(car.getAmount());
 			order.setCreateTime(DateUtil.nowDate());
 			order.setGoodsId(car.getGoodsId());

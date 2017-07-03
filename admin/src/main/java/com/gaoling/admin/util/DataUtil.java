@@ -11,6 +11,9 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
+import org.apache.shiro.crypto.hash.SimpleHash;
+import org.apache.shiro.util.ByteSource;
+
 import net.sourceforge.pinyin4j.PinyinHelper;
 import net.sourceforge.pinyin4j.format.HanyuPinyinCaseType;
 import net.sourceforge.pinyin4j.format.HanyuPinyinOutputFormat;
@@ -19,7 +22,7 @@ import net.sourceforge.pinyin4j.format.HanyuPinyinVCharType;
 import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombination;
 
 public class DataUtil {
-
+	
 	private static final String[] chars = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e",
 			"f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z",
 			"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U",
@@ -33,6 +36,15 @@ public class DataUtil {
 			code += ram.nextInt(10);
 		}
 		return code;
+	}
+
+	// 盐值加密
+	public static String encodeWithSalt(String credentials, String salt) {
+		String hashAlgorithmName = "MD5";// 加密算法
+		int hashIterations = 1024;// 加密次数
+		ByteSource credentialsSalt = ByteSource.Util.bytes(salt);
+		Object obj = new SimpleHash(hashAlgorithmName, credentials, credentialsSalt, hashIterations);
+		return obj.toString();
 	}
 
 	// 生成指定位数的随机字母字符串
@@ -60,7 +72,7 @@ public class DataUtil {
 	public static boolean isImgFile(String imgName) {
 		return Pattern.matches("^[\\w|\u4e00-\u9fa5]+\\.(gif|jpe?g|png)$", imgName);
 	}
-	
+
 	// 拼装Map
 	@SuppressWarnings("unchecked")
 	public static <K, V> Map<K, V> mapOf(Object... v) {
@@ -73,10 +85,10 @@ public class DataUtil {
 		}
 		return ret;
 	}
-	
-	//删除多余Key
-	public static <K,V> void removeKeys(Map<K,V> map,String[] keys){
-		for(String key:keys){
+
+	// 删除多余Key
+	public static <K, V> void removeKeys(Map<K, V> map, String[] keys) {
+		for (String key : keys) {
 			map.remove(key);
 		}
 	}
@@ -157,7 +169,7 @@ public class DataUtil {
 	public static String buildUUID() {
 		return UUID.randomUUID().toString().replaceAll("-", "");
 	}
-	
+
 	// 将汉字转换为全拼
 	public static String getPingYin(String src) {
 		char[] t1 = null;

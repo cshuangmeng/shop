@@ -10,8 +10,8 @@ public class PropertiesUtil {
 	
 	static{
 		try {
-			prop.load(PropertiesUtil.class.getResourceAsStream("/vms.properties"));
-			Logger.getLogger("file").info(DateUtil.getCurrentTime()+" vms.properties loaded!");
+			prop.load(PropertiesUtil.class.getResourceAsStream("/admin.properties"));
+			Logger.getLogger("file").info(DateUtil.getCurrentTime()+" admin.properties loaded!");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

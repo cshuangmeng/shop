@@ -9,8 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.gaoling.admin.system.dao.SysRoleDao;
 import com.gaoling.admin.system.pojo.SysRole;
-import com.gaoling.admin.util.DataUtil;
-import com.gaoling.admin.util.DateUtil;
 
 
 @Service
@@ -18,13 +16,9 @@ public class SysRoleService {
 	
 	@Autowired
 	private SysRoleDao roleDao;
-	@Autowired
-	private SysUserService userService;
 
 	// 新增role信息
 	public void addRole(SysRole role) {
-		role.setRoleId(DataUtil.buildUUID());
-		role.setCreateTime(DateUtil.getCurrentTime());
 		roleDao.addRole(role);
 	}
 
@@ -51,9 +45,9 @@ public class SysRoleService {
 	// 删除角色
 	@Transactional
 	public void deleteRole(int rid) {
-		deleteMenusOfRole(rid, 0);
-		userService.delRoleForUser(0, rid);
-		roleDao.deleteRole(rid);
+		SysRole role=getRole(rid);
+		role.setState(SysRole.ROLE_STATE_ENUM.DELETED.getState());
+		roleDao.updateRole(role);
 	}
 	
 	// 为角色分配菜单
@@ -70,8 +64,8 @@ public class SysRoleService {
 	}
 	
 	// 加载角色列表
-	public List<SysRole> getAllRoles(int enabled){
-		return roleDao.getAllRoles(enabled);
+	public List<SysRole> getAllRoles(){
+		return roleDao.getAllRoles(SysRole.SHOWSTATES);
 	}
 
 }

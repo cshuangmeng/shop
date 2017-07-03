@@ -40,11 +40,11 @@ public class ShiroRealm extends AuthorizingRealm {
 		if (user==null) {
 			throw new UnknownAccountException("用户名:"+token.getUsername()+"不存在");
 		} // 查看用户是否可用
-		if (!user.isEnabled()) {
+		if (user.getState()!=SysUser.USER_STATE_ENUM.NORMAL.getState()) {
 			throw new LockedAccountException("账户:"+user.getUsername()+"不可用");
 		}
 		// 数据库的密码
-		SimpleAuthenticationInfo info=new SimpleAuthenticationInfo(user.getId(), user.getPwd(), getName());
+		SimpleAuthenticationInfo info=new SimpleAuthenticationInfo(user.getId(), user.getPassword(), user.getUsername());
 		return info;
 	}
 

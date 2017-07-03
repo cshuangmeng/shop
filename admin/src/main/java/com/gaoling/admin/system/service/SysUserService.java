@@ -36,9 +36,7 @@ public class SysUserService {
 	
 	// 新增后台管理人员
 	public int addUser(SysUser user) {
-		user.setUserId(DataUtil.buildUUID());
 		user.setCreateTime(DateUtil.getCurrentTime());
-		user.setEnabled(true);
 		return userDao.addUser(user);
 	}
 
@@ -69,8 +67,9 @@ public class SysUserService {
 	// 删除用户
 	@Transactional
 	public void deleteUser(int id) {
-		delRoleForUser(id,0);
-		userDao.deleteUser(id);
+		SysUser user=getUser(id);
+		user.setState(SysUser.USER_STATE_ENUM.DELETED.getState());
+		userDao.updateUser(user);
 	}
 	
 	// 通过登录名获取用户
@@ -103,7 +102,7 @@ public class SysUserService {
 		Subject currentUser = SecurityUtils.getSubject();
 		// 判断当前用户是否登录
 		if (!currentUser.isAuthenticated()) {
-			UsernamePasswordToken token = new UsernamePasswordToken(username, pwd);
+			UsernamePasswordToken token = new UsernamePasswordToken(username, DataUtil.encodeWithSalt(pwd, username));
 			// oss登录状态
 			token.setRememberMe(true);
 			try {
@@ -119,14 +118,13 @@ public class SysUserService {
 				return "redirect:login";
 			}
 		}
-		SysUser user = getUser((int) currentUser.getPrincipal());
+		SysUser user=getUser((int)currentUser.getPrincipal());
 		//保存用户信息
 		SessionInfo session=new SessionInfo();
-		session.setUid(user.getId());
 		session.setUsername(username);
 		session.setPassword(pwd);
 		session.setLoginTime(DateUtil.getCurrentTime());
-		session.setUserId(user.getUserId());
+		session.setUserId(user.getId());
 		session.setMenus(loadMenusOfUser(user.getId()));
 		currentUser.getSession().setAttribute(AppConstant.SESSION_DATA_NAME, session);
 		//跳转到欢迎页

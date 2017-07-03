@@ -4,7 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <%@include file="common/head.jsp"%>
-<title>伏特加 － 首页</title>
+<title>后台管理平台 － 首页</title>
 
 </head>
 

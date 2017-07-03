@@ -19,14 +19,11 @@ public class SysMenuService {
 	
 	@Autowired
 	private SysMenuDao menuDao;
-	@Autowired
-	private SysRoleService roleService;
 
 	//增加权限
 	@Transactional
 	public int addMenu(SysMenu menu){
-		menu.setMenuId(DataUtil.buildUUID());
-		menu.setCreateTime(DateUtil.getCurrentTime());
+		menu.setCreateTime(DateUtil.nowDate());
 		return menuDao.addMenu(menu);
 	}
 	
@@ -38,8 +35,9 @@ public class SysMenuService {
 	//删除权限
 	@Transactional
 	public void deleteMenu(int mid){
-		roleService.deleteMenusOfRole(0, mid);
-		menuDao.deleteMenu(mid);
+		SysMenu menu=getMenu(mid);
+		menu.setState(SysMenu.MENU_STATE_ENUM.DELETED.getState());
+		menuDao.updateMenu(menu);
 	}
 	
 	//查询指定权限
@@ -77,14 +75,14 @@ public class SysMenuService {
 		for(SysMenu parentMenu:parentMenus){
 			parentMap=new HashMap<String,Object>();
 			parentMap.put("id", parentMenu.getId());
-			parentMap.put("text", parentMenu.getMenuName());
+			parentMap.put("text", parentMenu.getName());
 			List<SysMenu> songMenus=getMenus(parentMenu.getId());
 			List<HashMap<String,Object>> songMapList=new ArrayList<HashMap<String,Object>>();
 			for(SysMenu songMenu:songMenus){
 				sonMap=new HashMap<String,Object>();
 				sonMap.put("id", songMenu.getId());
-				sonMap.put("text", songMenu.getMenuName());
-				sonMap.put("attributes", DataUtil.saveObjectToMap("url", songMenu.getMenuUrl()));
+				sonMap.put("text", songMenu.getName());
+				sonMap.put("attributes", DataUtil.saveObjectToMap("url", songMenu.getUrl()));
 				//判断菜单的选中状态
 				for(HashMap<String,Object> roleMenu:roleMenus){
 					if(songMenu.getId()==Integer.parseInt(roleMenu.get("id").toString())){

@@ -3,10 +3,11 @@ package com.gaoling.admin.system.pojo;
 public class SysUser {
 
 	private int id;
-	private String userId;
 	private String username;
-	private String pwd;
-	private boolean enabled;
+	private String password;
+	private int state;
+	private int system;
+	private String description;
 	private String createTime;
 
 	public int getId() {
@@ -17,14 +18,6 @@ public class SysUser {
 		this.id = id;
 	}
 
-	public String getUserId() {
-		return userId;
-	}
-
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
-
 	public String getUsername() {
 		return username;
 	}
@@ -33,20 +26,36 @@ public class SysUser {
 		this.username = username;
 	}
 
-	public String getPwd() {
-		return pwd;
+	public String getPassword() {
+		return password;
 	}
 
-	public void setPwd(String pwd) {
-		this.pwd = pwd;
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
-	public boolean isEnabled() {
-		return enabled;
+	public int getState() {
+		return state;
 	}
 
-	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
+	public void setState(int state) {
+		this.state = state;
+	}
+
+	public int getSystem() {
+		return system;
+	}
+
+	public void setSystem(int system) {
+		this.system = system;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public String getCreateTime() {
@@ -55,6 +64,20 @@ public class SysUser {
 
 	public void setCreateTime(String createTime) {
 		this.createTime = createTime;
+	}
+
+	// 用户状态
+	public static enum USER_STATE_ENUM {
+		NORMAL(1), DISABLED(2), DELETED(3);
+		private int state;
+
+		private USER_STATE_ENUM(int state) {
+			this.state = state;
+		}
+
+		public int getState() {
+			return state;
+		}
 	}
 
 }

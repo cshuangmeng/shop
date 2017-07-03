@@ -43,7 +43,7 @@ public class SysMenuController {
 	public JsonResult updateMenu(@ModelAttribute SysMenu menu) {
 		JsonResult json = new JsonResult();
 		try {
-			SysMenu m=menuService.getMenuByName(menu.getMenuName());
+			SysMenu m=menuService.getMenuByName(menu.getName());
 			if (menu.getId() > 0) {
 				if(null==m||m.getId()==menu.getId()){
 					menuService.updateMenu(menu);

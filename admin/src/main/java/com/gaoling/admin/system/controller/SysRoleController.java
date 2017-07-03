@@ -56,7 +56,7 @@ public class SysRoleController {
 	public JsonResult getAllRoles(@RequestParam(defaultValue="-1")int enabled) {
 		JsonResult json = new JsonResult();
 		try {
-			json.setData(roleService.getAllRoles(enabled));
+			json.setData(roleService.getAllRoles());
 		} catch (Exception e) {
 			json.setResult(1);
 			e.printStackTrace();
@@ -84,7 +84,7 @@ public class SysRoleController {
 	public JsonResult updateRole(@ModelAttribute SysRole role) {
 		JsonResult json = new JsonResult();
 		try {
-			SysRole r = roleService.getRoleByRoleName(role.getRoleName());
+			SysRole r = roleService.getRoleByRoleName(role.getName());
 			if (role.getId() > 0) {
 				if(null==r||role.getId()==r.getId()){
 					roleService.updateRole(role);

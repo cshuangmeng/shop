@@ -13,12 +13,11 @@ public interface SysRoleDao {
 	
 	int addRole(SysRole role);
 	void updateRole(SysRole role);
-	void deleteRole(int id);
 	SysRole getRole(int id);
-	SysRole getRoleByRoleName(String roleName);
-	void addMenuForRole(@Param("rid")int rid,@Param("mid")int mid);
-	void deleteMenusOfRole(@Param("rid")int rid,@Param("mid")int mid);
-	List<HashMap<String,Object>> getRolesOfUser(int uid);
-	List<SysRole> getAllRoles(@Param("enabled")int enabled);
+	SysRole getRoleByRoleName(String name);
+	void addMenuForRole(@Param("roleId")int roleId,@Param("menuId")int menuId);
+	void deleteMenusOfRole(@Param("roleId")int roleId,@Param("menuId")int menuId);
+	List<HashMap<String,Object>> getRolesOfUser(int userId);
+	List<SysRole> getAllRoles(@Param("states")List<Integer> states);
 		
 }

@@ -6,69 +6,62 @@
 
 	<!-- 保存系统用户信息 -->
 	<insert id="addUser" parameterType="com.gaoling.admin.system.pojo.SysUser" useGeneratedKeys="true" keyProperty="id">
-		insert into
-		sys_user(userId,username,pwd,enabled,createTime)
-		values(#{userId},#{username},#{pwd},#{enabled},#{createTime})
+		insert into sys_user(username,password,state,system,description,create_time)values(#{username},#{password},#{state},#{system},#{description},#{createTime})
 	</insert>
 	
 	<!-- 更新系统用户信息 -->
 	<update id="updateUser" parameterType="com.gaoling.admin.system.pojo.SysUser">
-		update sys_user set username=#{username},pwd=#{pwd},enabled=#{enabled} where id=#{id}
+		update sys_user set username=#{username},password=#{password},state=#{state},description=#{description} where id=#{id}
 	</update>
 	
 	<!-- 获取系统用户信息 -->
 	<select id="getUser" resultType="com.gaoling.admin.system.pojo.SysUser">
-		select * from sys_user where id=#{id}
+		select id,username,password,state,system,description,create_time createTime from sys_user where id=#{id}
 	</select>
-
-	<!-- 删除系统用户信息 -->
-	<delete id="deleteUser">
-		delete from sys_user where id=#{id}
-	</delete>
 
 	<!-- 通过登录名获取系统用户信息 -->
 	<select id="getUserByUsername" resultType="com.gaoling.admin.system.pojo.SysUser">
-		select * from sys_user where username=#{username}
+		select id,username,password,state,system,description,create_time createTime from sys_user where username=#{username}
 	</select>
 	
 	<!-- 为用户分配角色 -->
 	<insert id="addRoleForUser" parameterType="java.util.HashMap">
-		insert into sys_user_role(uid,rid)values(#{uid},#{rid})
+		insert into sys_user_role(user_id,role_id)values(#{userId},#{roleId})
 	</insert>
 	
 	<!-- 删除用户所属角色 -->
 	<delete id="delRoleForUser">
 		delete from sys_user_role where
 		<choose>
-			<when test="uid &gt; 0 and rid &gt; 0">
-				uid=#{uid} and rid=#{rid}
+			<when test="userId &gt; 0 and roleId &gt; 0">
+				user_id=#{userId} and role_id=#{roleId}
 			</when>
-			<when test="uid &gt; 0">
-				uid=#{uid}
+			<when test="userId &gt; 0">
+				user_id=#{userId}
 			</when>
-			<when test="rid &gt; 0">
-				rid=#{rid}
+			<when test="roleId &gt; 0">
+				role_id=#{roleId}
 			</when>
 		</choose>
 	</delete>
 	
 	<!-- 加载所有用户 -->
 	<select id="loadAllUsers" resultType="java.util.HashMap">
-		select id,username,pwd,enabled,createTime from sys_user group by createTime
+		select id,username,password,state,description,create_time createTime from sys_user order by createTime
 	</select>
 	
 	<!-- 加载用户菜单 -->
 	<select id="loadMenusOfUser" resultType="java.util.HashMap">
-		select t.menuUrl,t.menuName,t.parentId,t.icon,case when t.parentId=0
-		then concat(t.id,'-',t.parentId) else concat(t.parentId,'-',t.orderIndex) end as orderby
-		from sys_menu t inner join sys_role_menu t1 on (t.id=t1.mid)
-		inner join sys_user_role t2 on (t1.rid=t2.rid) inner join sys_role t3 on (t2.rid=t3.id)
-		where t2.uid=#{uid} and t3.enabled and t.enabled order by orderby
+		select t.url,t.name,t.parent_id parentId,t.icon,case when t.parent_id=0
+		then concat(t.id,'-',t.parent_id) else concat(t.parent_id,'-',t.sort) end as orderby
+		from sys_menu t inner join sys_role_menu t1 on (t.id=t1.menu_id)
+		inner join sys_role_user t2 on (t1.role_id=t2.role_id) inner join sys_role t3 on (t2.role_id=t3.id)
+		where t2.user_id=#{userId} and t3.state=1 and t.state=1 order by orderby
 	</select>
 	
 	<!-- 加载角色所拥有的用户 -->
 	<select id="getUsersOfRole" resultType="java.util.HashMap">
-		select t.id,t.userName from sys_user t inner join sys_user_role t1 on (t.id=t1.uid) where t1.rid=#{rid}
+		select t.id,t.username from sys_user t inner join sys_user_role t1 on (t.id=t1.user_id) where t1.role_id=#{roleId}
 	</select>
 	
 </mapper>  

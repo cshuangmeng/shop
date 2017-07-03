@@ -14,13 +14,12 @@ public interface SysUserDao {
 	
 	int addUser(SysUser user);
 	void updateUser(SysUser user);
-	void addRoleForUser(@Param("uid")int uid,@Param("rid")int rid);
-	void deleteUser(int id);
-	void delRoleForUser(@Param("uid")int uid,@Param("rid")int rid);
+	void addRoleForUser(@Param("userId")int userId,@Param("roleId")int roleId);
+	void delRoleForUser(@Param("userId")int userId,@Param("roleId")int roleId);
 	SysUser getUser(int id);
 	SysUser getUserByUsername(String username);
 	List<HashMap<String,Object>> loadAllUsers();
-	List<HashMap<String,Object>> loadMenusOfUser(int uid);
-	List<HashMap<String,Object>> getUsersOfRole(int rid);
+	List<HashMap<String,Object>> loadMenusOfUser(int userId);
+	List<HashMap<String,Object>> getUsersOfRole(int roleId);
 	
 }

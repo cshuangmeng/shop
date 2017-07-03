@@ -1,16 +1,18 @@
 package com.gaoling.admin.system.pojo;
 
+import java.util.Date;
+
 public class SysMenu {
 
 	private int id;
-	private String menuId;
-	private String menuUrl;
-	private String menuName;
-	private boolean enabled;
-	private Integer orderIndex;
+	private String name;
+	private String url;
+	private String sort;
 	private int parentId;
 	private String icon;
-	private String createTime;
+	private int state;
+	private int system;
+	private Date createTime;
 
 	public int getId() {
 		return id;
@@ -20,44 +22,28 @@ public class SysMenu {
 		this.id = id;
 	}
 
-	public String getMenuId() {
-		return menuId;
+	public String getName() {
+		return name;
 	}
 
-	public void setMenuId(String menuId) {
-		this.menuId = menuId;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public String getMenuUrl() {
-		return menuUrl;
+	public String getUrl() {
+		return url;
 	}
 
-	public void setMenuUrl(String menuUrl) {
-		this.menuUrl = menuUrl;
+	public void setUrl(String url) {
+		this.url = url;
 	}
 
-	public String getMenuName() {
-		return menuName;
+	public String getSort() {
+		return sort;
 	}
 
-	public void setMenuName(String menuName) {
-		this.menuName = menuName;
-	}
-
-	public boolean isEnabled() {
-		return enabled;
-	}
-
-	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
-	}
-
-	public Integer getOrderIndex() {
-		return orderIndex;
-	}
-
-	public void setOrderIndex(Integer orderIndex) {
-		this.orderIndex = orderIndex;
+	public void setSort(String sort) {
+		this.sort = sort;
 	}
 
 	public int getParentId() {
@@ -76,12 +62,41 @@ public class SysMenu {
 		this.icon = icon;
 	}
 
-	public String getCreateTime() {
+	public int getState() {
+		return state;
+	}
+
+	public void setState(int state) {
+		this.state = state;
+	}
+
+	public int getSystem() {
+		return system;
+	}
+
+	public void setSystem(int system) {
+		this.system = system;
+	}
+
+	public Date getCreateTime() {
 		return createTime;
 	}
 
-	public void setCreateTime(String createTime) {
+	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
 
+	// 菜单状态
+	public static enum MENU_STATE_ENUM {
+		NORMAL(1), DISABLED(2), DELETED(3);
+		private int state;
+
+		private MENU_STATE_ENUM(int state) {
+			this.state = state;
+		}
+
+		public int getState() {
+			return state;
+		}
+	}
 }

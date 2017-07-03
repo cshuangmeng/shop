@@ -13,12 +13,11 @@ import com.gaoling.admin.system.pojo.SysMenu;
 public interface SysMenuDao {
 
 	int addMenu(SysMenu menu);
-	void deleteMenu(int id);
 	SysMenu getMenu(int id);
-	SysMenu getMenuByName(String menuName);
+	SysMenu getMenuByName(String name);
 	void updateMenu(SysMenu menu);
 	List<SysMenu> getMenus(@Param("parentId")int parentId);
 	List<HashMap<String,Object>> loadAllMenus();
-	List<HashMap<String,Object>> getMenusOfRole(int rid);
+	List<HashMap<String,Object>> getMenusOfRole(int roleId);
 	
 }

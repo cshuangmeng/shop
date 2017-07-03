@@ -9,11 +9,11 @@
 					</li>
 				</c:if>
 				<li>
-				<a href="${menu.menuUrl!='#'?pageContext.servletContext.contextPath:'' }${menu.menuUrl }" class="mws-i-24 ${menu.icon }">${menu.menuName }</a>
+				<a href="${menu.url!='#'?pageContext.servletContext.contextPath:'' }${menu.url }" class="mws-i-24 ${menu.icon }">${menu.name }</a>
 				<ul class="closed">
 			</c:if>
 			<c:if test="${menu.parentId>0 }">
-				<li><a href="${pageContext.servletContext.contextPath }${menu.menuUrl }">${menu.menuName }</a></li>
+				<li><a href="${pageContext.servletContext.contextPath }${menu.url }">${menu.name }</a></li>
 			</c:if>
 			<c:if test="${status.last }">
 				</ul>

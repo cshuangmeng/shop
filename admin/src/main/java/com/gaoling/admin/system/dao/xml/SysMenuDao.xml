@@ -3,47 +3,46 @@
 
 <mapper namespace="com.gaoling.admin.system.dao.SysMenuDao">
 
+	<!-- 表头 -->
+	<sql id="menuHead">
+		select t.id,t.name,t.url,t.sort,t.parent_id parentId,t.icon,t.state,t.system,t.create_time createTime from sys_menu t
+	</sql>
+
 	<!-- 添加菜单 -->
 	<insert id="addMenu" parameterType="com.gaoling.admin.system.pojo.SysMenu">
-		insert into sys_menu(menuId,menuUrl,menuName,enabled,orderIndex,parentId,icon,state,system,createTime)
-		values(#{menuId},#{menuUrl},#{menuName},#{enabled},#{orderIndex},#{parentId},#{icon},#{state},#{system},#{createTime})
+		insert into sys_menu(`name`,url,sort,parent_id,icon,state,system,create_time)
+		values(#{name},#{url},#{sort},#{parentId},#{icon},#{state},#{system},#{createTime})
 	</insert>
 	
 	<!-- 更新菜单 -->
 	<update id="updateMenu" parameterType="com.gaoling.admin.system.pojo.SysMenu">
-		update sys_menu set menuUrl=#{menuUrl},menuName=#{menuName},enabled=#{enabled},orderIndex=#{orderIndex}
-		,parentId=#{parentId},icon=#{icon},state=#{state} where id=#{id}
+		update sys_menu set `name`=#{name},url=#{url},sort=#{sort},parent_id=#{parentId},icon=#{icon},state=#{state} where id=#{id}
 	</update>
 
 	<!-- 获取指定的菜单 -->
 	<select id="getMenu" resultType="com.gaoling.admin.system.pojo.SysMenu">	
-		select * from sys_menu where id=#{id}
+		<include refid="menuHead"/> where id=#{id}
 	</select>
-	
-	<!-- 删除菜单 -->
-	<delete id="deleteMenu">
-		delete from sys_menu where id=#{id}
-	</delete>
 	
 	<!-- 获取菜单 -->
 	<select id="getMenuByName" resultType="com.gaoling.admin.system.pojo.SysMenu">
-		select * from sys_menu where menuName=#{menuName}
+		<include refid="menuHead"/> where `name`=#{name}
 	</select>
 	
 	<!-- 获取所有的菜单 -->
 	<select id="getMenus" resultType="com.gaoling.admin.system.pojo.SysMenu">	
-		select * from sys_menu where parentId=#{parentId} order by orderIndex
+		<include refid="menuHead"/> where parent_id=#{parentId} order by sort
 	</select>
 	
 	<!-- 查询角色所拥有的菜单列表 -->
 	<select id="getMenusOfRole" resultType="java.util.HashMap">
-		select t.id,t.menuName from sys_menu t inner join sys_role_menu t1 on (t.id=t1.mid) where t1.rid=#{rid}
+		select t.id,t.name from sys_menu t inner join sys_role_menu t1 on (t.id=t1.menu_id) where t1.role_id=#{roleId}
 	</select>
 	
 	<!-- 加载所有用户 -->
 	<select id="loadAllMenus" resultType="java.util.HashMap">
-		select t.*,(select menuName from sys_menu where id=t.parentId) as parentName
-		,case when t.parentId=0 then concat(t.id,'-',t.parentId) else concat(t.parentId,'-',t.orderIndex) end as orderby
+		select t.*,(select `name` from sys_menu where id=t.parent_id) as parentName
+		,case when t.parent_id=0 then concat(t.id,'-',t.parent_id) else concat(t.parent_id,'-',t.sort) end as orderby
 		from sys_menu t order by orderby
 	</select>
 

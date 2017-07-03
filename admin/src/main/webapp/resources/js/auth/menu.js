@@ -27,11 +27,11 @@
 		        aTargets : [ '_all' ]
 		    } ],
 			"aoColumns": [
-			   {"mDataProp":"menuName","sTitle":"菜单名","sClass":"center","sWidth":"20%"},
-			   {"mDataProp":"menuUrl","sTitle":"页面地址","sClass":"center","sWidth":"20%"},
+			   {"mDataProp":"name","sTitle":"菜单名","sClass":"center","sWidth":"20%"},
+			   {"mDataProp":"url","sTitle":"页面地址","sClass":"center","sWidth":"20%"},
 			   {"mDataProp":"parentName","sTitle":"父菜单","sClass":"center","sWidth":"20%"},
-			   {"mDataProp":"enabled","sTitle":"是否可用","sClass":"center","sWidth":"10%"},
-			   {"mDataProp":"orderIndex","sTitle":"排列序号","sClass":"center","sWidth":"10%"},
+			   {"mDataProp":"state","sTitle":"是否可用","sClass":"center","sWidth":"10%"},
+			   {"mDataProp":"sort","sTitle":"排列序号","sClass":"center","sWidth":"10%"},
 			   {"sTitle":"操作","sClass":"center","bSortable": false,"sWidth":"20%","fnRender": function(obj){
 				   var buttons="<span><a href='javascript:editMenuInfo("+obj.aData.id+");'>"
 				   		  +"<img src='"+contextPath+"/resources/css/icons/16/application_edit.png' alt='编辑' /></a>&nbsp;&nbsp;" +

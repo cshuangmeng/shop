@@ -1,13 +1,16 @@
 package com.gaoling.admin.system.pojo;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class SysRole {
 
 	private int id;
-	private String roleId;
-	private String roleName;
-	private boolean enabled;
+	private String name;
+	private int state;
+	private String system;
 	private String description;
-	private String createTime;
+	public final static List<Integer> SHOWSTATES=Arrays.asList(ROLE_STATE_ENUM.NORMAL.getState(),ROLE_STATE_ENUM.DISABLED.getState());
 
 	public int getId() {
 		return id;
@@ -17,28 +20,28 @@ public class SysRole {
 		this.id = id;
 	}
 
-	public String getRoleId() {
-		return roleId;
+	public String getName() {
+		return name;
 	}
 
-	public void setRoleId(String roleId) {
-		this.roleId = roleId;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public String getRoleName() {
-		return roleName;
+	public int getState() {
+		return state;
 	}
 
-	public void setRoleName(String roleName) {
-		this.roleName = roleName;
+	public void setState(int state) {
+		this.state = state;
 	}
 
-	public boolean isEnabled() {
-		return enabled;
+	public String getSystem() {
+		return system;
 	}
 
-	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
+	public void setSystem(String system) {
+		this.system = system;
 	}
 
 	public String getDescription() {
@@ -49,12 +52,18 @@ public class SysRole {
 		this.description = description;
 	}
 
-	public String getCreateTime() {
-		return createTime;
-	}
+	// 角色状态
+	public static enum ROLE_STATE_ENUM {
+		NORMAL(1), DISABLED(2), DELETED(3);
+		private int state;
 
-	public void setCreateTime(String createTime) {
-		this.createTime = createTime;
+		private ROLE_STATE_ENUM(int state) {
+			this.state = state;
+		}
+
+		public int getState() {
+			return state;
+		}
 	}
 
 }

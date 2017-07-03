@@ -5,26 +5,17 @@ import java.util.List;
 
 public class SessionInfo {
 
-	private int uid;
-	private String userId;
+	private int userId;
 	private String username;
 	private String password;
 	private String loginTime;
 	private List<HashMap<String, Object>> menus;
 
-	public int getUid() {
-		return uid;
-	}
-
-	public void setUid(int uid) {
-		this.uid = uid;
-	}
-
-	public String getUserId() {
+	public int getUserId() {
 		return userId;
 	}
 
-	public void setUserId(String userId) {
+	public void setUserId(int userId) {
 		this.userId = userId;
 	}
 
