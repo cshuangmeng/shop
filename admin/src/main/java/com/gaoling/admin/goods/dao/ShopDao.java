@@ -6,7 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
-import com.gaoling.admin.goods.entity.Shop;
+import com.gaoling.admin.goods.pojo.Shop;
 
 @Repository
 public interface ShopDao {

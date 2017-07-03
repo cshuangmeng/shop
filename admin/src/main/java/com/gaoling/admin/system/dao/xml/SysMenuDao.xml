@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.futeplus.vms.dao.SysMenuDao">
+<mapper namespace="com.gaoling.admin.system.dao.SysMenuDao">
 
 	<!-- 添加菜单 -->
-	<insert id="addMenu" parameterType="com.futeplus.vms.entity.SysMenu">
-		insert into sys_menu(menuId,menuUrl,menuName,enabled,orderIndex,parentId,icon,createTime)
-		values(#{menuId},#{menuUrl},#{menuName},#{enabled},#{orderIndex},#{parentId},#{icon},#{createTime})
+	<insert id="addMenu" parameterType="com.gaoling.admin.system.pojo.SysMenu">
+		insert into sys_menu(menuId,menuUrl,menuName,enabled,orderIndex,parentId,icon,state,system,createTime)
+		values(#{menuId},#{menuUrl},#{menuName},#{enabled},#{orderIndex},#{parentId},#{icon},#{state},#{system},#{createTime})
 	</insert>
 	
 	<!-- 更新菜单 -->
-	<update id="updateMenu" parameterType="com.futeplus.vms.entity.SysMenu">
+	<update id="updateMenu" parameterType="com.gaoling.admin.system.pojo.SysMenu">
 		update sys_menu set menuUrl=#{menuUrl},menuName=#{menuName},enabled=#{enabled},orderIndex=#{orderIndex}
-		,parentId=#{parentId},icon=#{icon} where id=#{id}
+		,parentId=#{parentId},icon=#{icon},state=#{state} where id=#{id}
 	</update>
 
 	<!-- 获取指定的菜单 -->
-	<select id="getMenu" resultType="com.futeplus.vms.entity.SysMenu">	
+	<select id="getMenu" resultType="com.gaoling.admin.system.pojo.SysMenu">	
 		select * from sys_menu where id=#{id}
 	</select>
 	
@@ -26,12 +26,12 @@
 	</delete>
 	
 	<!-- 获取菜单 -->
-	<select id="getMenuByName" resultType="com.futeplus.vms.entity.SysMenu">
+	<select id="getMenuByName" resultType="com.gaoling.admin.system.pojo.SysMenu">
 		select * from sys_menu where menuName=#{menuName}
 	</select>
 	
 	<!-- 获取所有的菜单 -->
-	<select id="getMenus" resultType="com.futeplus.vms.entity.SysMenu">	
+	<select id="getMenus" resultType="com.gaoling.admin.system.pojo.SysMenu">	
 		select * from sys_menu where parentId=#{parentId} order by orderIndex
 	</select>
 	

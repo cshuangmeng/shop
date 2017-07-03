@@ -2,7 +2,7 @@ package com.gaoling.admin.goods.dao;
 
 import org.springframework.stereotype.Repository;
 
-import com.gaoling.admin.goods.entity.Cooperation;
+import com.gaoling.admin.goods.pojo.Cooperation;
 
 @Repository
 public interface CooperationDao {

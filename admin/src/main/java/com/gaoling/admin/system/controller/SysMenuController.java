@@ -1,4 +1,4 @@
-package com.gaoling.admin.goods.controller;
+package com.gaoling.admin.system.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.gaoling.admin.goods.entity.JsonResult;
-import com.gaoling.admin.goods.entity.SysMenu;
-import com.gaoling.admin.goods.service.SysMenuService;
+import com.gaoling.admin.goods.pojo.JsonResult;
+import com.gaoling.admin.system.pojo.SysMenu;
+import com.gaoling.admin.system.service.SysMenuService;
 
 @Controller
 public class SysMenuController {

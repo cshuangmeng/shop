@@ -1,4 +1,4 @@
-package com.gaoling.admin.goods.controller;
+package com.gaoling.admin.system.controller;
 
 import java.util.Locale;
 
@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.gaoling.admin.goods.entity.JsonResult;
-import com.gaoling.admin.goods.entity.SysUser;
-import com.gaoling.admin.goods.service.SysUserService;
+import com.gaoling.admin.goods.pojo.JsonResult;
+import com.gaoling.admin.system.pojo.SysUser;
+import com.gaoling.admin.system.service.SysUserService;
 
 @Controller
 public class SysUserController {

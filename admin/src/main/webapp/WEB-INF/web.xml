@@ -68,7 +68,7 @@
 	<!-- 防止工程冲突 -->
 	<context-param>
 		<param-name>webAppRootKey</param-name>
-		<param-value>futeplus.vms.root</param-value>
+		<param-value>gaoling.admin.root</param-value>
 	</context-param>
 	<!-- 会话超时设置 -->
 	<session-config>

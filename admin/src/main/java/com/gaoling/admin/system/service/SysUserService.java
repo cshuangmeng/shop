@@ -1,4 +1,4 @@
-package com.gaoling.admin.goods.service;
+package com.gaoling.admin.system.service;
 
 import java.util.HashMap;
 import java.util.List;
@@ -16,9 +16,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.gaoling.admin.goods.dao.SysUserDao;
-import com.gaoling.admin.goods.entity.SessionInfo;
-import com.gaoling.admin.goods.entity.SysUser;
+import com.gaoling.admin.goods.pojo.SessionInfo;
+import com.gaoling.admin.system.dao.SysUserDao;
+import com.gaoling.admin.system.pojo.SysUser;
 import com.gaoling.admin.util.AppConstant;
 import com.gaoling.admin.util.DataUtil;
 import com.gaoling.admin.util.DateUtil;

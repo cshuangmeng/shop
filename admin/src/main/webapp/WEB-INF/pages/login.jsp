@@ -18,7 +18,7 @@
 </head>
 </body>
 	<div id="mws-login">
-    	<h1>伏特加管理后台</h1>
+    	<h1>唐僧商城管理后台</h1>
         <div class="mws-login-lock"><img src="resources/css/icons/24/locked-2.png" alt="" /></div>
     	<div id="mws-login-form">
         	<form class="mws-form" action="loginSubmit" method="post">

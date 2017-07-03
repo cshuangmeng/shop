@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.futeplus.vms.dao.SysRoleDao">
+<mapper namespace="com.gaoling.admin.system.dao.SysRoleDao">
 	
 	<!-- 新增角色 -->
-	<insert id="addRole" parameterType="com.futeplus.vms.entity.SysRole" useGeneratedKeys="true" keyProperty="id">
+	<insert id="addRole" parameterType="com.gaoling.admin.system.pojo.SysRole" useGeneratedKeys="true" keyProperty="id">
 		insert into sys_role(roleId,roleName,enabled,description,createTime)
 		values(#{roleId},#{roleName},#{enabled},#{description},#{createTime})
 	</insert>
 	
 	<!-- 更新角色 -->
-	<update id="updateRole" parameterType="com.futeplus.vms.entity.SysRole">
+	<update id="updateRole" parameterType="com.gaoling.admin.system.pojo.SysRole">
 		update sys_role set roleName=#{roleName},enabled=#{enabled},description=#{description} where id=#{id}
 	</update>
 	
 	<!-- 查询角色 -->
-	<select id="getRole" resultType="com.futeplus.vms.entity.SysRole">	
+	<select id="getRole" resultType="com.gaoling.admin.system.pojo.SysRole">	
 		select * from sys_role where id=#{id}
 	</select>
 	
 	<!-- 通过角色名查询角色 -->
-	<select id="getRoleByRoleName" resultType="com.futeplus.vms.entity.SysRole">	
+	<select id="getRoleByRoleName" resultType="com.gaoling.admin.system.pojo.SysRole">	
 		select * from sys_role where roleName=#{roleName}
 	</select>
 	
@@ -56,7 +56,7 @@
 	</select>
 	
 	<!-- 加载所有角色列表 -->
-	<select id="getAllRoles" resultType="com.futeplus.vms.entity.SysRole">
+	<select id="getAllRoles" resultType="com.gaoling.admin.system.pojo.SysRole">
 		select * from sys_role
 		<if test="enabled &gt;= 0">
 			where enabled=#{enabled}

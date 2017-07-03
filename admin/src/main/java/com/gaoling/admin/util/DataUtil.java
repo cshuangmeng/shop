@@ -60,6 +60,26 @@ public class DataUtil {
 	public static boolean isImgFile(String imgName) {
 		return Pattern.matches("^[\\w|\u4e00-\u9fa5]+\\.(gif|jpe?g|png)$", imgName);
 	}
+	
+	// 拼装Map
+	@SuppressWarnings("unchecked")
+	public static <K, V> Map<K, V> mapOf(Object... v) {
+		Map<K, V> ret = new HashMap<K, V>();
+		if (null == v) {
+			return ret;
+		}
+		for (int i = 0; i < v.length; i++) {
+			ret.put((K) v[i], (V) v[++i]);
+		}
+		return ret;
+	}
+	
+	//删除多余Key
+	public static <K,V> void removeKeys(Map<K,V> map,String[] keys){
+		for(String key:keys){
+			map.remove(key);
+		}
+	}
 
 	// MD5 32位和16位加密
 	public static String md5(String str, int count) {

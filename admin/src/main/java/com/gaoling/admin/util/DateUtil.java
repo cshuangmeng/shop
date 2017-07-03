@@ -11,6 +11,17 @@ public class DateUtil {
 		return format.format(new Date());
 	}
 	
+	//获取系统当前时间
+	public static String getCurrentTime(String pattern){
+		SimpleDateFormat format=new SimpleDateFormat(pattern);
+		return format.format(new Date());
+	}
+	
+	// 获取系统当前时间
+	public static Date nowDate() {
+		return new Date();
+	}
+	
 	//格式化时间
 	public static String getFormatTime(Date date){
 		SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

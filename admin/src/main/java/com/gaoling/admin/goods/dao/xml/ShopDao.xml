@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.gaoling.shop.goods.dao.ShopDao">
+<mapper namespace="com.gaoling.admin.goods.dao.ShopDao">
 
 	<!-- 表头 -->
 	<sql id="shopHead">
@@ -10,7 +10,7 @@
 	</sql>
 
 	<!-- 查询所有订单 -->
-	<select id="queryShops" resultType="com.gaoling.shop.goods.pojo.Shop">
+	<select id="queryShops" resultType="com.gaoling.admin.goods.pojo.Shop">
 		<include refid="shopHead"/>
 		<if test="param.id!=null">
 			and t.id=#{param.id}
@@ -21,9 +21,15 @@
 	</select>
 	
 	<!-- 保存门店信息 -->
-	<insert id="addShop" keyProperty="id" useGeneratedKeys="true" parameterType="com.gaoling.shop.goods.pojo.Shop">
+	<insert id="addShop" keyProperty="id" useGeneratedKeys="true" parameterType="com.gaoling.admin.goods.pojo.Shop">
 		insert into shop(`name`,head_img,info_imgs,is_show,area_id,flowers,followers,area_name,address,contact,telephone,introduction,state,create_time)
 		values(#{name},#{headImg},#{infoImgs},#{isShow},#{areaId},#{flowers},#{followers},#{areaName},#{address},#{contact},#{telephone},#{introduction},#{state},#{createTime})
 	</insert>
+	
+	<!-- 更新门店 -->
+	<update id="updateShop" parameterType="com.gaoling.admin.goods.pojo.Shop">
+		update shop set `name`=#{name},head_img=#{headImg},info_imgs=#{infoImgs},is_show=#{isShow},area_id=#{areaId}
+		,area_name=#{areaName},address=#{address},contact=#{contact},telephone=#{telephone},introduction=#{introduction},state=#{state} where id=#{id}
+	</update>
 
 </mapper>  

@@ -1,4 +1,4 @@
-package com.gaoling.admin.goods.entity;
+package com.gaoling.admin.goods.pojo;
 
 import java.util.HashMap;
 import java.util.List;

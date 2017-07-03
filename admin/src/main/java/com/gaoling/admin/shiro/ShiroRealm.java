@@ -14,9 +14,8 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.gaoling.admin.goods.entity.SysUser;
-import com.gaoling.admin.goods.service.SysUserService;
-
+import com.gaoling.admin.system.pojo.SysUser;
+import com.gaoling.admin.system.service.SysUserService;
 
 @Component
 public class ShiroRealm extends AuthorizingRealm {

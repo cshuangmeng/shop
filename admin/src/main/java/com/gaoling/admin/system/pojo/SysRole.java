@@ -1,4 +1,4 @@
-package com.gaoling.admin.goods.entity;
+package com.gaoling.admin.system.pojo;
 
 public class SysRole {
 

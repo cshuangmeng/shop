@@ -1,4 +1,4 @@
-package com.gaoling.admin.goods.service;
+package com.gaoling.admin.system.service;
 
 import java.util.HashMap;
 import java.util.List;
@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.gaoling.admin.goods.dao.SysRoleDao;
-import com.gaoling.admin.goods.entity.SysRole;
+import com.gaoling.admin.system.dao.SysRoleDao;
+import com.gaoling.admin.system.pojo.SysRole;
 import com.gaoling.admin.util.DataUtil;
 import com.gaoling.admin.util.DateUtil;
 
