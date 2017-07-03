@@ -6,7 +6,7 @@
 	<!-- 表头 -->
 	<sql id="goodsHead">
 		select id,`name`,type_id typeId,shop_id shopId,price,cash_discount cashDiscount,details,head_img headImg,info_imgs infoImgs,detail_imgs detailImgs
-		,coin_enable coinEnable,point_enable pointEnable,state,create_time createTime from goods t where t.state=1
+		,coin_enable coinEnable,point_enable pointEnable,state,create_time createTime from goods t
 	</sql>
 
 	<!-- 查询所有商品 -->
