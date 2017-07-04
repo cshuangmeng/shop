@@ -62,13 +62,13 @@
 	
 	//初始化下拉列表
 	function initOptionsOfSelect(select,code,value){
-		$.post(contextPath + "/dict/option",{"code":code},function(data){
-        	$.each(data.data, function (index, val) {
-        		$("select[name='"+select+"']").append("<option value='"+val.dictValue+"'>"+val.dictName+"</option>")
+		$.post(contextPath + "/util/dicts",{"parentName":code},function(data){
+	        	$.each(data.data, function (index, val) {
+	        		$("select[name='"+select+"']").append("<option value='"+val.code+"'>"+val.value+"</option>")
 			});
-        	if(undefined!=value){
-        		setSelectedOption(select,value);
-        	}
+	        	if(undefined!=value){
+	        		setSelectedOption(select,value);
+	        	}
 	    });
 	}
 	

@@ -1,114 +1,107 @@
 package com.gaoling.admin.system.controller;
 
-import java.util.Locale;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.gaoling.admin.goods.pojo.JsonResult;
+import com.gaoling.admin.system.pojo.Result;
 import com.gaoling.admin.system.pojo.SysUser;
 import com.gaoling.admin.system.service.SysUserService;
+import com.gaoling.admin.util.AppConstant;
 
 @Controller
+@RequestMapping("/user")
 public class SysUserController {
 	@Autowired
-	private SysUserService userService;
+	private SysUserService sysUserService;
 	
 	// 进入用户管理页面
-	@RequestMapping("/auth/user")
+	@RequestMapping("/index")
 	public String index() {
-		return "auth/user";
-	}
-
-	//用户登录
-	@RequestMapping("/loginSubmit")
-	public String shiroLogin(@RequestParam String username, @RequestParam String pwd
-			,RedirectAttributes attributes, Locale locale) {
-		return userService.login(username, pwd, attributes, locale);
+		return "/user/index";
 	}
 
 	//删除用户
-	@RequestMapping("/auth/user/del")
+	@RequestMapping("/del")
 	@ResponseBody
-	public JsonResult delete(@RequestParam int uid) {
-		JsonResult json = new JsonResult();
+	public Result delete(@RequestParam int uid) {
+		Result result;
 		try {
-			userService.deleteUser(uid);
+			sysUserService.deleteUser(uid);
+			result=sysUserService.putResult();
 		} catch (Exception e) {
+			result=sysUserService.putResult(AppConstant.SYSTEM_ERROR_CODE);
 			e.printStackTrace();
-			json.setResult(1);
 		}
-		return json;
+		return result;
 	}
 
 	// 新增或更新后台管理人员
 	@ResponseBody
-	@RequestMapping("/auth/user/update")
-	public JsonResult addOrUpdate(@ModelAttribute SysUser user) {
-		JsonResult json = new JsonResult();
+	@RequestMapping("/update")
+	public Result addOrUpdate(@ModelAttribute SysUser user) {
+		Result result;
 		try {
-			SysUser u=userService.getUserByUsername(user.getUsername());
+			SysUser u=sysUserService.getUserByUsername(user.getUsername());
 			if(user.getId()>0){
 				if(null==u||user.getId()==u.getId()){
-					userService.updateUser(user);
-				}else{
-					json.setResult(2);
+					sysUserService.updateUser(user);
 				}
 			}else if(null==u){
-				userService.addUser(user);
-			}else{
-				json.setResult(2);
+				sysUserService.addUser(user);
 			}
+			result=sysUserService.putResult();
 		} catch (Exception e) {
-			json.setResult(1);
+			result=sysUserService.putResult(AppConstant.SYSTEM_ERROR_CODE);
 			e.printStackTrace();
 		}
-		return json;
+		return result;
 	}
 
 	// 加载所有用户人员列表
 	@ResponseBody
-	@RequestMapping("/auth/user/list")
-	public JsonResult loadAllUser() {
-		JsonResult json = new JsonResult();
+	@RequestMapping("/list")
+	public Result loadAllUser() {
+		Result result;
 		try {
-			json.setData(userService.loadAllUsers());
+			result=sysUserService.putResult(sysUserService.loadAllUsers());
 		} catch (Exception e) {
-			json.setResult(1);
+			result=sysUserService.putResult(AppConstant.SYSTEM_ERROR_CODE);
 			e.printStackTrace();
 		}
-		return json;
+		return result;
 	}
 
 	// 加载指定用户人员信息
 	@ResponseBody
-	@RequestMapping("/auth/user/info")
-	public JsonResult loadUser(@RequestParam int uid) {
-		JsonResult json = new JsonResult();
+	@RequestMapping("/info")
+	public Result loadUser(@RequestParam int uid) {
+		Result result;
 		try {
-			json.setData(userService.getUser(uid));
+			result=sysUserService.putResult(sysUserService.getUser(uid));
 		} catch (Exception e) {
+			result=sysUserService.putResult(AppConstant.SYSTEM_ERROR_CODE);
 			e.printStackTrace();
 		}
-		return json;
+		return result;
 	}
 	
 	// 为用户分配角色
 	@ResponseBody
-	@RequestMapping("/auth/user/roles")
-	public JsonResult addRoleForUser(@RequestParam int uid,@RequestParam String rids) {
-		JsonResult json = new JsonResult();
+	@RequestMapping("/roles")
+	public Result addRoleForUser(@RequestParam int uid,@RequestParam String rids) {
+		Result result;
 		try {
-			userService.addRoleForUser(uid, rids);
+			sysUserService.addRoleForUser(uid, rids);
+			result=sysUserService.putResult();
 		} catch (Exception e) {
+			result=sysUserService.putResult(AppConstant.SYSTEM_ERROR_CODE);
 			e.printStackTrace();
 		}
-		return json;
+		return result;
 	}
 	
 }

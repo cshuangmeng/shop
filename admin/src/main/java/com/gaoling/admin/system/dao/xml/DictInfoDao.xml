@@ -17,6 +17,9 @@
 		<if test="param.parentId!=null">
 			and parent_id=#{param.parentId}
 		</if>
+		<if test="param.parentName!=null">
+			and parent_id=(select id from dict_info where name=#{param.parentName})
+		</if>
 		order by order_index
 	</select>
 

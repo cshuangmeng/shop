@@ -12,6 +12,8 @@ import com.gaoling.admin.goods.pojo.Shop;
 public interface ShopDao {
 
 	List<Shop> queryShops(@Param("param")Map<Object,Object> param);
+	List<Map<String,Object>> queryShopsToMap(@Param("param")Map<Object,Object> param);
 	void addShop(Shop shop);
+	void updateShop(Shop shop);
 	
 }

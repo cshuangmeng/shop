@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gaoling.admin.goods.dao.GoodsTypeDao">
+
+	<!-- 商品类别查询 -->
+	<select id="queryGoodsTypes" resultType="com.gaoling.admin.goods.pojo.GoodsType">
+		select id,`name`,parent_id parnetId,level,state,create_time createTime from goods_type t
+		<trim prefix="where" prefixOverrides="and">
+			<if test="param.states!=null and param.states.size()>0">
+				and t.state in
+				<foreach collection="param.states" item="state" open="(" separator="," close=")">
+					#{state}
+				</foreach>
+			</if>
+		</trim>
+	</select>
+	
+</mapper>  

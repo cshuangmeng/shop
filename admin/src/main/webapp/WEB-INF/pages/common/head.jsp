@@ -61,7 +61,7 @@
 <script type="text/javascript" src="${pageContext.servletContext.contextPath }/resources/js/mws.js"></script>
 <script type="text/javascript" src="${pageContext.servletContext.contextPath }/resources/js/themer.js"></script>
 
-<script type="text/javascript" src="${pageContext.servletContext.contextPath }/resources/js/main.js"></script>
+<script type="text/javascript" src="${pageContext.servletContext.contextPath }/resources/js/main.js?v=1"></script>
 
 
 <%-- <script type="text/javascript" src="${pageContext.servletContext.contextPath }/resources/js/jquery.datetimepicker.js"></script> --%>

@@ -7,99 +7,101 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.gaoling.admin.goods.pojo.JsonResult;
+import com.gaoling.admin.system.pojo.Result;
 import com.gaoling.admin.system.pojo.SysRole;
 import com.gaoling.admin.system.service.SysRoleService;
+import com.gaoling.admin.util.AppConstant;
 
 @Controller
+@RequestMapping("/role")
 public class SysRoleController {
 	
 	@Autowired
-	private SysRoleService roleService;
+	private SysRoleService sysRoleService;
 
 	// 进入角色界面
-	@RequestMapping("/auth/role")
+	@RequestMapping("/index")
 	public String index() {
-		return "auth/role";
+		return "/role/index";
 	}
 	
 	// 删除角色信息
 	@ResponseBody
-	@RequestMapping("/auth/role/del")
-	public JsonResult deleteRole(@RequestParam int rid) {
-		JsonResult json = new JsonResult();
+	@RequestMapping("/del")
+	public Result deleteRole(@RequestParam int rid) {
+		Result result;
 		try {
-			roleService.deleteRole(rid);
+			sysRoleService.deleteRole(rid);
+			result=sysRoleService.putResult();
 		} catch (Exception e) {
-			json.setResult(1);
+			result=sysRoleService.putResult(AppConstant.OPERATE_FAILURE);
 			e.printStackTrace();
 		}
-		return json;
+		return result;
 	}
 
 	// 加载指定角色信息
 	@ResponseBody
-	@RequestMapping("/auth/role/info")
-	public JsonResult roleDetail(@RequestParam int rid) {
-		JsonResult json = new JsonResult();
+	@RequestMapping("/info")
+	public Result roleDetail(@RequestParam int rid) {
+		Result result;
 		try {
-			json.setData(roleService.getRole(rid));
+			result=sysRoleService.putResult(sysRoleService.getRole(rid));
 		} catch (Exception e) {
+			result=sysRoleService.putResult(AppConstant.OPERATE_FAILURE);
 			e.printStackTrace();
 		}
-		return json;
+		return result;
 	}
 	
 	// 加载所有角色列表
 	@ResponseBody
-	@RequestMapping("/auth/role/list")
-	public JsonResult getAllRoles(@RequestParam(defaultValue="-1")int enabled) {
-		JsonResult json = new JsonResult();
+	@RequestMapping("/list")
+	public Result getAllRoles(@RequestParam(defaultValue="-1")int enabled) {
+		Result result;
 		try {
-			json.setData(roleService.getAllRoles());
+			result=sysRoleService.putResult(sysRoleService.getAllRoles());
 		} catch (Exception e) {
-			json.setResult(1);
+			result=sysRoleService.putResult(AppConstant.OPERATE_FAILURE);
 			e.printStackTrace();
 		}
-		return json;
+		return result;
 	}
 	
 	// 为角色分配菜单
 	@ResponseBody
 	@RequestMapping("/auth/role/menus")
-	public JsonResult addMenuForRole(@RequestParam int rid,@RequestParam String mids) {
-		JsonResult json = new JsonResult();
+	public Result addMenuForRole(@RequestParam int rid,@RequestParam String mids) {
+		Result result;
 		try {
-			roleService.addMenuForRole(rid, mids);
+			sysRoleService.addMenuForRole(rid, mids);
+			result=sysRoleService.putResult();
 		} catch (Exception e) {
-			json.setResult(1);
+			result=sysRoleService.putResult(AppConstant.OPERATE_FAILURE);
 			e.printStackTrace();
 		}
-		return json;
+		return result;
 	}
 
 	// 进入编辑角色页面
 	@RequestMapping("/auth/role/update")
 	@ResponseBody
-	public JsonResult updateRole(@ModelAttribute SysRole role) {
-		JsonResult json = new JsonResult();
+	public Result updateRole(@ModelAttribute SysRole role) {
+		Result result;
 		try {
-			SysRole r = roleService.getRoleByRoleName(role.getName());
+			SysRole r = sysRoleService.getRoleByRoleName(role.getName());
 			if (role.getId() > 0) {
 				if(null==r||role.getId()==r.getId()){
-					roleService.updateRole(role);
-				}else{
-					json.setResult(2);
+					sysRoleService.updateRole(role);
 				}
 			} else if(null==r){
-				roleService.addRole(role);
-			}else{
-				json.setResult(2);
+				sysRoleService.addRole(role);
 			}
+			result=sysRoleService.putResult();
 		} catch (Exception e) {
-			json.setResult(1);
+			result=sysRoleService.putResult(AppConstant.OPERATE_FAILURE);
 			e.printStackTrace();
 		}
-		return json;
+		return result;
 	}
 }

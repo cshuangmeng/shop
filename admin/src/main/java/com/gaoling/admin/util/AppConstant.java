@@ -21,6 +21,25 @@ public class AppConstant {
 	public static String OSS_SECRETACCESSKEY;// OSSAPI调用密匙
 	public static String OSS_CDN_SERVER;// OSS加速域名
 
+	// 全局错误码
+	public static final int SYSTEM_ERROR_CODE = 500;
+	public static final int PARAM_IS_NULL = 100;
+	public static final int DATA_FORMAT_INCORRECT = 101;
+	public static final int SMS_SEND_FAILURE = 102;
+	public static final int CHECK_CODE_INCORRECT = 103;
+	public static final int USER_NOT_EXISTS = 104;
+	public static final int NOT_MYSELF_OPERATE = 105;
+	public static final int GOODS_NOT_EXISTS = 106;
+	public static final int SHOP_NOT_EXISTS = 107;
+	public static final int USER_ALREADY_FOLLOWED = 108;
+	public static final int USER_NO_FOLLOWED = 109;
+	public static final int OPERATE_FAILURE = 110;
+	public static final int PAY_PRICE_INCORRECT = 111;
+	public static final int ACCOUNT_BALANCE_INADEQUATE = 112;
+	public static final int TRIBE_NOT_EXISTS = 113;
+	public static final int ORDER_STATE_INCORRECT = 114;
+	public static final int OUT_OF_BOUNDS = 115;
+
 	static {
 		SESSION_DATA_NAME = PropertiesUtil.getProperty("session_data_name");
 		TEMP_FILE_DIR = PropertiesUtil.getProperty("temp_file_dir");
@@ -71,14 +90,14 @@ public class AppConstant {
 
 	// 帐号状态
 	public static enum ACCOUNT_STATE_TYPE {
-		ENABLED("ENABLED"), DISABLED("DISABLED");
-		private String value;
+		ENABLED(1), DISABLED(0);
+		private int value;
 
-		private ACCOUNT_STATE_TYPE(String value) {
+		private ACCOUNT_STATE_TYPE(int value) {
 			this.value = value;
 		}
 
-		public String getValue() {
+		public int getValue() {
 			return value;
 		}
 	}

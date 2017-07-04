@@ -16,8 +16,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.gaoling.admin.goods.pojo.SessionInfo;
 import com.gaoling.admin.system.dao.SysUserDao;
+import com.gaoling.admin.system.pojo.SessionInfo;
 import com.gaoling.admin.system.pojo.SysUser;
 import com.gaoling.admin.util.AppConstant;
 import com.gaoling.admin.util.DataUtil;
@@ -25,43 +25,43 @@ import com.gaoling.admin.util.DateUtil;
 
 
 @Service
-public class SysUserService {
+public class SysUserService extends CommonService {
 	
 	@Autowired
-	private SysUserDao userDao;
+	private SysUserDao sysUserDao;
 	@Autowired
-	private SysRoleService roleService;
+	private SysRoleService sysRoleService;
 	@Autowired
 	private ResourceBundleMessageSource messageSource;
 	
 	// 新增后台管理人员
 	public int addUser(SysUser user) {
 		user.setCreateTime(DateUtil.getCurrentTime());
-		return userDao.addUser(user);
+		return sysUserDao.addUser(user);
 	}
 
 	// 更新人员
 	public void updateUser(SysUser user) {
-		userDao.updateUser(user);
+		sysUserDao.updateUser(user);
 	}
 
 	// 获取指定的后台用户
 	public SysUser getUser(int id) {
-		return userDao.getUser(id);
+		return sysUserDao.getUser(id);
 	}
 	
 	// 加载所有用户
 	public List<HashMap<String,Object>> loadAllUsers(){
-		List<HashMap<String,Object>> users=userDao.loadAllUsers();
+		List<HashMap<String,Object>> users=sysUserDao.loadAllUsers();
 		for (HashMap<String,Object> user:users) {
-			user.put("roles", roleService.getRolesOfUser(Integer.parseInt(user.get("id").toString())));
+			user.put("roles", sysRoleService.getRolesOfUser(Integer.parseInt(user.get("id").toString())));
 		}
 		return users;
 	}
 	
 	// 为用户分配角色
 	public void delRoleForUser(int uid,int rid){
-		userDao.delRoleForUser(uid,rid);
+		sysUserDao.delRoleForUser(uid,rid);
 	}
 
 	// 删除用户
@@ -69,12 +69,12 @@ public class SysUserService {
 	public void deleteUser(int id) {
 		SysUser user=getUser(id);
 		user.setState(SysUser.USER_STATE_ENUM.DELETED.getState());
-		userDao.updateUser(user);
+		sysUserDao.updateUser(user);
 	}
 	
 	// 通过登录名获取用户
 	public SysUser getUserByUsername(String username){
-		return userDao.getUserByUsername(username);
+		return sysUserDao.getUserByUsername(username);
 	}
 	
 	// 为用户分配角色
@@ -82,18 +82,18 @@ public class SysUserService {
 	public void addRoleForUser(int uid,String rids){
 		delRoleForUser(uid,0);
 		for(String rid:rids.split(",")){
-			userDao.addRoleForUser(uid,Integer.parseInt(rid));
+			sysUserDao.addRoleForUser(uid,Integer.parseInt(rid));
 		}
 	}
 	
 	// 加载用户菜单
 	public List<HashMap<String,Object>> loadMenusOfUser(int uid){
-		return userDao.loadMenusOfUser(uid);
+		return sysUserDao.loadMenusOfUser(uid);
 	}
 	
 	// 加载角色所拥有的用户
 	public List<HashMap<String,Object>> getUsersOfRole(int rid){
-		return userDao.getUsersOfRole(rid);
+		return sysUserDao.getUsersOfRole(rid);
 	}
 	
 	// 用户登录

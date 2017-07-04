@@ -8,31 +8,65 @@
 		select id,`name`,type_id typeId,shop_id shopId,price,cash_discount cashDiscount,details,head_img headImg,info_imgs infoImgs,detail_imgs detailImgs
 		,coin_enable coinEnable,point_enable pointEnable,state,create_time createTime from goods t
 	</sql>
+	
+	<!-- 查询条件 -->
+	<sql id="goodsWhere">
+		<trim prefix="where" prefixOverrides="and">
+			<if test="param.typeId!=null and param.typeId!=''">
+				and t.type_id=#{param.typeId}
+			</if>
+			<if test="param.id!=null and param.id!=''">
+				and t.id=#{param.id}
+			</if>
+			<if test="param.name!=null and param.name!=''">
+				and t.name like concat('%',#{param.name},'%')
+			</if>
+			<if test="param.shopId!=null and param.shopId!=''">
+				and t.shop_id=#{param.shopId}
+			</if>
+			<if test="param.ids!=null and param.ids!='' and param.ids.size()>0">
+				and t.id in
+				<foreach collection="param.ids" item="id" open="(" separator="," close=")">
+					#{id}
+				</foreach>
+			</if>
+			<if test="param.states!=null and param.states!='' and param.states.size()>0">
+				and t.state in
+				<foreach collection="param.states" item="state" open="(" separator="," close=")">
+					#{state}
+				</foreach>
+			</if>
+			<choose>
+				<when test="param.startDate!=null and param.startDate!='' and param.endDate!=null and param.endDate!=''">
+					and date_format(t.create_time,'%Y-%m-%d') between #{param.startDate} and #{param.endDate}
+				</when>
+				<when test="param.startDate!=null and param.startDate!=''">
+					and date_format(t.create_time,'%Y-%m-%d')&gt;=#{param.startDate}
+				</when>
+				<when test="param.endDate!=null and param.endDate!=''">
+					and date_format(t.create_time,'%Y-%m-%d')&lt;=#{param.endDate}
+				</when>
+			</choose>
+			<if test="param.shopName!=null and param.shopName!=''">
+				and t1.name like concat('%',#{param.shopName},'%')
+			</if>
+			<if test="param.limit!=null and param.limit!='' and param.limit>0">
+				limit #{param.page}*#{param.limit},#{param.limit}
+			</if>
+		</trim>
+	</sql>
 
 	<!-- 查询所有商品 -->
 	<select id="queryGoods" resultType="com.gaoling.admin.goods.pojo.Goods">
 		<include refid="goodsHead"/>
-		<if test="param.typeId!=null">
-			and t.type_id=#{param.typeId}
-		</if>
-		<if test="param.id!=null">
-			and t.id=#{param.id}
-		</if>
-		<if test="param.name!=null">
-			and t.name like concat('%',#{param.name},'%')
-		</if>
-		<if test="param.shopId!=null">
-			and t.shop_id=#{param.shopId}
-		</if>
-		<if test="param.ids!=null and param.ids.size()>0">
-			and t.id in
-			<foreach collection="param.ids" item="id" open="(" separator="," close=")">
-				#{id}
-			</foreach>
-		</if>
-		<if test="param.limit!=null and param.limit>0">
-			limit #{param.page}*#{param.limit},#{param.limit}
-		</if>
+		<include refid="goodsWhere"/>
+	</select>
+	
+	<!-- 查询所有商品 -->
+	<select id="queryGoodsToMap" resultType="java.util.Map">
+		select t.id goodsId,t.name goodsName,t1.name shopName,t2.name typeName,(select `value` from dict_info where `name`=concat('goods_state_',t.state)) state
+		,date_format(t.create_time,'%Y-%m-%d %H:%i:%s') createTime from goods t inner join shop t1 on (t.shop_id=t1.id) inner join goods_type t2 on (t.type_id=t2.id)
+		<include refid="goodsWhere"/>
 	</select>
 	
 	<!-- 保存商品信息 -->

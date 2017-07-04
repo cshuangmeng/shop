@@ -6,18 +6,58 @@
 	<!-- 表头 -->
 	<sql id="shopHead">
 		select id,`name`,head_img headImg,info_imgs infoImgs,area_id areaId,is_show isShow,area_name areaName,address,contact,telephone
-		,introduction,state,create_time createTime from shop t where t.state=1
+		,introduction,state,create_time createTime from shop t
+	</sql>
+	
+	<!-- 查询条件 -->
+	<sql id="shopWhere">
+		<trim prefix="where" prefixOverrides="and">
+			<if test="param.id!=null">
+				and t.id=#{param.id}
+			</if>
+			<if test="param.isShow!=null">
+				and t.is_show=#{param.isShow}
+			</if>
+			<if test="param.name!=null">
+				and t.name like concat('%',#{param.name},'%')
+			</if>
+			<if test="param.areaId!=null">
+				and t.area_id=#{param.areaId}
+			</if>
+			<if test="param.telephone!=null">
+				and t.telephone=#{param.telephone}
+			</if>
+			<if test="param.states!=null and param.states.size()>0">
+				and t.state in
+				<foreach collection="param.states" item="state" open="(" separator="," close=")">
+					#{state}
+				</foreach>
+			</if>
+			<choose>
+				<when test="param.startDate!=null and param.endDate!=null">
+					and date_format(create_time,'%Y-%m-%d') between #{param.startDate} and #{param.endDate}
+				</when>
+				<when test="param.startDate!=null">
+					and date_format(create_time,'%Y-%m-%d')&gt;=#{param.startDate}
+				</when>
+				<when test="param.endDate!=null">
+					and date_format(create_time,'%Y-%m-%d')&lt;=#{param.endDate}
+				</when>
+			</choose>
+		</trim>
 	</sql>
 
-	<!-- 查询所有订单 -->
+	<!-- 查询所有门店 -->
 	<select id="queryShops" resultType="com.gaoling.admin.goods.pojo.Shop">
 		<include refid="shopHead"/>
-		<if test="param.id!=null">
-			and t.id=#{param.id}
-		</if>
-		<if test="param.isShow!=null">
-			and t.is_show=#{param.isShow}
-		</if>
+		<include refid="shopWhere"/>
+	</select>
+	
+	<!-- 查询所有门店 -->
+	<select id="queryShopsToMap" resultType="java.util.Map">
+		select t.id shopId,t.name shopName,t.area_name areaName,t.telephone
+		,(select `value` from dict_info where `name`=concat('shop_state_',t.state)) state,t.create_time from shop t
+		<include refid="shopWhere"/>
 	</select>
 	
 	<!-- 保存门店信息 -->
@@ -26,7 +66,7 @@
 		values(#{name},#{headImg},#{infoImgs},#{isShow},#{areaId},#{flowers},#{followers},#{areaName},#{address},#{contact},#{telephone},#{introduction},#{state},#{createTime})
 	</insert>
 	
-	<!-- 更新门店 -->
+	<!-- 更新门店信息 -->
 	<update id="updateShop" parameterType="com.gaoling.admin.goods.pojo.Shop">
 		update shop set `name`=#{name},head_img=#{headImg},info_imgs=#{infoImgs},is_show=#{isShow},area_id=#{areaId}
 		,area_name=#{areaName},address=#{address},contact=#{contact},telephone=#{telephone},introduction=#{introduction},state=#{state} where id=#{id}

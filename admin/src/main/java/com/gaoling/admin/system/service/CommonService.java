@@ -1,5 +1,8 @@
 package com.gaoling.admin.system.service;
 
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -7,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.gaoling.admin.system.dao.DictInfoDao;
 import com.gaoling.admin.system.dao.ResponseInfoDao;
 import com.gaoling.admin.system.pojo.Result;
+import com.gaoling.admin.util.DataUtil;
 
 @Service
 public class CommonService {
@@ -36,6 +40,20 @@ public class CommonService {
 	public int getInteger(String name,int def){
 		String value=dictInfoDao.queryDictValue(name);
 		return StringUtils.isNotEmpty(value)?Integer.parseInt(value):def;
+	}
+	
+	//查询字典集合
+	public List<Map<String,Object>> getDicts(String parentName){
+		List<Map<String,Object>> result=dictInfoDao.queryDicts(DataUtil.mapOf("parentName",parentName));
+		if(result.size()>0){
+			result.stream().forEach(r->{
+				String name=r.get("name").toString();
+				if(name.contains("_")){
+					r.put("code", name.split("_")[name.split("_").length-1]);
+				}
+			});
+		}
+		return result;
 	}
 	
 	//设置返回结果

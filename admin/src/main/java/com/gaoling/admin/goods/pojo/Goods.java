@@ -7,8 +7,6 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.gaoling.admin.util.AppConstant;
 
 public class Goods {
@@ -20,17 +18,8 @@ public class Goods {
 	private float price;
 	private float cashDiscount;
 	private String details;
-	@JsonProperty("headImg")
-	private String fullHeadImg;
-	@JsonIgnore
 	private String headImg;
-	@JsonProperty("infoImgs")
-	private String fullInfoImgs;
-	@JsonIgnore
 	private String infoImgs;
-	@JsonProperty("detailImgs")
-	private String fullDetailImgs;
-	@JsonIgnore
 	private String detailImgs;
 	private int coinEnable;
 	private int pointEnable;

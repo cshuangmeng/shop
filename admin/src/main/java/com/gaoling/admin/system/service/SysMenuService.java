@@ -15,21 +15,21 @@ import com.gaoling.admin.util.DateUtil;
 
 
 @Service
-public class SysMenuService {
+public class SysMenuService extends CommonService {
 	
 	@Autowired
-	private SysMenuDao menuDao;
+	private SysMenuDao sysMenuDao;
 
 	//增加权限
 	@Transactional
 	public int addMenu(SysMenu menu){
 		menu.setCreateTime(DateUtil.nowDate());
-		return menuDao.addMenu(menu);
+		return sysMenuDao.addMenu(menu);
 	}
 	
 	//更新权限
 	public void updateMenu(SysMenu menu){
-		menuDao.updateMenu(menu);
+		sysMenuDao.updateMenu(menu);
 	}
 	
 	//删除权限
@@ -37,32 +37,32 @@ public class SysMenuService {
 	public void deleteMenu(int mid){
 		SysMenu menu=getMenu(mid);
 		menu.setState(SysMenu.MENU_STATE_ENUM.DELETED.getState());
-		menuDao.updateMenu(menu);
+		sysMenuDao.updateMenu(menu);
 	}
 	
 	//查询指定权限
 	public SysMenu getMenu(int id){
-		return menuDao.getMenu(id);
+		return sysMenuDao.getMenu(id);
 	}
 	
 	//查询所有权限
 	public List<SysMenu> getMenus(int parentId){
-		return menuDao.getMenus(parentId);
+		return sysMenuDao.getMenus(parentId);
 	}
 	
 	//依据菜单名称获取菜单信息
 	public SysMenu getMenuByName(String menuName){
-		return menuDao.getMenuByName(menuName);
+		return sysMenuDao.getMenuByName(menuName);
 	}
 	
 	//查询角色所拥有的菜单
 	public List<HashMap<String,Object>> getMenusOfRole(int rid){
-		return menuDao.getMenusOfRole(rid);
+		return sysMenuDao.getMenusOfRole(rid);
 	}
 	
 	//加载所有菜单
 	public List<HashMap<String,Object>> loadAllMenus(){
-		return menuDao.loadAllMenus();
+		return sysMenuDao.loadAllMenus();
 	}
 	
 	//拼装菜单对象

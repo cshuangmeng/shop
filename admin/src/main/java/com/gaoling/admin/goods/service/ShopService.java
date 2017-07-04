@@ -23,16 +23,17 @@ public class ShopService extends CommonService{
 	@Autowired
 	private ShopDao shopDao;
 	
-	//查询店铺详情
-	public Result loadShopDetail(int id,String uuid){
-		Shop shop=getShop(id);
-		return putResult(shop);
-	}
-	
 	//查询店铺
 	public Shop getShop(int id){
 		List<Shop> shops=queryShops(DataUtil.mapOf("id",id));
 		return shops.size()>0?shops.get(0):null;
+	}
+	
+	//审核店铺
+	public void examineShop(int shopId,int state){
+		Shop shop=getShop(shopId);
+		shop.setState(state);
+		updateShop(shop);
 	}
 	
 	//加载店铺
@@ -40,14 +41,33 @@ public class ShopService extends CommonService{
 		return shopDao.queryShops(param);
 	}
 	
+	//加载店铺
+	public List<Map<String,Object>> queryShopsToMap(Map<Object,Object> param){
+		return shopDao.queryShopsToMap(param);
+	}
+	
+	//新增店铺信息
+	public void addShop(Shop shop){
+		shopDao.addShop(shop);
+	}
+	
+	//更新店铺信息
+	public void updateShop(Shop shop){
+		shopDao.updateShop(shop);
+	}
+	
 	//保存商铺信息
 	@Transactional
-	public Result saveShopByUpload(Shop shop,MultipartFile headImgFile,MultipartFile[] infoImgFile)throws Exception{
+	public Result saveOrUpdateShop(Shop shop,MultipartFile headImgFile,MultipartFile[] infoImgFile)throws Exception{
+		Shop old=shop.getId()>0?getShop(shop.getId()):null;
 		//上传头像
-		String fileName="shop/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS"+DataUtil.createNums(6));
-		fileName+=headImgFile.getOriginalFilename().substring(headImgFile.getOriginalFilename().lastIndexOf("."));
-		OSSUtil.uploadFileToOSS(fileName, headImgFile.getInputStream());
-		shop.setHeadImg(fileName);
+		String fileName="";
+		if(!headImgFile.isEmpty()){
+			fileName="shop/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS"+DataUtil.createNums(6));
+			fileName+=headImgFile.getOriginalFilename().substring(headImgFile.getOriginalFilename().lastIndexOf("."));
+			OSSUtil.uploadFileToOSS(fileName, headImgFile.getInputStream());
+		}
+		shop.setHeadImg(StringUtils.isNotEmpty(fileName)?fileName:null!=old?old.getHeadImg():"");
 		//上传描述
 		shop.setInfoImgs("");
 		for(MultipartFile ii:infoImgFile){
@@ -55,11 +75,16 @@ public class ShopService extends CommonService{
 				fileName="shop/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS"+DataUtil.createNums(6));
 				fileName+=ii.getOriginalFilename().substring(ii.getOriginalFilename().lastIndexOf("."));
 				OSSUtil.uploadFileToOSS(fileName, ii.getInputStream());
-				shop.setInfoImgs(StringUtils.isNotEmpty(shop.getInfoImgs())?shop.getInfoImgs()+","+fileName:fileName);
+				fileName+=StringUtils.isNotEmpty(fileName)?","+fileName:fileName;
 			}
 		}
-		shop.setCreateTime(DateUtil.nowDate());
-		shopDao.addShop(shop);
+		shop.setInfoImgs(StringUtils.isNotEmpty(fileName)?fileName:null!=old?old.getInfoImgs():"");
+		shop.setCreateTime(null!=old?old.getCreateTime():DateUtil.nowDate());
+		if(shop.getId()>0){
+			updateShop(shop);
+		}else{
+			addShop(shop);
+		}
 		return putResult(shop);
 	}
 	

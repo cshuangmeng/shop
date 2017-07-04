@@ -4,10 +4,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <%@include file="../common/head.jsp" %>
-<script type="text/javascript" src="${pageContext.servletContext.contextPath }/resources/js/ldpage/ldpage.js"></script>
-
-<title>广告组列表</title>
-
+<script type="text/javascript" src="${pageContext.servletContext.contextPath }/resources/js/goods/goods.js?v=1"></script>
+<title>商品列表</title>
 </head>
 
 <body>
@@ -81,54 +79,37 @@
                     <div class="mws-panel-body">
                  		<form id="query-form">
                  			<div class="query-div-row">
-                 				<span class="query-div-label">广告组名称</span>
-                 				<span><input type="text" class="edit-div-input1 w400" name="groupName"/></span>
+	              				<div class="query-div-column-float">
+	                 				<span class="query-div-label">商品名称</span>
+                 					<span><input type="text" class="edit-div-input1 w400" name="goodsName"/></span>
+	                 			</div>
+	                 			<div>
+	                 				<span class="query-div-label">店铺名称</span>
+                 					<span><input type="text" class="edit-div-input1 w400" name="shopName"/></span>
+	                 			</div>
                  			</div>
                  			<div class="query-div-row">
 	              				<div class="query-div-column-float">
-	                 				<span class="query-div-label">城市</span>
-	                 				<span><select class="query-div-select" name="city">
+	                 				<span class="query-div-label">商品类别</span>
+	                 				<span><select class="query-div-select" name="typeId">
 	              						<option value="">全部</option>
 	              					</select>
 	              					</span>
 	                 			</div>
 	                 			<div>
-	                 				<span class="query-div-label">平台</span>
-	                 				<span><select name="os" class="query-div-select">
+	                 				<span class="query-div-label">商品状态</span>
+	                 				<span><select name="state" class="query-div-select">
 	                 					<option value="">全部</option>
 	                 				</select></span>
-	                 			</div>
-                 			</div>
-                 			<div class="query-div-row">
-                 				<div class="query-div-column-float">
-	                 				<span class="query-div-label">广告类型</span>
-	                 				<span><select name="groupType" class="query-div-select">
-	                 					<option value="0">全部</option>
-	                 				</select></span>
-	                 			</div>
-                 				<div>
-	                 				<span class="query-div-label">状态</span>
-	                 				<span><select name="status" class="query-div-select">
-	                 					<option value="0">全部</option>
-	              					</select>
-	                 				</span>
 	                 			</div>
                  			</div>
                  			<div class="query-div-row">
                  				<div>
 	                 				<span class="query-div-label">起至日期</span>
 	                 				<span>
-	                 					<input type="text" name="beginDate" class="mws-textinput mws-datepicker query-div-input1" /> - <input type="text" name="endDate" class="mws-textinput mws-datepicker query-div-input1"/>
+	                 					<input type="text" name="startDate" class="mws-textinput mws-datepicker query-div-input1" /> - <input type="text" name="endDate" class="mws-textinput mws-datepicker query-div-input1"/>
 	                 				</span>
 	                 			</div>
-                 			</div>
-                 			<div class="query-div-row">
-	                 			<div>
-	                 				<span class="query-div-label">起至时间</span>
-	                 				<span>
-	                 					<input type="text" name="beginTime" class="query-div-input1"/> - <input type="text" name="endTime" class="query-div-input1"/>
-	                 				</span>
-                 				</div>
                  			</div>
                				<div class="query-div-row">
                					<span class="query-div-submit-span"><input name="submit" type="button" value="查  询" class="mws-button green large"/></span>
@@ -144,23 +125,20 @@
                     <div class="mws-panel-body">
                     	<div class="mws-panel-toolbar top clearfix">
                         	<ul>
-                        		<li><a href="${pageContext.servletContext.contextPath }/manager/ad/addGroup" class="mws-ic-16 ic-arrow-refresh">添加</a></li>
-                        		<li onclick="deleteAddGroup()"><a href="javascript:void(0);" class="mws-ic-16 ic-arrow-refresh">删除</a></li>
+                        		<li><a href="${pageContext.servletContext.contextPath }/goods/edit" class="mws-ic-16 ic-arrow-refresh">添加</a></li>
                         		<li onclick="editAddGroupInfo()"><a href="javascript:void(0);" class="mws-ic-16 ic-edit">编辑</a></li>
-                        		<li onclick="approveAdInfo('2')"><a href="javascript:void(0);" class="mws-ic-16 ic-arrow-refresh">上线</a></li>
-                            	<li onclick="approveAdInfo('4')"><a href="javascript:void(0);" class="mws-ic-16 ic-arrow-refresh">下线</a></li>
+                        		<li onclick="approveAdInfo('2')"><a href="javascript:void(0);" class="mws-ic-16 ic-arrow-refresh">通过</a></li>
+                            	<li onclick="approveAdInfo('4')"><a href="javascript:void(0);" class="mws-ic-16 ic-arrow-refresh">拒绝</a></li>
                             </ul>
                         </div>
 						<table id="store-result-table" class="mws-datatable mws-table">
 							<thead>
 								<th style="width: 93px"><input type="checkbox" name="checkAll" onclick="selectAll(this)" />&nbsp;&nbsp;&nbsp;全选</th>
-								<th style="width: 152px">广告组名称</th>
-								<th>城市</th>
-								<th>平台</th>
-								<th>广告类型</th>
+								<th style="width: 152px">商品名称</th>
+								<th>商品类别</th>
 								<th>状态</th>
-								<th>素材数量</th>
-								<th>创建时间</th>
+								<th>店铺名称</th>
+								<th>添加时间</th>
 							</thead>
 							<tbody>
 							</tbody>
@@ -172,7 +150,7 @@
             <!-- End Main Container -->
             
             <!-- Footer -->
-            <div id="mws-footer">Copyright &copy; 2015-2018 futeplus.com , All Rights Reserved</div>
+            <div id="mws-footer">Copyright &copy; 2017-2020 tangseng.com , All Rights Reserved</div>
             <!-- End Footer -->
             
         </div>

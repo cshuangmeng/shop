@@ -7,113 +7,114 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.gaoling.admin.goods.pojo.JsonResult;
+import com.gaoling.admin.system.pojo.Result;
 import com.gaoling.admin.system.pojo.SysMenu;
 import com.gaoling.admin.system.service.SysMenuService;
+import com.gaoling.admin.util.AppConstant;
 
 @Controller
+@RequestMapping("/menu")
 public class SysMenuController {
 	
 	@Autowired
-	private SysMenuService menuService;
+	private SysMenuService sysMenuService;
 
 	// 进入菜单管理首页
-	@RequestMapping("/auth/menu")
+	@RequestMapping("/index")
 	public String index() {
-		return "auth/menu";
+		return "/menu/index";
 	}
 	
 	//加载所有菜单
 	@ResponseBody
-	@RequestMapping("/auth/menu/list")
-	public JsonResult loadAllMenus() {
-		JsonResult json = new JsonResult();
+	@RequestMapping("/list")
+	public Result loadAllMenus() {
+		Result result;
 		try {
-			json.setData(menuService.loadAllMenus());
+			result=sysMenuService.putResult(sysMenuService.loadAllMenus());
 		} catch (Exception e) {
-			json.setResult(1);
+			result=sysMenuService.putResult(AppConstant.SYSTEM_ERROR_CODE);
 			e.printStackTrace();
 		}
-		return json;
+		return result;
 	}
 
 	// 增加或更新菜单
 	@ResponseBody
-	@RequestMapping("/auth/menu/update")
-	public JsonResult updateMenu(@ModelAttribute SysMenu menu) {
-		JsonResult json = new JsonResult();
+	@RequestMapping("/update")
+	public Result updateMenu(@ModelAttribute SysMenu menu) {
+		Result result;
 		try {
-			SysMenu m=menuService.getMenuByName(menu.getName());
+			SysMenu m=sysMenuService.getMenuByName(menu.getName());
 			if (menu.getId() > 0) {
 				if(null==m||m.getId()==menu.getId()){
-					menuService.updateMenu(menu);
-				}else{
-					json.setResult(2);
+					sysMenuService.updateMenu(menu);
 				}
 			} else if(null==m){
-				menuService.addMenu(menu);
-			}else{
-				json.setResult(2);
+				sysMenuService.addMenu(menu);
 			}
+			result=sysMenuService.putResult();
 		} catch (Exception e) {
-			json.setResult(1);
+			result=sysMenuService.putResult(AppConstant.SYSTEM_ERROR_CODE);
 			e.printStackTrace();
 		}
-		return json;
+		return result;
 	}
 
 	// 删除菜单
 	@ResponseBody
-	@RequestMapping("/auth/menu/del")
-	public JsonResult deleteMenu(@RequestParam int mid) {
-		JsonResult json = new JsonResult();
+	@RequestMapping("/del")
+	public Result deleteMenu(@RequestParam int mid) {
+		Result result;
 		try {
-			menuService.deleteMenu(mid);
+			sysMenuService.deleteMenu(mid);
+			result=sysMenuService.putResult();
 		} catch (Exception e) {
-			json.setResult(1);
+			result=sysMenuService.putResult(AppConstant.SYSTEM_ERROR_CODE);
 			e.printStackTrace();
 		}
-		return json;
+		return result;
 	}
 
 	// 加载指定菜单信息
 	@ResponseBody
-	@RequestMapping("/auth/menu/info")
-	public JsonResult getMenuById(@RequestParam int mid) {
-		JsonResult json = new JsonResult();
+	@RequestMapping("/info")
+	public Result getMenuById(@RequestParam int mid) {
+		Result result;
 		try {
-			json.setData(menuService.getMenu(mid));
+			result=sysMenuService.putResult(sysMenuService.getMenu(mid));
 		} catch (Exception e) {
+			result=sysMenuService.putResult(AppConstant.SYSTEM_ERROR_CODE);
 			e.printStackTrace();
 		}
-		return json;
+		return result;
 	}
 	
 	// 加载角色的菜单
 	@ResponseBody
-	@RequestMapping("/auth/menu/role")
-	public JsonResult loadMenusOfRole(@RequestParam int rid){
-		JsonResult json=new JsonResult();
+	@RequestMapping("/role")
+	public Result loadMenusOfRole(@RequestParam int rid){
+		Result result;
 		try {
-			json.setData(menuService.loadMenusOfRole(rid));
+			result=sysMenuService.putResult(sysMenuService.loadMenusOfRole(rid));
 		} catch (Exception e) {
-			json.setResult(1);
+			result=sysMenuService.putResult(AppConstant.SYSTEM_ERROR_CODE);
 			e.printStackTrace();
 		}
-		return json;
+		return result;
 	}
 	
 	// 加载子菜单
 	@ResponseBody
-	@RequestMapping("/auth/menu/son")
-	public JsonResult loadSonMenus(@RequestParam(defaultValue="0") int parentId){
-		JsonResult json=new JsonResult();
+	@RequestMapping("/son")
+	public Result loadSonMenus(@RequestParam(defaultValue="0") int parentId){
+		Result result;
 		try {
-			json.setData(menuService.getMenus(parentId));
+			result=sysMenuService.putResult(sysMenuService.getMenus(parentId));
 		} catch (Exception e) {
-			json.setResult(1);
+			result=sysMenuService.putResult(AppConstant.SYSTEM_ERROR_CODE);
 			e.printStackTrace();
 		}
-		return json;
+		return result;
 	}
 }
