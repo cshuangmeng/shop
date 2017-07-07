@@ -81,82 +81,87 @@
                     <div class="mws-panel-body">
 	                    	<div class="mws-panel-content">
 	                    		<form id="update-form" action="submit" enctype="multipart/form-data" method="post">
-	                    		<input type="hidden" name="id" value="${empty storeInfo.id?0:storeInfo.id }"/>
-	                    		<input type="hidden" name="examineState" value="${empty storeInfo.examineState?'EXAMINING':storeInfo.examineState }"/>
+	                    		<input type="hidden" name="id" value="${empty goodsInfo.id?0:goodsInfo.id }"/>
+	                    		<input type="hidden" name="state" value="${empty goodsInfo.state?0:goodsInfo.state }"/>
 	                    		<div class="edit-div-row">
 	                    			<div>
-	                    				<span class="edit-div-label">名称</span>
-	                    				<span><input type="text" name="storeName" class="edit-div-input1" value="${storeInfo.storeName }"/></span>
-	                    			</div>
-                    			</div>
-                    			<div class="edit-div-row">
-	                    			<div>
-	                    				<span class="edit-div-label">详细地址</span>
-	                    				<span><input type="text" name="address" class="edit-div-input1" value="${storeInfo.address }"/></td>
+	                    				<span class="edit-div-label">商品名称</span>
+	                    				<span><input type="text" name="goodsName" class="edit-div-input1" value="${goodsInfo.goodsName }"/></span>
 	                    			</div>
                     			</div>
 	                    		<div class="edit-div-row">
 	                    			<div class="edit-div-column-float">
-	                    				<span class="edit-div-label">城市</span>
+	                    				<span class="edit-div-label">商品类型</span>
 	                    				<span>
-	                    					<select name="city" class="edit-div-select" val="${areaInfo.id }">
-	                    					<c:forEach var="city" items="${cityList }">
-	                    						<option value="${city.areacode }">${city.city }</option>
+	                    					<select name="typeId" class="edit-div-select" val="${goods.typeId }">
+	                    					<c:forEach var="type" items="${goodsTypes }">
+	                    						<option value="${type.id }">${type.name }</option>
 	                    					</c:forEach>
 	                    					</select>
 	                    				</span>
 	                    			</div>
-	                    			<div>
-	                    				<span class="edit-div-label">区划</span>
-	                    				<span>
-	                    					<select name="areacode" class="edit-div-select" val="${storeInfo.areacode }"></select>
-	                    				</span>
-	                    			</div>
 	                    		</div>
-                    			<div class="edit-div-row">
-                    				<div class="edit-div-column-float">
-	                    				<span class="edit-div-label">BD人员</span>
-	                    				<span><select name="bdId" class="edit-div-select" val="${storeInfo.bdId }">
-	                    					<c:forEach var="bd" items="${bdList }">
-	                    						<option value="${bd.id }">${bd.fullname }</option>
+	                    		<div class="edit-div-row">
+	                    			<div>
+	                    				<span class="edit-div-label">店铺名称</span>
+	                    				<span>
+	                    					<select name="shopId" class="edit-div-select" val="${goods.shopId }">
+	                    					<c:forEach var="shop" items="${shops }">
+	                    						<option value="${shop.id }">${shop.name }</option>
 	                    					</c:forEach>
-	                    				</select></span>
-	                    			</div>
-	                    			<div>
-                    					<span class="edit-div-label">类型</span>
-                    					<span><select name="typeId" class="edit-div-select" val="${storeInfo.typeId }">
-                    					<c:forEach var="storeType" items="${storeTypeList }">
-                    						<option value="${storeType.dictValue }">${storeType.dictName }</option>
-                    					</c:forEach>
-                    					</select></span>
-                    				</div>
-	                    		</div>
-	                    		<div class="edit-div-row">
-	                    			<div class="edit-div-column-float">
-	                    				<span class="edit-div-label">客服电话</span>
-	                    				<span><input type="text" name="servicePhone" class="query-div-input" value="${storeDetail.servicePhone }"/></span>
-	                    			</div>
-	                    			<div>
-	                    				<span class="edit-div-label">营业时间</span>
-	                    				<span>
-	                    					<input type="text" name="businessHours" class="query-div-input" value="${storeDetail.businessHours }"/>
+	                    					</select>
 	                    				</span>
 	                    			</div>
-	                    		</div>
-	                    		<div class="edit-div-row">
-	                    			<div class="edit-div-column-float">
-	                    				<span class="edit-div-label">经度</span>
-	                    				<span><input type="text" name="lon" class="query-div-input" value="${empty storeInfo.lon?0:storeInfo.lon }"/></span>
-	                    			</div>
+                    			</div>
+                    			<div class="edit-div-row">
 	                    			<div>
-	                    				<span class="edit-div-label">纬度</span>
-	                    				<span><input type="text" name="lat" class="query-div-input" value="${empty storeInfo.lat?0:storeInfo.lat }"/></span>
+	                    				<span class="edit-div-label">价格</span>
+	                    				<span><input type="text" name="price" class="edit-div-input1" value="${goodsInfo.price }"/></span>
 	                    			</div>
-	                    		</div>
+                    			</div>
+                    			<div class="edit-div-row">
+	                    			<div>
+	                    				<span class="edit-div-label">最低现金折扣</span>
+	                    				<span><input type="text" name="cashDiscount" class="edit-div-input1" value="${goodsInfo.cashDiscount }"/></span>
+	                    			</div>
+                    			</div>
+                    			<div class="edit-div-row">
+	                    			<div>
+	                    				<span class="edit-div-label">商品参数</span>
+	                    				<span><a href="">点击添加</a></span>
+	                    			</div>
+                    			</div>
+                    			<div class="edit-div-row">
+	                    			<div>
+	                    				<span class="edit-div-label">是否可以使用部落币</span>
+	                    				<span><input type="radio" name="coinEnable" class="edit-div-input1"/>是
+	                    				<input type="radio" name="coinEnable" class="edit-div-input1"/>否</span>
+	                    			</div>
+                    			</div>
+                    			<div class="edit-div-row">
+	                    			<div>
+	                    				<span class="edit-div-label">是否可以使用部落分</span>
+	                    				<span><input type="radio" name="pointEnable" class="edit-div-input1"/>是
+	                    				<input type="radio" name="pointEnable" class="edit-div-input1"/>否</span>
+	                    			</div>
+                    			</div>
+                    			<div class="edit-div-row">
+	                    			<div>
+	                    				<span class="edit-div-label">当前状态</span>
+	                    				<span>
+	                    					<select name="state" class="edit-div-select" val="${goods.state }">
+	                    					<c:forEach var="state" items="${states }">
+	                    						<option value="${shop.code }">${shop.value }</option>
+	                    					</c:forEach>
+	                    					</select>
+	                    				</span>
+	                    			</div>
+                    			</div>
 	                    		<table id="file-upload-table">
 	                    			<tr>
-	                    				<td class="edit-file-table-label">商户LOGO</td>
+	                    				<td class="edit-file-table-label">商品头像</td>
 	                    				<td class="edit-file-padding-bottom"><input type="file" name="logoFile" class="edit-div-file"/></td>
+	                    				<tr><td colspan="3"><input type="button" value="点击添加"/></td></tr>
 	                    			</tr>
 	                    		</table>
 	                    		</div>

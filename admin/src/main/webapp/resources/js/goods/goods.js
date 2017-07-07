@@ -125,7 +125,33 @@ function approveAdInfo(status){
 	}
 }
 
-
+//动态增删文件上传控件
+var i=1;
+function del(a){
+	$("table").find("tr[index='"+a+"']").remove();
+	restRowspan();
+}
+function restRowspan(){
+	var trs=$("table tr").length;
+	$("table").find("td[rowspan]").removeAttr("rowspan");
+	if(trs>1){
+		if($("table tr:first td").length<3){
+			$("table tr:first").html("<td>商品名称</td>"+$("table tr:first").html());
+		}
+		$("table tr:first td:first").attr("rowspan",trs-1);
+	}
+}
+$(function(){
+	$(":button").click(function(){
+		var str="<tr index="+i+"><td><input type='file' name='headImg'/></td><td><a href='javascript:del("+i+");'>删除</a></td></tr>";
+		if($("table tr").length<=1){
+			str="<tr index="+i+"><td>商品名称</td><td><input type='file' name='headImg'/></td><td><a href='javascript:del("+i+");'>删除</a></td></tr>";
+		}
+		$("table").find("tr:last").before(str);
+		i++;
+		restRowspan();
+	});
+});
 
 $(function(){
 	//设置datepicker的全局变量信息
