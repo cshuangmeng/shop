@@ -2,6 +2,7 @@ package com.gaoling.shop.user.service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,6 +101,20 @@ public class AddressService extends CommonService{
 	public Address getDefaultAddresses(int userId){
 		List<Address> addresses=queryAddresses(DataUtil.mapOf("userId",userId,"isDefault",1));
 		return addresses.size()>0?addresses.get(0):null;
+	}
+	
+	//获取用户的下单地址
+	public Address getNewOrderAddresses(int userId){
+		List<Address> addresses=queryAddresses(DataUtil.mapOf("userId",userId));
+		Address def=null;
+		Optional<Address> ip=addresses.stream().filter(a->a.getIsDefault()>0).findFirst();
+		if(ip.isPresent()){
+			def=ip.get();
+		}else if(addresses.size()>0){
+			addresses.sort((a,b)->b.getCreateTime().compareTo(a.getCreateTime()));
+			def=addresses.get(0);
+		}
+		return def;
 	}
 	
 	//查询地址

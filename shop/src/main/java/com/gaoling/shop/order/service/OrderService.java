@@ -312,7 +312,7 @@ public class OrderService extends CommonService{
 					,"goods",k.getValue(),"totalPrice",totalPrice,"totalPoint",totalPoint);
 		}).collect(Collectors.toList());
 		//获取用户的默认地址
-		Address address=addressService.getDefaultAddresses(user.getId());
+		Address address=addressService.getNewOrderAddresses(user.getId());
 		//拼装其他参数
 		float totalMiniPrice=goods.stream().map(g->{
 			float cashDiscount=Float.parseFloat(g.get("cashDiscount").toString());
