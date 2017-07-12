@@ -13,6 +13,8 @@ public class User {
 	private String uuid;
 	private String nickname;
 	private String openId;
+	private String webId;
+	private String unionId;
 	private String headImg;
 	private String cellphone;
 	@JsonIgnore
@@ -56,6 +58,22 @@ public class User {
 
 	public void setOpenId(String openId) {
 		this.openId = openId;
+	}
+
+	public String getWebId() {
+		return webId;
+	}
+
+	public void setWebId(String webId) {
+		this.webId = webId;
+	}
+
+	public String getUnionId() {
+		return unionId;
+	}
+
+	public void setUnionId(String unionId) {
+		this.unionId = unionId;
 	}
 
 	public String getHeadImg() {

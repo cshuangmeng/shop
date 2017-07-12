@@ -42,10 +42,11 @@ public class UserController extends CommonService{
 	//用户注册
 	@RequestMapping("/register")
 	public Result register(@RequestParam(required=false) String code
-			,@RequestParam(required=false) String mobile,@RequestParam(required=false) String openId){
+			,@RequestParam(required=false) String cellphone,@RequestParam(defaultValue="0") int platform
+			,@RequestParam(required=false) String openId,@RequestParam(required=false) String password){
 		Result result=null;
 		try {
-			result=userService.register(code, mobile, openId);
+			result=userService.register(code, cellphone, openId, password, platform);
 		} catch (Exception e) {
 			result=userService.putResult(AppConstant.SYSTEM_ERROR_CODE);
 			e.printStackTrace();
@@ -55,10 +56,11 @@ public class UserController extends CommonService{
 	
 	//用户登录
 	@RequestMapping("/login")
-	public Result login(@RequestParam(required=false) String openId){
+	public Result login(@RequestParam(required=false) String unionId,@RequestParam(required=false) String cellphone
+			,@RequestParam(required=false) String password,@RequestParam(defaultValue="0") int platform){
 		Result result=null;
 		try {
-			result=userService.login(openId);
+			result=userService.login(unionId, cellphone, password, platform);
 		} catch (Exception e) {
 			result=userService.putResult(AppConstant.SYSTEM_ERROR_CODE);
 			e.printStackTrace();

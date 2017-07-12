@@ -2,6 +2,7 @@ package com.gaoling.shop.pay.service;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Date;
 import java.util.HashMap;
@@ -19,6 +20,7 @@ import com.gaoling.shop.common.DataUtil;
 import com.gaoling.shop.common.DateUtil;
 import com.gaoling.shop.common.HttpClientUtil;
 import com.gaoling.shop.common.MemcachedUtil;
+import com.gaoling.shop.common.OSSUtil;
 import com.gaoling.shop.common.SignUtil;
 import com.gaoling.shop.goods.pojo.Goods;
 import com.gaoling.shop.goods.pojo.Shop;
@@ -81,22 +83,53 @@ public class WeiXinService extends CommonService{
 	}
 	
 	// 获取关注用户的openId
-	public Result getOAAccessToken(String code) {
-		Object openId=MemcachedUtil.getInstance().getData(code);
-		if(null==openId){
-			String res=HttpClientUtil.sendHTTPS(AppConstant.WEIXIN_OA_ACCESS_TOKEN_URL
-					+"&appid=" + AppConstant.USERMP_APP_ID + "&secret=" + AppConstant.USERMP_SECRET_KEY 
-					+"&code="+code);
+	public Result getOAAccessToken(String code,int platform)throws Exception{
+		String appId=AppConstant.USERMP_APP_ID;
+		String secret=AppConstant.USERMP_SECRET_KEY;
+		if(platform==AppConstant.PLATFORM_TYPE_ENUM.PC.getType()){
+			appId=AppConstant.USERPC_APP_ID;
+			secret=AppConstant.USERPC_SECRET_KEY;
+		}
+		String openId=MemcachedUtil.getInstance().getData(code,"");
+		String unionId=null;
+		String token=null;
+		if(StringUtils.isEmpty(openId)){
+			String res=HttpClientUtil.sendHTTPS(AppConstant.WEIXIN_OA_ACCESS_TOKEN_URL+"&appid="+appId+"&secret="+secret+"&code="+code);
 			JSONObject json=JSONObject.fromObject(res);
 			if(json.containsKey("openid")){
 				openId=json.getString("openid");
+				unionId=json.getString("unionid");
+				token=json.getString("access_token");
 				//保存code与openId的关系
-				MemcachedUtil.getInstance().setData(code, openId);
+				MemcachedUtil.getInstance().setData(code, openId+","+unionId, getInteger("openId_code_save_mins"));
+				//保存openId与accessToken的关系
+				MemcachedUtil.getInstance().setData(openId, token, getInteger("openId_code_save_mins"));
+			}
+		}else{
+			unionId=openId.split(",")[1];
+			openId=openId.split(",")[0];
+			token=MemcachedUtil.getInstance().getData(openId, "");
+		}
+		//更新用户头像
+		String url=AppConstant.WEIXIN_SNS_USERINFO_URL+"&access_token="+AppConstant.USERMP_ACCESS_TOKEN+"&openid="+openId;
+		if(platform==AppConstant.PLATFORM_TYPE_ENUM.PC.getType()){
+			url=AppConstant.PC_SNS_USERINFO_URL+"?access_token="+token+"&openid="+openId;
+		}
+		//查找用户信息
+		User user=userService.getUserByUnionId(unionId);
+		if(null!=user){
+			String response=HttpClientUtil.getNetWorkInfo(url, "");
+			if(StringUtils.isNotEmpty(response)){
+				JSONObject json=JSONObject.fromObject(response);
+				if(!json.containsKey("errcode")){
+					//保存用户头像
+					OSSUtil.uploadFileToOSS(new URL(json.getString("headimgurl")).openStream(), user.getHeadImg());
+				}
 			}
 		}
-		return putResult(DataUtil.mapOf("openId",openId));
+		return putResult(DataUtil.mapOf("openId",openId,"unionId",unionId));
 	}
-
+	
 	// JS－SDK签名生成
 	public Result getRequestSign(String url) {
 		HashMap<String, String> params = new HashMap<String, String>();

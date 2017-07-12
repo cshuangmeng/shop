@@ -41,7 +41,7 @@ public class GoodsService extends CommonService{
 		//上传头像
 		String fileName="";
 		if(!headImg.isEmpty()){
-			fileName="goods/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS"+DataUtil.createNums(6));
+			fileName="goods/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS")+DataUtil.createNums(6);
 			fileName+=headImg.getOriginalFilename().substring(headImg.getOriginalFilename().lastIndexOf("."));
 			OSSUtil.uploadFileToOSS(fileName, headImg.getInputStream());
 		}
@@ -50,7 +50,7 @@ public class GoodsService extends CommonService{
 		fileName="";
 		for(MultipartFile ii:infoImg){
 			if(!ii.isEmpty()){
-				fileName="goods/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS"+DataUtil.createNums(6));
+				fileName="goods/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS")+DataUtil.createNums(6);
 				fileName+=ii.getOriginalFilename().substring(ii.getOriginalFilename().lastIndexOf("."));
 				OSSUtil.uploadFileToOSS(fileName, ii.getInputStream());
 				fileName+=StringUtils.isNotEmpty(fileName)?","+fileName:fileName;
@@ -61,7 +61,7 @@ public class GoodsService extends CommonService{
 		fileName="";
 		for(MultipartFile di:detailImg){
 			if(!di.isEmpty()){
-				fileName="goods/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS"+DataUtil.createNums(6));
+				fileName="goods/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS")+DataUtil.createNums(6);
 				fileName+=di.getOriginalFilename().substring(di.getOriginalFilename().lastIndexOf("."));
 				OSSUtil.uploadFileToOSS(fileName, di.getInputStream());
 				fileName+=StringUtils.isNotEmpty(fileName)?","+fileName:fileName;

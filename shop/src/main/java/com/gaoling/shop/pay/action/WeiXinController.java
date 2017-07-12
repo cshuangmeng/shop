@@ -38,10 +38,10 @@ public class WeiXinController {
 	// 获取openId
 	@ResponseBody
 	@RequestMapping("/oa")
-	public Result getOAAccessToken(@RequestParam String code, HttpServletRequest request) {
+	public Result getOAAccessToken(@RequestParam String code,@RequestParam(defaultValue="0")int platform, HttpServletRequest request) {
 		Result result=null;
 		try {
-			result=weiXinService.getOAAccessToken(code);
+			result=weiXinService.getOAAccessToken(code,platform);
 		} catch (Exception e) {
 			result=weiXinService.putResult(AppConstant.SYSTEM_ERROR_CODE);
 			e.printStackTrace();

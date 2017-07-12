@@ -46,6 +46,9 @@ public class AppConstant {
 	public static String USERMP_PAY_CERT;// 用户端微信商户付款证书
 	public static String USERMP_ACCESS_TOKEN;//// 用户端微信公众号access_token
 	public static String USERMP_TICKET;// 用户端微信公众号ticket
+	
+	public static String USERPC_APP_ID;// 微信网站应用AppID
+	public static String USERPC_SECRET_KEY;// 微信网站应用API调用Secret Key
 
 	public static String WEIXIN_JSAPI_ACCESS_TOKEN_URL;// 微信公众号获取access_token接口
 	public static String WEIXIN_JSAPI_TICKET_URL;// 微信公众号获取TICKET接口
@@ -56,6 +59,8 @@ public class AppConstant {
 	public static String WEIXIN_ORDER_QUERY;// 微信支付查询接口
 	public static String WEIXIN_ORDER_REFUND;// 微信申请退款接口
 	public static String WEIXIN_TEMPLATE_SEND;// 微信模板消息发送接口
+	
+	public static String PC_SNS_USERINFO_URL;// PC端获取微信用户的昵称
 
 	public static String MEMCACHED_ADDR;// Memcached服务器配置
 
@@ -107,6 +112,10 @@ public class AppConstant {
 		USERMP_PAY_SECRET_KEY = PropertiesUtil.getProperty("usermp.weixin_pay_secret_key");
 		USERMP_PAY_NOTIFY = PropertiesUtil.getProperty("usermp.weixin_pay_notify");
 		USERMP_PAY_CERT = PropertiesUtil.getProperty("usermp.weixin_pay_cert");
+		
+		PC_SNS_USERINFO_URL = PropertiesUtil.getProperty("wxapi.pc_sns_userinfo_url");
+		USERPC_APP_ID = PropertiesUtil.getProperty("userpc.weixin_app_id");
+		USERPC_SECRET_KEY = PropertiesUtil.getProperty("userpc.weixin_secret_key");
 
 		WEIXIN_JSAPI_ACCESS_TOKEN_URL = PropertiesUtil.getProperty("wxapi.weixin_jsapi_access_token_url");
 		WEIXIN_JSAPI_TICKET_URL = PropertiesUtil.getProperty("wxapi.weixin_jsapi_ticket_url");
@@ -138,6 +147,20 @@ public class AppConstant {
 
 		public int getState() {
 			return state;
+		}
+	}
+	
+	// 设备类型
+	public static enum PLATFORM_TYPE_ENUM {
+		MOBILE(1), PC(2);
+		private int type;
+
+		private PLATFORM_TYPE_ENUM(int type) {
+			this.type = type;
+		}
+
+		public int getType() {
+			return type;
 		}
 	}
 

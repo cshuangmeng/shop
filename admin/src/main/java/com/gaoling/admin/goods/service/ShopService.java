@@ -63,7 +63,7 @@ public class ShopService extends CommonService{
 		//上传头像
 		String fileName="";
 		if(!headImgFile.isEmpty()){
-			fileName="shop/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS"+DataUtil.createNums(6));
+			fileName="shop/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS")+DataUtil.createNums(6);
 			fileName+=headImgFile.getOriginalFilename().substring(headImgFile.getOriginalFilename().lastIndexOf("."));
 			OSSUtil.uploadFileToOSS(fileName, headImgFile.getInputStream());
 		}
@@ -72,7 +72,7 @@ public class ShopService extends CommonService{
 		shop.setInfoImgs("");
 		for(MultipartFile ii:infoImgFile){
 			if(!ii.isEmpty()){
-				fileName="shop/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS"+DataUtil.createNums(6));
+				fileName="shop/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS")+DataUtil.createNums(6);
 				fileName+=ii.getOriginalFilename().substring(ii.getOriginalFilename().lastIndexOf("."));
 				OSSUtil.uploadFileToOSS(fileName, ii.getInputStream());
 				fileName+=StringUtils.isNotEmpty(fileName)?","+fileName:fileName;
