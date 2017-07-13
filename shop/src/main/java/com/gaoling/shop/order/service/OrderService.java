@@ -516,7 +516,7 @@ public class OrderService extends CommonService{
 				log.setTradeNo(DateUtil.getCurrentTime("yyyyMMddHHmmssSSS")+DataUtil.createNums(3));
 				log.setTradeType(users.size()>1?PayRefundSummary.TRADE_TYPE_ENUM.INVITE.getState()
 						:PayRefundSummary.TRADE_TYPE_ENUM.REWARD.getState());
-				log.setUserId(userId);
+				log.setUserId(users.get(users.size()-1-i));
 				userTradeLogService.addUserTradeLog(log);
 			}
 			//加入部落
