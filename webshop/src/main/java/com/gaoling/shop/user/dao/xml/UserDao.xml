@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gaoling.shop.user.dao.UserDao">
+
+	<!-- 表头 -->
+	<sql id="userHead">
+		select id,uuid,nickname,open_id openId,web_id webId,union_id unionId,head_img headImg,cellphone,password,coin,point,state,create_time createTime,login_time loginTime from `user` t
+	</sql>
+
+	<!-- 查询所有订单 -->
+	<select id="queryUsers" resultType="com.gaoling.shop.user.pojo.User">
+		<include refid="userHead"/>
+		<trim prefix="where" prefixOverrides="and">
+			<if test="param.openId!=null">
+				and t.open_id=#{param.openId}
+			</if>
+			<if test="param.unionId!=null">
+				and t.union_id=#{param.unionId}
+			</if>
+			<if test="param.uuid!=null">
+				and t.uuid=#{param.uuid}
+			</if>
+			<if test="param.cellphone!=null">
+				and t.cellphone=#{param.cellphone}
+			</if>
+			<if test="param.password!=null">
+				and t.password=#{param.password}
+			</if>
+			<if test="param.password!=null">
+				and t.open_id=#{param.openId}
+			</if>
+		</trim>
+	</select>
+	
+	<!-- 查询单一用户 -->
+	<select id="getUser" resultType="com.gaoling.shop.user.pojo.User">
+		<include refid="userHead"/> where id=#{id}
+		<if test="lock">
+			for update
+		</if>
+	</select>
+	
+	<!-- 保存用户 -->
+	<insert id="addUser" keyProperty="id" useGeneratedKeys="true" parameterType="com.gaoling.shop.user.pojo.User">
+		insert into `user`(nickname,uuid,open_id,web_id,union_id,head_img,cellphone,password,coin,point,state,create_time,login_time)
+		values(#{nickname},#{uuid},#{openId},#{webId},#{unionId},#{headImg},#{cellphone},#{password},#{coin},#{point},#{state},#{createTime},#{loginTime})
+	</insert>
+	
+	<!-- 更新用户 -->
+	<update id="updateUser" parameterType="com.gaoling.shop.user.pojo.User">
+		update `user` set nickname=#{nickname},open_id=#{openId},web_id=#{webId},union_id=#{unionId},head_img=#{headImg},cellphone=#{cellphone},password=#{password}
+		,coin=#{coin},point=#{point},state=#{state},create_time=#{createTime},login_time=#{loginTime} where id=#{id}
+	</update>
+
+</mapper>  

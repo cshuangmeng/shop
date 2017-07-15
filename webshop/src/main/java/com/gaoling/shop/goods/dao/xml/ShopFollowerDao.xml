@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gaoling.shop.goods.dao.ShopFollowerDao">
+
+	<!-- 检查用户关注记录 -->
+	<select id="queryShopFollowers" resultType="com.gaoling.shop.goods.pojo.ShopFollower">
+		select id,shop_id shopId,user_id userId,sub_time subTime,cancel_time cancelTime,state from shop_follower t
+		<trim prefix="where" prefixOverrides="and">
+			<if test="param.shopId!=null">
+				and t.shop_id=#{param.shopId}
+			</if>
+			<if test="param.userId!=null">
+				and t.user_id=#{param.userId}
+			</if>
+			<if test="param.state!=null">
+				and t.state=#{param.state}
+			</if>
+		</trim>
+	</select>
+	
+	<!-- 查询已关注粉丝数 -->
+	<select id="queryFollowersOfShop" resultType="Integer">
+		select count(1) followers from shop_follower where shop_id=#{shopId} and state=#{state}
+	</select>
+	
+	<!-- 保存关注记录 -->
+	<insert id="addShopFollower" keyProperty="id" useGeneratedKeys="true" parameterType="com.gaoling.shop.goods.pojo.ShopFollower">
+		insert into shop_follower(shop_id,user_id,sub_time,state)values(#{shopId},#{userId},#{subTime},#{state})
+	</insert>
+	
+	<!-- 更新关注状态 -->
+	<update id="updateShopFollower" parameterType="com.gaoling.shop.goods.pojo.ShopFollower">
+		update shop_follower set sub_time=#{subTime},cancel_time=#{cancelTime},state=#{state} where id=#{id}
+	</update>
+
+</mapper>  

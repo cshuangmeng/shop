@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:lang="http://www.springframework.org/schema/lang" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:cache="http://www.springframework.org/schema/cache" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	         http://www.springframework.org/schema/beans/spring-beans.xsd
+	         http://www.springframework.org/schema/lang
+	         http://www.springframework.org/schema/lang/spring-lang.xsd      
+	         http://www.springframework.org/schema/tx   
+	         http://www.springframework.org/schema/tx/spring-tx.xsd    
+	         http://www.springframework.org/schema/aop     
+	         http://www.springframework.org/schema/aop/spring-aop.xsd    
+	         http://www.springframework.org/schema/mvc     
+	         http://www.springframework.org/schema/mvc/spring-mvc.xsd   
+	         http://www.springframework.org/schema/context     
+	         http://www.springframework.org/schema/context/spring-context.xsd
+	         http://www.springframework.org/schema/cache
+	         http://www.springframework.org/schema/cache/spring-cache.xsd
+	         http://www.springframework.org/schema/task 
+	         http://www.springframework.org/schema/task/spring-task.xsd">
+
+	<!-- 自动扫描的包名 -->
+	<context:component-scan base-package="com.gaoling.admin" />
+	<!-- 注册@Controllers分发请求时必须的Bean -->
+	<mvc:annotation-driven />
+	<!-- 通过注解的方式显示指定哪些方法需要启用事务 -->
+	<tx:annotation-driven />
+	<!-- 启用@Scheduled实现定时方法调用 -->
+	<task:annotation-driven />
+	<!-- 启用缓存注解功能 -->
+	<cache:annotation-driven />
+	
+	<!-- 启用缓存管理器 -->
+	 <bean id="cacheManager" class="org.springframework.cache.support.SimpleCacheManager">
+		<property name="caches">
+			<set>
+				<bean
+					class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean"
+					p:name="default" />
+				<bean
+					class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean"
+					p:name="user" />
+			</set>
+		</property>
+	</bean> 
+
+	<!-- 加载外部属性文件 -->
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:admin.properties</value>
+			</list>
+		</property>
+	</bean>
+	<!-- 配置国际化资源文件 -->
+	<bean id="messageSource"
+		class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basename" value="i18n"></property>
+	</bean>
+	
+	<mvc:resources mapping="/resources/**" location="/resources/" />
+	<mvc:resources mapping="/file/**" location="/file/" />
+	<mvc:resources mapping="*.html" location="/" />
+	
+	<!-- 避免IE执行AJAX时,返回JSON出现下载文件--> 
+	<bean id="mappingJacksonHttpMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+		<property name="supportedMediaTypes">
+			<list>
+				<value>text/html;charset=UTF-8</value>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- 适配传统模式的controlelr -->
+    <bean class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter" />
+	<!-- 配置视图解析器 -->
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/pages/"></property>
+		<property name="suffix" value=".jsp"></property>
+	</bean>
+	
+	<bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+        <property name="contentNegotiationManager">
+            <bean class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
+                <property name="mediaTypes">
+                    <map>
+                        <entry key="html" value="text/html"/>
+                        <entry key="xml" value="application/xml"/>
+                        <entry key="json" value="application/json"/>
+                    </map>
+                </property>
+                <property name="defaultContentType" value="text/html"/>
+                <!-- not by accept header -->
+                <property name="ignoreAcceptHeader" value="true"/>
+            </bean>
+        </property>
+
+		<property name="defaultViews">
+			<list>
+				<bean class="org.springframework.web.servlet.view.json.MappingJackson2JsonView" />
+			</list>
+		</property>
+	</bean>
+	<!-- 图片上传的配置 -->
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver" >
+		<!-- 最大值4M -->
+		<property name="maxUploadSize" value="209715200" />
+		<property name="resolveLazily" value="true" />
+		<property name="defaultEncoding" value="UTF-8"/>
+	</bean>
+	
+	<!-- 数据源配置 -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass" value="${jdbc.driverClass}" />
+		<property name="jdbcUrl" value="${jdbc.jdbcUrl}" />
+		<property name="user" value="${jdbc.user}" />
+		<property name="password" value="${jdbc.password}" />
+		<property name="checkoutTimeout" value="${jdbc.checkoutTimeout}"/><!-- 当连接池用完时客户端等待获取新连接的超时时间,单位毫秒 -->
+		<property name="idleConnectionTestPeriod" value="${jdbc.idleConnectionTestPeriod}"/><!-- 每隔多长时间检查所有连接池中的空闲连接 -->
+		<property name="initialPoolSize" value="${jdbc.initialPoolSize}"/><!-- 初始连接数 -->
+		<property name="maxPoolSize" value="${jdbc.maxPoolSize}"/><!-- 连接池中保留的最大连接数 -->
+		<property name="minPoolSize" value="${jdbc.minPoolSize}"/><!-- 连接池中保留的最小连接数 -->
+		<property name="maxIdleTime" value="${jdbc.maxIdleTime}"/><!-- 最大空闲时间，单位秒 -->
+		<property name="acquireRetryAttempts" value="${jdbc.acquireRetryAttempts}"/><!-- 获取新连接失败后重复尝试的次数 -->
+	</bean>
+
+	<!-- 创建SqlSessionFactory，同时指定数据源 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="mapperLocations" value="classpath:com/gaoling/admin/**/dao/**/*.xml" />
+	</bean>
+
+	<!-- 配置事务管理器 -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<!--创建数据映射器，数据映射器必须为接口 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="annotationClass" value="org.springframework.stereotype.Repository" />
+		<property name="basePackage" value="com.gaoling.admin.*.dao" />
+	</bean>
+
+</beans>
