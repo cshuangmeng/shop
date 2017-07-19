@@ -23,7 +23,7 @@
 	         http://www.springframework.org/schema/task/spring-task.xsd">
 
 	<!-- 自动扫描的包名 -->
-	<context:component-scan base-package="com.gaoling.admin" />
+	<context:component-scan base-package="com.gaoling.webshop" />
 	<!-- 注册@Controllers分发请求时必须的Bean -->
 	<mvc:annotation-driven />
 	<!-- 通过注解的方式显示指定哪些方法需要启用事务 -->
@@ -51,7 +51,7 @@
 	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="locations">
 			<list>
-				<value>classpath:admin.properties</value>
+				<value>classpath:webshop.properties</value>
 			</list>
 		</property>
 	</bean>
@@ -131,7 +131,7 @@
 	<!-- 创建SqlSessionFactory，同时指定数据源 -->
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
-		<property name="mapperLocations" value="classpath:com/gaoling/admin/**/dao/**/*.xml" />
+		<property name="mapperLocations" value="classpath:com/gaoling/webshop/**/dao/**/*.xml" />
 	</bean>
 
 	<!-- 配置事务管理器 -->
@@ -143,7 +143,7 @@
 	<!--创建数据映射器，数据映射器必须为接口 -->
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
 		<property name="annotationClass" value="org.springframework.stereotype.Repository" />
-		<property name="basePackage" value="com.gaoling.admin.*.dao" />
+		<property name="basePackage" value="com.gaoling.webshop.*.dao" />
 	</bean>
 
 </beans>

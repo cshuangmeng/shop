@@ -1,0 +1,199 @@
+/*header*/
+.top{
+	height: 27px;
+	line-height: 27px;
+	width: 100%;
+	background: #f5f5f5;
+}
+.topCon,.headerCon,.navigationCon{
+	width: 1000px;
+	margin: 0 auto;
+}
+.topCon span{
+	float: right;
+	display: block;
+	line-height: 26px;
+	color: #999;
+	cursor: pointer;	
+}
+.topCon .login{
+	color: #ff5c5d;
+}
+.topCon b{
+	width: 60px;
+	float: right;
+	line-height: 26px;
+	color: #999;
+	text-align: center;
+}
+/*header*/
+.header{
+	padding: 20px 0px;
+	width: 100%;
+}
+.headerCon .logo{
+	float: left;
+	width: 104px;
+	height: 40px;
+}
+.headerCon .logo img{
+	display: block;
+	width: 100%;
+}
+.headerCon .icon{
+	float: right;
+}
+.headerCon .icon div{
+	float: right;
+	margin-left: 20px;
+}
+.headerCon .icon div .img{
+	height: 40px;
+	width: 40px;
+	float: left;
+	margin-right: 10px;
+}
+.headerCon .icon div .img img{
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+.headerCon .icon div .con{
+	text-align: center;
+	font-size: 16px;
+	line-height: 40px;
+}
+/*navigation*/
+.navigation{
+	height: 50px;
+	width: 100%;
+	background: #cb2c28;
+}
+.navigationCon .list{
+	float: left;
+}
+.navigationCon .list div{
+	float: left;
+	padding: 0 10px;
+	color: #fff;
+	font-size: 16px;
+	line-height: 50px;
+	position: relative;
+	cursor: pointer;
+}
+.navigationCon .list div span{
+	/*display: inline-block;*/
+	position: absolute;
+	z-index: 99999;
+	display: none;
+	left: -24px;
+	/*width: 72px;*/
+	padding: 0 15px;
+	background: #fff;
+	border: 1px solid #e6e9e8;
+	cursor: pointer;
+}
+.navigationCon .list div span b{
+	display: block;
+	color: #333;
+	width: 72px;
+	font-size: 14px;
+	line-height: 38px;
+	text-align: center;
+}
+.navigationCon .list div.js-more span{
+	position: absolute;
+}
+.navigationCon .list div.js-more img{
+	position: absolute;
+    top: -5px;
+    left: 45%;
+}
+.navigationCon .search{
+	float: right;
+	position: relative;
+}
+.navigationCon .search input{
+	border: 1px solid #e6e9e8;
+	padding: 0 16px;
+	font-size: 14px;
+	color: #fff;
+	height: 38px;
+	background: none;
+	border-radius: 4px;
+	margin-top: 5px;
+	width: 300px;
+}
+input::-webkit-input-placeholder{
+	color: #fff;
+}
+.navigationCon .search img{
+	display: block;
+    position: absolute;
+    height: 19px;
+    width: 19px;
+    top: 16px;
+    right: 15px;
+}
+
+/*footer*/
+.footer{
+	padding: 60px 0;
+	width: 100%;
+	border-top: 1px solid #dadada;
+	background: #fcfcfc;
+}
+.footer .footerCon{
+	width: 1000px;
+	margin: 0 auto;
+}
+.footer .footerCon .footerConL{
+	float: left;	
+	width: 840px;
+}
+.footer .footerCon .footerConL .list .li{
+	float: left;	
+	margin-right: 60px;
+	margin-bottom: 20px;
+}
+.footer .footerCon .footerConL .list .li img{
+	display: block;
+	width: 70px;
+	margin-bottom: 20px;
+}
+.footer .footerCon .footerConL .list .li p{
+	width: 70px;
+	text-align: center;
+	font-size: 14px;
+	color: #999;
+}
+.footer .footerCon .footerConL .tag{
+	line-height: 32px;
+}
+.footer .footerCon .footerConL .tag span{
+	float: left;
+	color: #999;
+	font-size: 14px;
+}
+.footer .footerCon .footerConL .tag b{
+	float: left;
+	margin: 0 5px;
+	color: #999;
+}
+.footer .footerCon .qr{
+	float: right;
+	width: 160px;
+}
+.footer .footerCon .qr img{
+	width: 136px;
+	height: 136px;
+	margin-left: 12px;
+	display: block;
+}
+.footer .footerCon .qr p{
+	width: 160px;
+	text-align: center;
+	font-size: 12px;
+	color: #999;
+	line-height: 32px;
+}

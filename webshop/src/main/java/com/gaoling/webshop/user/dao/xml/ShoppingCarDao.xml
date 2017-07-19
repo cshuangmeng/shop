@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gaoling.webshop.user.dao.ShoppingCarDao">
+
+	<!-- 查询用户购物车 -->
+	<select id="queryMyShoppingCar" resultType="java.util.Map">
+		select t.id itemId,t1.id goodsId,t1.shop_id shopId,t2.name shopName,t.goods_id as goodsId,t1.coin_enable coinEnable,t1.point_enable pointEnable
+		,t1.name goodsName,t1.type_id typeId,t1.shop_id shopId,t1.price,t1.head_img headImg,t1.cash_discount cashDiscount
+		,date_format(t.join_time,'%Y-%m-%d %H:%i:%s') joinTime,t.amount from shopping_car t inner join goods t1 on (t.goods_id=t1.id)
+		inner join shop t2 on (t1.shop_id=t2.id) where t.user_id=#{userId}
+		<if test="goodsIds!=null and goodsIds.size()>0">
+			and t.goods_id in
+			<foreach collection="goodsIds" item="goodsId" open="(" separator="," close=")">
+				#{goodsId}
+			</foreach>
+		</if>
+	</select>
+	
+	<!-- 查询购物车内的商品信息 -->
+	<select id="queryShoppingCars" resultType="com.gaoling.webshop.user.pojo.ShoppingCar">
+		select id,user_id userId,goods_id goodsId,amount,join_time joinTime from shopping_car t
+		<trim prefix="where" prefixOverrides="and">
+			<if test="null!=param.userId">
+				and t.user_id=#{param.userId}
+			</if>
+			<if test="null!=param.goodsId">
+				and t.goods_id=#{param.goodsId}
+			</if>
+			<if test="null!=param.id">
+				and t.id=#{param.id}
+			</if>
+			<if test="null!=param.goodsIds and param.goodsIds.size()>0">
+				and t.goods_id in
+				<foreach collection="param.goodsIds" item="goodsId" open="(" separator="," close=")">
+					#{goodsId}
+				</foreach>
+			</if>
+		</trim>
+	</select>
+	<!-- 更新商品数量 -->
+	<update id="updateAmountOfShoppingCar">
+		update shopping_car set amount=#{amount} where user_id=#{userId} and goods_id=#{goodsId}
+	</update>
+	
+	<!-- 添加商品 -->
+	<insert id="addGoodsToShoppingCar" keyProperty="id" useGeneratedKeys="true" parameterType="com.gaoling.webshop.user.pojo.ShoppingCar">
+		insert into shopping_car(user_id,goods_id,amount,join_time)values(#{userId},#{goodsId},#{amount},#{joinTime})
+	</insert>
+	
+	<!-- 保存关注记录 -->
+	<delete id="removeGoodsFromShoppingCar">
+		delete from shopping_car where user_id=#{userId}
+		<if test="goodsIds!=null and goodsIds.size()>0">
+			and goods_id in
+			<foreach collection="goodsIds" item="goodsId" open="(" separator="," close=")">
+				#{goodsId}
+			</foreach>
+		</if>
+	</delete>
+	
+</mapper>  

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gaoling.webshop.order.dao.OrderDao">
+
+	<!-- 表头 -->
+	<sql id="orderHead">
+		select id,user_id userId,goods_id goodsId,pay_way payWay,list_price listPrice,amount,price,coin
+		,`point`,ref_id refId,tribe_id tribeId,trade_no tradeNo,out_trade_no outTradeNo,address_id addressId
+		,express_number expressNumber,state,create_time createTime,sign_time signTime from `order` t
+	</sql>
+
+	<!-- 查询所有订单 -->
+	<select id="queryOrders" resultType="com.gaoling.webshop.order.pojo.Order">
+		<include refid="orderHead"/>
+		<trim prefix="where" prefixOverrides="and">
+			and t.state!=5
+			<if test="param.userId!=null">
+				and t.user_id=#{param.userId}
+			</if>
+			<if test="param.refId!=null">
+				and t.ref_id=#{param.refId}
+			</if>
+			<if test="param.state!=null">
+				and t.state=#{param.state}
+			</if>
+			<if test="param.states!=null and param.states.size()>0">
+				and t.state in
+				<foreach collection="param.states" item="state" open="(" separator="," close=")">
+					#{state}
+				</foreach>
+			</if>
+			<if test="param.tradeNo!=null">
+				and t.trade_no=#{param.tradeNo}
+			</if>
+			<if test="param.outtradeNo!=null">
+				and t.out_trade_no=#{param.outTradeNo}
+			</if>
+			<if test="param.id!=null">
+				and t.id=#{param.id}
+			</if>
+			<if test="param.goodsId!=null">
+				and t.goods_id=#{param.goodsId}
+			</if>
+			<if test="param.allOrders!=null and param.allOrders and param.mainOrderId!=null">
+				and (t.id=#{param.mainOrderId} or t.ref_id=#{param.mainOrderId})
+			</if>
+		</trim>
+	</select>
+	
+	<!-- 查询订单列表 -->
+	<select id="queryOrderList" resultType="java.util.Map">
+		select t.id orderId,t.goods_id goodsId,replace(coalesce(t2.trade_no,t.trade_no),'goods_','') tradeNo,t.ref_id refId,t1.head_img headImg
+		,t1.name goodsName,t.price,t.amount,(select `value` from dict_info where `name`=concat('order_state_',t.state)) state
+		,t.point,t.coin,t.list_price listPrice,t.pay_way payWay,date_format(t.create_time,'%Y-%m-%d %H:%i:%s') createTime
+		from `order` t inner join goods t1 on (t.goods_id=t1.id) left join `order` t2 on (t.ref_id=t2.id)
+		where t.state!=5
+		<if test="param.userId!=null">
+			and t.user_id=#{param.userId}
+		</if>
+		<if test="param.states!=null and param.states.size()>0">
+			and t.state in
+			<foreach collection="param.states" item="state" open="(" separator="," close=")">
+				#{state}
+			</foreach>
+		</if>
+		<if test="param.typeIds!=null and param.typeIds.size()>0">
+			and t1.type_id in
+			<foreach collection="param.typeIds" item="typeId" open="(" separator="," close=")">
+				#{typeId}
+			</foreach>
+		</if>
+		order by t.create_time desc,t.id desc
+	</select>
+	
+	<!-- 查询单一订单 -->
+	<select id="getOrder" resultType="com.gaoling.webshop.order.pojo.Order">
+		<include refid="orderHead"/> where t.id=#{id}
+		<if test="lock!=null and lock">
+			for update
+		</if>
+	</select>
+	
+	<!-- 保存订单 -->
+	<insert id="addOrder" keyProperty="id" useGeneratedKeys="true" parameterType="com.gaoling.webshop.order.pojo.Order">
+		insert into `order`(user_id,goods_id,pay_way,list_price,amount,price,coin,`point`,ref_id,tribe_id,trade_no,address_id,state,create_time)
+		values(#{userId},#{goodsId},#{payWay},#{listPrice},#{amount},#{price},#{coin},#{point},#{refId},#{tribeId},#{tradeNo},#{addressId},#{state},#{createTime})
+	</insert>
+	
+	<!-- 更新订单信息 -->
+	<update id="updateOrder" parameterType="com.gaoling.webshop.order.pojo.Order">
+		update `order` set pay_way=#{payWay},list_price=#{listPrice},amount=#{amount},price=#{price},coin=#{coin},`point`=#{point},ref_id=#{refId}
+		,tribe_id=#{tribeId},trade_no=#{tradeNo},out_trade_no=#{outTradeNo},address_id=#{addressId},state=#{state}
+		<if test="expressNumber!=null">
+			,express_number=#{expressNumber}
+		</if>
+		<if test="expressTime!=null">
+			,express_time=#{expressTime}
+		</if>
+		<if test="signTime!=null">
+			,sign_time=#{signTime}
+		</if>
+		where id=#{id}
+	</update>
+
+</mapper>  

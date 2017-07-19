@@ -1,0 +1,205 @@
+.goodslist{
+	width: 1000px;
+	margin: 0 auto;
+	padding-right: 170px;
+}
+.goodslist .brand{
+	border-top: 1px solid #BCBCBC;
+	margin-top: 20px;
+}
+.goodslist .brand .left{
+	height: 220px;
+	width: 74px;
+	background: #fbfbfb;
+	font-size: 14px;
+	color: #666;
+	text-align: center;
+	line-height: 80px;
+	float: left;
+}
+.goodslist .brand .right{
+	width: 830px;
+	margin-top: 15px;
+	float: left;
+	margin-left: 30px;
+}
+.goodslist .brand .right div{
+	height: 90px;
+	width: 90px;
+	border: 1px solid #ececec;
+	float: left;
+	position: relative;
+}
+.goodslist .brand .right div span{
+	display: block;
+	background: #CC2C26;
+	height: 16px;
+	width: 16px;
+	color: #fff;
+	font-size: 12px;
+	text-align: center;
+	line-height: 16px;
+	position: absolute;
+	bottom: 0;
+	right: 0;
+}
+.goodslist .brand .right div.active{
+	border: 1px solid #CC2C26;
+}
+.goodslist .brand .right div img{
+	display: block;
+	width: 100%;
+}
+.goodslist .btn{
+	width: 150px;
+	margin: 0 auto;
+	margin-bottom: 20px;
+}
+.goodslist .btn .enture{
+	width: 60px;
+	height: 25px;
+	border-radius: 4px;
+	border: none;
+	background: #CC2C26;
+	color: #fff;
+	outline: none;
+	margin-right: 10px;
+}
+.goodslist .btn .cancel{
+	width: 60px;
+	height: 25px;
+	border-radius: 4px;
+	border: 1px solid #BCBCBC;
+	background: #fff;
+	color: #666;
+	outline: none;
+}
+/*line*/
+.line{
+	height: 20px;
+	border-top: 1px solid #BCBCBC;
+}
+/*screen*/
+.goodslist .screen{
+	height: 42px;
+	background: #FAFAFA;
+	border-bottom: 1px solid #BCBCBC;
+	border-top: 1px solid #BCBCBC;
+}
+.goodslist .screen .left{
+	float: left;
+}
+.goodslist .screen .left span{
+	height: 100%;
+	padding: 0 18px;
+	color: #666;
+	font-size: 14px;
+	text-align: center;
+	display: block;
+	float: left;
+	line-height: 42px;
+}
+.goodslist .screen .left b{
+	height: 42px;
+	width: 1px;
+	background: #BCBCBC;
+	display: block;
+	float: left;
+}
+.goodslist .screen .left span.active{
+	background: #ffd0d0;
+	color: #CC2C26;
+}
+.goodslist .screen .left .price{
+	float: left;
+}
+.goodslist .screen .left .price input,.goodslist .screen .left .price span,.goodslist .screen .left .price button{
+	float: left;
+}
+.goodslist .screen .left .price input{
+	margin-top: 8px;
+	height: 22px;
+	border: 1px solid #bcbcbc;
+	outline: none;
+	width: 40px;
+	padding: 0 10px;
+	margin-left: 10px;
+}
+.goodslist .screen .left .price span{
+	margin-left: 10px;
+	margin-right: 0px;
+	padding: 0;
+}
+.goodslist .screen .left .price button{
+	height: 24px;
+	width: 60px;
+	font-size: 14px;
+	color: #fff;
+	background: #CC2C26;
+	outline: none;
+	border: none;
+	margin-top: 8px;
+	margin-left: 10px;
+}
+.goodslist .screen .right{
+	float: right;
+}
+.goodslist .screen .right b,.goodslist .screen .right span{
+	display: block;
+	float: left;
+}
+.goodslist .screen .right b{
+	line-height: 42px;
+	padding: 0 10px;
+}
+.goodslist .screen .right span{
+	padding: 0 10px;
+	border: 1px solid #BCBCBC;
+	height: 22px;
+	margin-top: 8px;
+	background: #fff;
+	margin-right: 10px;
+	font-size: 12px;
+	line-height: 22px;
+}
+/*goodslistCon*/
+.goodslist .goodslistCon{
+	padding-top: 22px;
+	padding-bottom: 80px;
+}
+.goodslist .goodslistCon .li{
+	width: 220px;
+	float: left;
+	margin-right: 40px;
+	margin-bottom: 20px;
+}
+.goodslist .goodslistCon .li img{
+	display: block;
+	width: 100%;
+}
+.goodslist .goodslistCon .li .tit{
+	font-size: 16px;
+	color: #333;
+	line-height: 24px;
+	margin-top: 10px;
+	width: 100%;
+	display: block;
+	overflow: hidden;
+	text-overflow:ellipsis;
+	white-space: nowrap;
+}
+.goodslist .goodslistCon .li .money{
+	line-height: 32px;
+}
+.goodslist .goodslistCon .li .truemoney{
+	float: left;
+	color: #CC2C26;
+	font-size: 24px;
+}
+.goodslist .goodslistCon .li .minmoney{
+	float: right;
+	color: #ff7700;
+	font-size: 14px;
+	line-height: 24px;
+    margin-top: 6px;
+}

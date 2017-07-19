@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gaoling.webshop.tribe.dao.TribeDao">
+
+	<!-- 查询部落信息 -->
+	<select id="queryTribes" resultType="com.gaoling.webshop.tribe.pojo.Tribe">
+		select id,nickname,user_id userId,head_img headImg,level,coin,`point`,state,create_time createTime from tribe t
+		<trim prefix="where" prefixOverrides="and">
+			<if test="param.userId!=null">
+				and t.user_id=#{param.userId}
+			</if>
+			<if test="param.state!=null">
+				and t.state=#{param.state}
+			</if>
+			<if test="param.id!=null">
+				and t.id=#{param.id}
+			</if>
+		</trim>
+	</select>
+	
+	<!-- 保存部落信息 -->
+	<insert id="addTribe" keyProperty="id" useGeneratedKeys="true" parameterType="com.gaoling.webshop.tribe.pojo.Tribe">
+		insert into tribe(nickname,user_id,head_img,level,coin,`point`,state,create_time)
+		values(#{nickname},#{userId},#{headImg},#{level},#{coin},#{point},#{state},#{createTime})
+	</insert>
+	
+	<!-- 更新部落信息 -->
+	<update id="updateTribe" parameterType="com.gaoling.webshop.tribe.pojo.Tribe">
+		update tribe set nickname=#{nickname},head_img=#{headImg},level=#{level},coin=#{coin},`point`=#{point},state=#{state} where id=#{id}
+	</update>
+
+</mapper>  

@@ -1,0 +1,378 @@
+.p-index-main{
+	height: 100%;
+	width: 100%;
+}
+.clear{
+	clear: both;
+}
+.hide{
+	display: none;
+}
+
+/*banner*/
+.banner{
+	width: 100%;
+}
+.banner .list{
+	width: 1200px;
+	margin: 0 auto;
+}
+.carousel-inner{
+	width: 1200px;
+	height: 400px;
+}
+.carousel01{
+	position: relative;
+}
+a.carousel-control,a.carousel-control01{
+	font-size: 32px;
+	color: #fff;
+	font-weight: 800;
+	line-height: 400px;
+}
+.item img,.item01 img{
+	display: block;
+	width: 100%;
+}
+/*hydlb*/
+.hydlb{
+	width: 1000px;
+	margin: 0 auto;
+}
+.hydlb .tit{
+	width: 100%;
+	padding-top: 30px;
+}
+.tit b{
+	display: block;
+	width: 30px;
+	height: 3px;
+	background: #c92c25;
+	margin: 0 auto;
+}
+.hydlb .tit span{
+	float: left;
+}
+.hydlb .tit .titCon{
+	width: 200px;
+	text-align: center;
+	font-size: 32px;
+	color: #333;
+	line-height: 50px;
+	font-weight: 800;
+}
+.hydlb .tit .smalltit{
+	width: 200px;
+	text-align: center;
+	font-size: 14px;
+	color: #cecece;
+	line-height: 20px;
+	font-weight: 100;
+}
+.hydlb .tit .line{
+	height: 1px;
+	width: 400px;
+	background: #dadada;
+	margin-top: 28px;
+}
+.hydlb .list{
+	width: 100%;
+	padding-top: 20px;
+	padding-bottom: 70px;
+}
+.hydlb .list .li{
+	float: left;
+	width: 230px;
+	margin-right: 26px;
+}
+.hydlb .list .marR{
+	margin-right: 0px;
+}
+.hydlb .list .li .img{
+	width: 100%;
+}
+.hydlb .list .li .img img{
+	width: 100%;
+	display: block;
+}
+.hydlb .list .li .con{
+	width: 96%;
+	padding: 0 2%;
+}
+.hydlb .list .li .con .money{
+	float: left;
+	width: 26%;
+	display: block;
+	color: #333;
+	font-size: 14px;
+	line-height: 32px;
+}
+.hydlb .list .li .con .money b{
+	color: #cc2c27;
+	font-size: 24px;
+}
+.hydlb .list .li .con .name{
+	float: right;
+	width: 70%;
+	display: block;
+	overflow: hidden;
+	text-overflow:ellipsis;
+	white-space: nowrap;
+	color: #333;
+	font-size: 14px;
+	margin-top: 8px;
+	line-height: 22px;
+}
+/*tyzx*/
+.tyzx{
+	width: 1000px;
+	margin: 0 auto;
+}
+.tyzx .tit{
+	width: 100%;
+	height: 44px;
+	border-bottom: 1px solid #666;	
+}
+.tyzx .tit .con{
+	float: left;
+	border-bottom: 2px solid #333;
+}
+.tyzx .tit .con .titCon{
+	font-size: 32px;
+	font-weight: 800;
+	color: #333;
+	line-height: 44px;
+	margin-right: 10px;
+}
+.tyzx .tit .con .smalltit{
+	font-size: 14px;
+	font-weight: 100;
+	color: #666;
+}
+.tyzx .tit .all{
+	float: right;
+	line-height: 44px;
+	font-size: 14px;
+	color: #666;
+	cursor: pointer;
+}
+.tyzx .tit .all img{
+	display: inline-block;
+	margin-left: 4px;
+	width: 16px;
+	height: 16px;
+}
+.tyzx .list{
+	width: 100%;
+	padding-top: 20px;
+}
+.tyzx .list .li{
+	float: left;
+	width: 230px;
+	height: 120px;
+	margin-right: 26px;
+	margin-bottom: 33px;
+}
+.tyzx .list .marR{
+	margin-right: 0px;
+}
+.tyzx .list .li img{
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+/*banner01*/
+.banner01{
+	width: 1000px;
+	margin: 0 auto;
+	height: 400px;
+	margin-bottom: 40px;
+}
+.banner01 img{
+	display: block;
+	height: 100%;
+	width: 100%;
+}
+/*pzsh*/
+.pzsh{
+	width: 1000px;
+	margin: 0 auto;
+}
+.pzsh .tit{
+	width: 100%;
+	height: 44px;
+	border-bottom: 1px solid #666;	
+}
+.pzsh .tit .con{
+	float: left;
+	border-bottom: 2px solid #333;
+}
+.pzsh .tit .con .titCon{
+	font-size: 32px;
+	font-weight: 800;
+	line-height: 44px;
+	color: #333;
+	margin-right: 10px;
+}
+.pzsh .tit .con .smalltit{
+	font-size: 14px;
+	font-weight: 100;
+	color: #666;
+}
+.pzsh .tit .all{
+	float: right;
+	line-height: 44px;
+	font-size: 14px;
+	color: #666;
+	cursor: pointer;
+}
+.pzsh .tit .all img{
+	display: inline-block;
+	margin-left: 4px;
+	width: 16px;
+	height: 16px;
+}
+.pzsh .list{
+	width: 100%;
+	padding-top: 20px;
+	padding-bottom: 40px;
+}
+.pzsh .list .li{
+	float: left;
+	width: 230px;
+	margin-right: 26px;
+	margin-bottom: 20px;
+}
+.pzsh .list .marR{
+	margin-right: 0px;
+}
+.pzsh .list .li .img{
+	width: 100%;
+}
+.pzsh .list .li .img img{
+	width: 100%;
+	display: block;
+}
+.pzsh .list .li .con{
+	width: 96%;
+	padding: 0 2%;
+}
+.pzsh .list .li .con .money{
+	float: left;
+	width: 26%;
+	display: block;
+	color: #333;
+	font-size: 14px;
+	line-height: 32px;
+}
+.pzsh .list .li .con .money b{
+	color: #cc2c27;
+	font-size: 24px;
+}
+.pzsh .list .li .con .name{
+	float: right;
+	width: 70%;
+	display: block;
+	overflow: hidden;
+	text-overflow:ellipsis;
+	white-space: nowrap;
+	color: #333;
+	font-size: 14px;
+	margin-top: 8px;
+	line-height: 22px;
+}
+/*yssp*/
+.yssp{
+	width: 1000px;
+	margin: 0 auto;
+}
+.yssp .tit{
+	width: 100%;
+	height: 44px;
+	border-bottom: 1px solid #666;	
+}
+.yssp .tit .con{
+	float: left;
+	border-bottom: 2px solid #333;
+}
+.yssp .tit .con .titCon{
+	font-size: 32px;
+	font-weight: 800;
+	line-height: 44px;
+	color: #333;
+	margin-right: 10px;
+}
+.yssp .tit .con .smalltit{
+	font-size: 14px;
+	font-weight: 100;
+	color: #666;
+}
+.yssp .tit .all{
+	float: right;
+	line-height: 44px;
+	font-size: 14px;
+	color: #666;
+	cursor: pointer;
+}
+.yssp .tit .all img{
+	display: inline-block;
+	margin-left: 4px;
+	width: 16px;
+	height: 16px;
+}
+.yssp .list{
+	width: 100%;
+	padding-top: 20px;
+	padding-bottom: 40px;
+}
+.yssp .list .li{
+	float: left;
+	width: 230px;
+	margin-right: 26px;
+	margin-bottom: 20px;
+}
+.yssp .list .marR{
+	margin-right: 0px;
+}
+.yssp .list .li .img{
+	width: 100%;
+}
+.yssp .list .li .img img{
+	width: 100%;
+	display: block;
+}
+.yssp .list .li .con{
+	width: 96%;
+	padding: 0 2%;
+}
+.yssp .list .li .con .money{
+	float: left;
+	width: 26%;
+	display: block;
+	color: #333;
+	font-size: 14px;
+	line-height: 32px;
+}
+.yssp .list .li .con .money b{
+	color: #cc2c27;
+	font-size: 24px;
+}
+.yssp .list .li .con .name{
+	float: right;
+	width: 70%;
+	display: block;
+	overflow: hidden;
+	text-overflow:ellipsis;
+	white-space: nowrap;
+	color: #333;
+	font-size: 14px;
+	margin-top: 8px;
+	line-height: 22px;
+}
+
+
+
+
+
+
+

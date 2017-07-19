@@ -1,0 +1,150 @@
+/*pass*/
+.pass{
+	width: 100%;
+	background: #f5f6f8;
+}
+.pass .passcon{
+	width: 1000px;
+	margin: 0 auto;
+}
+.pass .passcon .tit{
+	padding: 24px 0px;
+}
+.pass .passcon .tit span{
+	font-size: 12px;
+	color: #666;
+	padding-left: 12px;
+	border-left: 4px solid #cb2c26;
+}
+.pass .passcon .con{
+	background: #fff;
+	padding: 60px 180px;
+}
+.pass .passcon .con .passImg{
+	display: block;
+	width: 100%;
+}
+.pass .passcon .con p{
+	margin: 25px 0;
+	margin-left: 140px;
+	display: block;
+	height: 34px;
+}
+.pass .passcon .con p span,.pass .passcon .con p input,.pass .passcon .con p b{
+	display: block;
+	float: left;
+}
+.pass .passcon .con p span{
+	color: #666;
+	font-size: 12px;
+	line-height: 34px;
+}
+.pass .passcon .con p input.name{
+	height: 32px;
+	width: 220px;
+	border: 1px solid #bcbcbc;
+	padding: 0 10px;
+	border-radius: 4px;
+	outline: none;
+	margin-left: 20px;
+}
+.pass .passcon .con p input.code{
+	height: 32px;
+	width: 110px;
+	border: 1px solid #bcbcbc;
+	padding: 0 10px;
+	border-radius: 4px;
+	outline: none;
+	margin-left: 20px;
+}
+.pass .passcon .con p b{
+	height: 30px;
+	border: 1px solid #bcbcbc;
+	text-align: center;
+	line-height: 30px;
+	margin: 1px 10px 0px;
+	padding: 0 10px;
+}
+.pass .passcon .con p span.cursor{
+	cursor: pointer;	
+}
+.pass .passcon .con p button{
+	height: 32px;
+	width: 123px;
+	border-radius: 4px;
+	background: #CC2C26;
+	color: #fff;
+	font-size: 16px;
+	border: none;
+	outline: none;
+	margin-left: 70px;
+}
+.pass .botTit{
+	font-size: 12px;
+	color: #666;
+	text-align: center;
+	line-height: 30px;
+	padding-bottom: 150px;
+}
+.pass .botTit span{
+	color: #cc2c26;
+}
+/*er*/
+.con .telCode{
+	display: block;
+	width: 100%;
+}
+.con .telCode span{
+	display: block;
+	float: left;
+}
+.con .telCode input{
+	outline: none;
+	border: 1px solid #BCBCBC;
+	height: 44px;
+	width: 210px;
+	padding: 0;
+	margin: 0;
+	padding: 0 10px;
+}
+.con .telCode b{
+	display: block;
+	font-weight: 100;
+	cursor: pointer;
+	float: left;
+	border: 1px solid #BCBCBC;
+	height: 44px;
+	padding: 0 15px;
+	color: #cf3a35;
+	font-size: 13px;
+	text-align: center;
+	line-height: 44px;
+}
+/*san*/
+.pass .passcon .con p span{
+	line-height: 34px;
+	color: #333;
+	font-size: 14px;
+	display: block;
+	float: left;
+	margin-right: 20px;
+	width: 80px;
+	text-align: right;
+}
+.con .newPass,.con .newPassAgain{
+	height: 44px;
+	padding: 0 10px;
+	width: 300px;
+	line-height: 44px;
+	color: #999;
+	font-size: 14px;
+}
+.pass .con p.getPssSuccess{
+	padding: 0;
+	margin: 0;
+	color: #555;
+	font-size: 14px;
+	height: 24px;
+	line-height: 24px;
+	text-align: center;
+}
