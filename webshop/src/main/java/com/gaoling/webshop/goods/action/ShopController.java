@@ -31,7 +31,7 @@ public class ShopController {
 	public String loadShopDetail(@RequestParam(defaultValue="0")String id,@RequestParam(required=false)String uuid,Model model){
 		Result result=shopService.loadShopDetail(Integer.parseInt(id),uuid);
 		model.addAttribute("result",result);
-		return "shopDetail";
+		return "shop/shopDetail";
 	}
 	
 	//关注门店

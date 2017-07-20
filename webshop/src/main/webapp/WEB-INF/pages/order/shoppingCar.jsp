@@ -4,18 +4,20 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
-		<%@include file="util/script.jsp" %>
+		<link rel="stylesheet" type="text/css" href="${pageContext.servletContext.contextPath }/resources/css/shoppingCar.css"/>
+		<%@include file="../util/script.jsp" %>
 		<script type="text/javascript" src="${pageContext.servletContext.contextPath }/resources/js/login.js"></script>
 		<title>首页</title>
 	</head>
 	<body>
 		<!--navigation-->
-		<%@include file="util/head.jsp" %>
+		<%@include file="../util/head.jsp" %>
 		<!--body-->
 		<div class="shoppingCartMiddle">
 			<div class="shoppingCartMiddleCon">
 				<p class="MiddleConTitle">
-					<span style="font-weight: 800;font-size: 20px;font-family: '微软雅黑';color: #404040;margin-right: 34px;">购物袋</span>请在<span style="color: #cf443f;">19分32秒</span>19分32秒内提交订单，下单后你另有30分钟的支付时间。
+					<span style="font-weight: 800;font-size: 20px;font-family: '微软雅黑';color: #404040;margin-right: 34px;">
+					购物袋</span>请在<span style="color: #cf443f;">19分32秒</span>19分32秒内提交订单，下单后你另有30分钟的支付时间。
 				</p>
 				<div class="MiddleConTitle_T">
 					<p class="MiddleConTitle_1">
@@ -36,7 +38,7 @@
 				</div>
 				<ul class="MiddleConGoods">
 					<li>
-						<img style="margin-left: 30px;" class="goodsImage" src="img/goods.png" />
+						<img style="margin-left: 30px;" class="goodsImage" src="${pageContext.servletContext.contextPath }/resources/img/goods.png" />
 						<p class="goods_introduce">尚可茶品精选名茶专场-青云碧螺春两罐10g</p>
 						<p class="goods_price">¥3402</p>
 						<div class="count">
@@ -46,10 +48,10 @@
 							<span class="minus">-</span>
 						</div>
 						<p class="goods_price_end">¥3402</p>
-						<img class="delectImg" src="img/delect.png"/>
+						<img class="delectImg" src="${pageContext.servletContext.contextPath }/resources/img/delect.png"/>
 					</li>
 					<li>
-						<img style="margin-left: 30px;" class="goodsImage" src="img/goods.png" />
+						<img style="margin-left: 30px;" class="goodsImage" src="${pageContext.servletContext.contextPath }/resources/img/goods.png" />
 						<p class="goods_introduce">尚可茶品精选名茶专场-青云碧螺春两罐10g</p>
 						<p class="goods_price">¥3402</p>
 						<div class="count">
@@ -58,10 +60,10 @@
 							<span class="minus">-</span>
 						</div>
 						<p class="goods_price_end">¥3402</p>
-						<img class="delectImg" src="img/delect.png"/>
+						<img class="delectImg" src="${pageContext.servletContext.contextPath }/resources/img/delect.png"/>
 					</li>
 					<li>
-						<img style="margin-left: 30px;" class="goodsImage" src="img/goods.png" />
+						<img style="margin-left: 30px;" class="goodsImage" src="${pageContext.servletContext.contextPath }/resources/img/goods.png" />
 						<p class="goods_introduce">尚可茶品精选名茶专场-青云碧螺春两罐10g</p>
 						<p class="goods_price">¥3402</p>
 						<div class="count">
@@ -70,7 +72,7 @@
 							<span class="minus">-</span>
 						</div>
 						<p class="goods_price_end">¥3402</p>
-						<img class="delectImg" src="img/delect.png"/>
+						<img class="delectImg" src="${pageContext.servletContext.contextPath }/resources/img/delect.png"/>
 					</li>
 				</ul>
 				<div class="fare">
@@ -105,19 +107,9 @@
 				
 				<!--footer-->
 				<div class="commonBot"></div>
-				<script type="text/javascript">
-			  	    var link = document.querySelector('link[rel="import"]');
-				    var content = link.import;
-				    // 从 warning.html 的文档中获取 DOM。
-				    var el1 = content.querySelector('.BOT');
-				    $('.commonBot').append(el1.cloneNode(true));
-				    var elll1 = content.querySelector('.Rigest_top');
-		    		$('.RigestTop').append(elll1.cloneNode(true));
-			  	</script>
-				
 			</div>
 		</div>
 		<!--footer-->
-		<%@include file="util/foot.jsp" %>
+		<%@include file="../util/foot.jsp" %>
 	</body>
 </html>

@@ -4,46 +4,18 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
-		<%@include file="util/script.jsp" %>
-		<script type="text/javascript" src="${pageContext.servletContext.contextPath }/resources/js/goodsList.js"></script>
+		<link rel="stylesheet" type="text/css" href="${pageContext.servletContext.contextPath }/resources/css/mySpace.css"/>
+		<%@include file="../util/script.jsp" %>
 		<title>首页</title>
 	</head>
 	<body>
 		<!--navigation-->
-		<%@include file="util/head.jsp" %>
+		<%@include file="../util/head.jsp" %>
 		<!--body-->
 		<div class="mySpace">
-			<div class="mySpace_left">
-				<div class="personImg">
-				</div>
-				<div class="mySpace_left_con_t">
-					<ul class="mySpace_left_con">
-						<li class="mySpace_left_con_1">
-							<img src="img/1_03.png"/>
-							<p>我的账户</p>
-							<img style="margin-top: 4px;" src="img/corner_01.png"/>
-						</li>
-						<li style="color: #DB3E40;" class="mySpace_left_con_2">订单管理</li>
-						<li class="mySpace_left_con_3">收货地址</li>
-					</ul>
-					<ul style="margin: 20px 0;" class="mySpace_left_con">
-						<li class="mySpace_left_con_1">
-							<img src="img/5_03.png"/>
-							<p>我的资产</p>
-						</li>
-						<li class="mySpace_left_con_2">钱包</li>
-					</ul>
-					<ul class="mySpace_left_con">
-						<li class="mySpace_left_con_1">
-							<img src="img/3_03.png"/>
-							<p>我的部落</p>
-						</li>
-						<li class="mySpace_left_con_2">成员</li>
-					</ul>
-				</div>
-			</div>
+			<%@include file="../util/navigate.jsp" %>
 			<!--收货地址-->
-			<div style="display: none;" class="goods_address">
+			<div class="goods_address">
 				<div class="goods_address_title">
 					<p class="goods_address_title_txt1">已保存的收获地址</p>
 					<p class="goods_address_title_txt2">您已经创建1个收货地址，最多可以创建10个</p>
@@ -51,22 +23,22 @@
 				<div class="goods_address_title_con">
 					<ul class="goods_address_title_con_1">
 						<li>
-							<img src="img/1_04.png"/>
+							<img src="${pageContext.servletContext.contextPath }/resources/img/1_04.png"/>
 							<p>陈陈陈</p>
 						</li>
 						<li>
-							<img src="img/2_04.png"/>
+							<img src="${pageContext.servletContext.contextPath }/resources/img/2_04.png"/>
 							<p>上海市普陀区兰溪路   君悦苑3号楼   </p>
 						</li>
 						<li>
-							<img src="img/3_04.png"/>
+							<img src="${pageContext.servletContext.contextPath }/resources/img/3_04.png"/>
 							<p>152001010101</p>
 						</li>
 						<li class="corner_top">
 							<p>默认地址</p>
 						</li>
 						<li class="corner_bottom">
-							<img src="img/6_03.png" />
+							<img src="${pageContext.servletContext.contextPath }/resources/img/6_03.png" />
 						</li>
 					</ul>
 					<ul class="goods_address_title_con_2">
@@ -116,6 +88,6 @@
 			</div>
 		</div>
 		<!--footer-->
-		<%@include file="util/foot.jsp" %>
+		<%@include file="../util/foot.jsp" %>
 	</body>
 </html>

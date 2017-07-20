@@ -68,15 +68,10 @@ public class UserController extends CommonService{
 	
 	//我的购物车
 	@RequestMapping("/car")
-	public Result myShoppingCar(@RequestParam(required=false) String uuid){
-		Result result=null;
-		try {
-			result=shoppingCarService.queryMyShoppingCar(uuid);
-		} catch (Exception e) {
-			result=userService.putResult(AppConstant.SYSTEM_ERROR_CODE);
-			e.printStackTrace();
-		}
-		return result;
+	public String myShoppingCar(@RequestParam(required=false)String uuid,Model model){
+		Result result=shoppingCarService.queryMyShoppingCar(uuid);
+		model.addAttribute("result", result);
+		return "order/shoppingCar";
 	}
 	
 	//增加指定数量的商品至购物车中

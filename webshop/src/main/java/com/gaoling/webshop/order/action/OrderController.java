@@ -3,12 +3,13 @@ package com.gaoling.webshop.order.action;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.gaoling.webshop.common.AppConstant;
 import com.gaoling.webshop.common.DataUtil;
@@ -16,7 +17,7 @@ import com.gaoling.webshop.order.pojo.Order;
 import com.gaoling.webshop.order.service.OrderService;
 import com.gaoling.webshop.system.pojo.Result;
 
-@RestController
+@Controller
 @RequestMapping("/order")
 @CrossOrigin(methods = RequestMethod.POST, origins = AppConstant.TRUST_CROSS_ORIGINS)
 public class OrderController {
@@ -40,15 +41,11 @@ public class OrderController {
 	
 	//订单确认
 	@RequestMapping("/confirm")
-	public Result confirmOrder(@RequestParam(required=false)String uuid,@RequestParam(required=false)String itemIds){
-		Result result=null;
-		try {
-			result=orderService.confirmOrder(itemIds, uuid);
-		} catch (Exception e) {
-			result=orderService.putResult(AppConstant.SYSTEM_ERROR_CODE);
-			e.printStackTrace();
-		}
-		return result;
+	public String confirmOrder(@RequestParam(required=false)String uuid
+			,@RequestParam(required=false)String itemIds,Model model){
+		Result result=orderService.confirmOrder(itemIds, uuid);
+		model.addAttribute("result", result);
+		return "order/orderConfirm";
 	}
 	
 	//订单详情

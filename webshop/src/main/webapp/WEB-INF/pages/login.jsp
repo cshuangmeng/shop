@@ -43,7 +43,9 @@
 					</p>
 					<p>
 						<span class="remberUserName"><b></b>记住用户名</span>
-						<span class="forgetReg"><b class="forget">忘记密码？</b> | <b class="register">免费注册</b></span>
+						<span class="forgetReg">
+						<b class="forget"><a href="${pageContext.servletContext.contextPath }/findPassword">忘记密码？</a></b>
+						 | <b class="register"><a href="${pageContext.servletContext.contextPath }/register">免费注册</a></b></span>
 					</p>
 					<p class="cooperate">合作网站账号登录</p>
 					<p><img class="loginWx" src="${pageContext.servletContext.contextPath }/resources/img/loginWx.png"/></p>

@@ -4,13 +4,13 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
-		<%@include file="util/script.jsp" %>
-		<script type="text/javascript" src="${pageContext.servletContext.contextPath }/resources/js/login.js"></script>
+		<link rel="stylesheet" type="text/css" href="${pageContext.servletContext.contextPath }/resources/css/orderConfirm.css"/>
+		<%@include file="../util/script.jsp" %>
 		<title>首页</title>
 	</head>
 	<body>
 		<!--navigation-->
-		<%@include file="util/head.jsp" %>
+		<%@include file="../util/head.jsp" %>
 		<!--body-->
 		<div class="shoppingCartMiddle">
 			<div class="shoppingCartMiddleCon">
@@ -29,7 +29,7 @@
 								<p class="address_con_txt3_l">修改</p>
 								<p class="address_con_txt3_r">#282727</p>
 							</div>
-							<img class="corner" src="img/right.png"/>
+							<img class="corner" src="${pageContext.servletContext.contextPath }/resources/img/right.png"/>
 						</li>
 						<li class="address_con1" style="margin: 0 64px;">
 							<div class="address_con_txt1">
@@ -45,17 +45,17 @@
 							</div>
 						</li>
 						<li class="address_con2">
-							<img src="img/addjpg.png" />
+							<img src="${pageContext.servletContext.contextPath }/resources/img/addjpg.png" />
 						</li>
 					</ul>
 					<div class="addressShow">
 						<p class="addressShow_l">
 							<span>显示全部地址</span>
-							<img src="img/boder.jpg"/>
+							<img src="${pageContext.servletContext.contextPath }/resources/img/boder.jpg"/>
 						</p>
 						<p class="addressShow_r">
 							<span>管理收货地址</span>
-							<img src="img/boder.jpg"/>
+							<img src="${pageContext.servletContext.contextPath }/resources/img/boder.jpg"/>
 						</p>
 					</div>
 					<p class="address_txt2">请确认收货地址</p>
@@ -85,7 +85,7 @@
 				</div>
 				<ul class="MiddleConGoods">
 					<li>
-						<img style="margin-left: 30px;" class="goodsImage" src="img/goods.png" />
+						<img style="margin-left: 30px;" class="goodsImage" src="${pageContext.servletContext.contextPath }/resources/img/goods.png" />
 						<p class="goods_introduce">尚可茶品精选名茶专场-青云碧螺春两罐10g</p>
 						<p class="goods_price">¥3402</p>
 						<div class="count" style="margin: 16px 120px 0 120px;">
@@ -98,7 +98,7 @@
 						<p class="goods_price_end">¥3402</p>
 					</li>
 					<li>
-						<img style="margin-left: 30px;" class="goodsImage" src="img/goods.png" />
+						<img style="margin-left: 30px;" class="goodsImage" src="${pageContext.servletContext.contextPath }/resources/img/goods.png" />
 						<p class="goods_introduce">尚可茶品精选名茶专场-青云碧螺春两罐10g</p>
 						<p class="goods_price">¥3402</p>
 						<div class="count" style="margin: 16px 120px 0 120px;">
@@ -111,7 +111,7 @@
 						<p class="goods_price_end">¥3402</p>
 					</li>
 					<li>
-						<img style="margin-left: 30px;" class="goodsImage" src="img/goods.png" />
+						<img style="margin-left: 30px;" class="goodsImage" src="${pageContext.servletContext.contextPath }/resources/img/goods.png" />
 						<p class="goods_introduce">尚可茶品精选名茶专场-青云碧螺春两罐10g</p>
 						<p class="goods_price">¥3402</p>
 						<div class="count" style="margin: 16px 120px 0 120px;">
@@ -170,7 +170,7 @@
 				<div class="payAll">
 					<p class="payAllLeft">
 						<span>返回购物车</span>
-						<img src="img/back.png" />
+						<img src="${pageContext.servletContext.contextPath }/resources/img/back.png" />
 					</p>
 					<p class="payAllRight">
 						提交订单
@@ -182,19 +182,9 @@
 				
 				<!--footer-->
 				<div class="commonBot"></div>
-				<script type="text/javascript">
-			  	    var link = document.querySelector('link[rel="import"]');
-				    var content = link.import;
-				    // 从 warning.html 的文档中获取 DOM。
-				    var el1 = content.querySelector('.BOT');
-				    $('.commonBot').append(el1.cloneNode(true));
-				    var elll1 = content.querySelector('.Rigest_top');
-		    		$('.RigestTop').append(elll1.cloneNode(true));
-			  	</script>
-				
 			</div>
 		</div>
 		<!--footer-->
-		<%@include file="util/foot.jsp" %>
+		<%@include file="../util/foot.jsp" %>
 	</body>
 </html>

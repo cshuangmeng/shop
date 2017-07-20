@@ -17,10 +17,10 @@
 			<!--body-->
 			<div class="p-register">
 				<div class="registerImg">
-					<img src="img/FX.jpg"/>
+					<img src="${pageContext.servletContext.contextPath }/resources/img/FX.jpg"/>
 				</div>
 				<div class="registerCon">
-					<p class="p01"><span>欢迎注册</span><span class="gologin">已注册可<b>直接登录</b></span></p>
+					<p class="p01"><span>欢迎注册</span><span class="gologin">已注册可<b><a href="${pageContext.servletContext.contextPath }/login">直接登录</a></b></span></p>
 					<p>
 						<input type="text" placeholder="请输入手机号" />
 					</p>

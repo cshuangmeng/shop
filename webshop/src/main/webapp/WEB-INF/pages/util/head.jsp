@@ -2,11 +2,11 @@
 <div class="TOP">
 	<div  class="top">
 		<div class="topCon">
-			<span>购物车</span>
+			<span><a href="${pageContext.servletContext.contextPath }/user/car">购物车</a></span>
 			<b>/</b>
-			<span>注册</span>
+			<span><a href="${pageContext.servletContext.contextPath }/register">注册</a></span>
 			<b>/</b>
-			<span class="login">登录</span>
+			<span class="login"><a href="${pageContext.servletContext.contextPath }/login">登录</a></span>
 		</div>
 	</div>
 	<div class="header">
