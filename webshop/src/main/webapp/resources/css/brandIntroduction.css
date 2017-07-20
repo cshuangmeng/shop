@@ -1,0 +1,132 @@
+.brandItroduction{
+	width: 1001px;
+	margin: 0 auto;
+}
+.brandItroduction_bg{
+	width: 1001px;
+	height: 512px;
+	background: url(../img/ppqj_03.jpg) no-repeat bottom center;
+}
+.brandItroduction_txt{
+	height: 72px;
+	padding-top: 40px;
+	background: #f8f7f7;
+}
+.brandItroduction_txt p{
+	width: 1001px;
+	height: 36px;
+	text-align: center;
+	font-size: 16px;
+	color: #4e4d4d;
+}
+.brandItroduction_logo{
+	height: 340px;
+	background: #f8f7f7;
+}
+.brandItroduction_logo li{
+	height: 106px;
+	width: 947px;
+	padding: 48px 0 0 54px;
+}
+.brandItroduction_logo_center{
+	margin: 0 68px 0 28px;
+}
+.jiuli_tribe{
+	height: 912px;
+}
+.jiuli_tribe_bg{
+	height: 554px;
+	width: 1001px;
+	background: url(../img/jiuli_tribe_bg.png) no-repeat bottom center;
+}
+.jiuli_tribe_txt{
+	height: 180px;
+	padding-top: 20px;
+}
+.jiuli_tribe_txt p{
+	width: 364px;
+	height: 154px;
+	background: #f0eeee;
+	float: left;
+	line-height: 32px;
+	font-size: 14px;
+	color: #343333;
+	padding: 20px 40px 0 40px;
+	text-indent: 34px;
+	font-family: "微软雅黑";
+}
+.jiuli_tribe_txt p span{
+	color: #DB3E40;
+	font-size: 16px;
+
+}
+.jiuli_tribe_txt_1{
+	margin-right: 112px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

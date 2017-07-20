@@ -9,9 +9,12 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gaoling.webshop.common.AppConstant;
+import com.gaoling.webshop.common.DataUtil;
 import com.gaoling.webshop.goods.service.GoodsService;
+import com.gaoling.webshop.goods.service.ShopService;
 import com.gaoling.webshop.system.pojo.Result;
 
 @Controller
@@ -21,13 +24,28 @@ public class GoodsController {
 
 	@Autowired
 	private GoodsService goodsService;
+	@Autowired
+	private ShopService shopService;
 	
-	//加载商品列表
+	//进入商品列表
 	@RequestMapping("/list")
-	public String loadGoods(@RequestParam HashMap<Object,Object> param,Model model){
-		Result result=goodsService.loadGoods(param);
-		model.addAttribute("result",result);
+	public String goodsListIndex(@RequestParam HashMap<Object,Object> param,Model model){
+		model.addAttribute("result",shopService.putResult(DataUtil.mapOf("shops",shopService.queryShops(DataUtil.mapOf()))));
 		return "goods/goodsList";
+	}
+	
+	//搜索商品
+	@RequestMapping("/search")
+	@ResponseBody
+	public Result searchGoods(@RequestParam HashMap<Object,Object> param,Model model){
+		Result result=null;
+		try {
+			result=goodsService.loadGoods(param);
+		} catch (Exception e) {
+			result=goodsService.putResult(AppConstant.SYSTEM_ERROR_CODE);
+			e.printStackTrace();
+		}
+		return result;
 	}
 	
 	//加载商品详情

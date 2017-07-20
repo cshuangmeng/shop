@@ -25,6 +25,7 @@ import com.gaoling.webshop.system.service.CommonService;
 import com.gaoling.webshop.user.pojo.User;
 import com.gaoling.webshop.user.service.UserService;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 @Service
@@ -58,6 +59,12 @@ public class GoodsService extends CommonService{
 		goods.getExtras().put("goodsArea", shop.getAreaName());
 		goods.getExtras().put("backPoint", goods.getPrice()*getInteger("cash_to_point_rate"));
 		goods.getExtras().put("buyEnable", 1);
+		if(DataUtil.isJSONObject(goods.getDetails())){
+			goods.getExtras().put("detailsJson", JSONArray.fromObject(goods.getDetails()));
+		}
+		if(StringUtils.isNotEmpty(goods.getFullDetailImgs())){
+			goods.getExtras().put("fullDetailImg", goods.getFullDetailImgs().split(","));
+		}
 		//检查商品是否可购买
 		if(null!=user){
 			int buyAmount=getEnableBuyAmount(user.getId(), goods.getId());
@@ -68,7 +75,8 @@ public class GoodsService extends CommonService{
 				goods.getExtras().put("buyAmount", buyAmount);
 			}
 		}
-		return putResult(goods);
+		//门店信息
+		return putResult(DataUtil.mapOf("goods",goods,"shop",shop));
 	}
 	
 	//检查商品是否还可购买

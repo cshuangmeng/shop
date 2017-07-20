@@ -12,10 +12,10 @@ $(function(){
 	
 	//轮播
 	$('.item:eq(1)').addClass('active');
-	//$('.item:eq(0)').remove();
+	$('.item:eq(0)').remove();
 	$('.carousel').carousel();
 	$('.item01:eq(1)').addClass('active');
-	//$('.item01:eq(0)').remove();
+	$('.item01:eq(0)').remove();
 	
 	
 	//商品列表定位

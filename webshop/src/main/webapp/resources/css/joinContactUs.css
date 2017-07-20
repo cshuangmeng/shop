@@ -1,0 +1,119 @@
+.joinContactUs{
+	width: 1001px;
+	height: 672px;
+	padding-top: 74px;
+	margin: 0 auto;
+	background: url(../img/join_bg.png) no-repeat center;
+}
+.contactUs{
+	width: 508px;
+	height: 746px;
+	float: left;
+}
+.contactUs_title{
+	height: 38px;
+	font-size: 18px;
+	color: #232323;
+	line-height: 38px;
+	text-align: center;
+}
+.contactUs_title_bg{
+	height: 12px;
+	background: url(../img/contactUs.png) no-repeat center;
+}
+.contactUs_con{
+	height: 142px;
+	padding-top: 28px;
+}
+.contactUs_con p{
+	font-size: 12px;
+	color: #232323;
+	line-height: 36px;
+	text-align: center;
+}
+.contactUs_map{
+	height: 260px;
+	width: 508px;
+	background: url(../img/map.png) no-repeat top center;
+}
+.contactUs_title_bg_bottom{
+	height: 36px;
+	background: url(../img/contactUs02.png) no-repeat center;
+}
+.contactUs_button{
+	height: 38px;
+	width: 170px;
+	border: 1px solid #f81852;
+	font-size: 16px;
+	line-height: 38px;
+	color:#232323 ;
+	text-align: center;
+	margin-left: 160px;
+}
+/*joinUs*/
+.joinUs{
+	width: 472px;
+	height: 746px;
+	float: left;
+}
+.joinUs_title{
+	height: 38px;
+	font-size: 18px;
+	color: #232323;
+	line-height: 38px;
+	text-align: center;
+}
+.joinUs_con{
+	height: 446px;
+	width: 402px;
+	padding-left: 70px;
+}
+.joinUs .joinUs_con input{
+	height: 26px;
+	width: 340px;
+	font-size: 12px;
+	padding-left: 14px;
+	line-height: 26px;
+	border: 1px solid #232323;
+	border-radius: 5px;
+	margin-top: 14px;
+	background: #fff;
+}
+.joinUs .joinUs_con .joinUs_con_txt{
+	width: 341px;
+	height: 104px;
+	border: none;
+	background: #f4f2f2;
+	padding: 12px 0 0 14px;
+	margin-top: 20px;
+}
+.joinUs_txt{
+	width: 356px;
+	height: 40px;
+	background: #d53737;
+	font-size: 16px;
+	color: #fff;
+	line-height: 40px;
+	text-align: center;
+	margin: 20px 0 0 72px;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,145 @@
+
+.mallItroduction_top{
+	width: 100%;
+	height: 396px;
+	background: url(../img/mallItroduction_top.png) no-repeat center;
+}
+
+.mallItroduction{
+	width: 1001px;
+	margin: 0 auto;
+}
+.mallItroduction_top_txt li{
+	float: left;
+}
+.mallItroduction_top_txt{
+	height: 104px;
+}
+.line01{
+	width: 336px;
+	height: 104px;
+	line-height: 104px;
+}
+.line01 p{
+	width: 336px;
+	height: 1px;
+	margin-top: 51px;
+	background: #333;
+}
+.mallItroduction_top_txt_con{
+	width: 310px;
+}
+.mallItroduction_top_txt_con p{
+	font-size: 14px;
+	line-height: 104px;
+	text-align: center;
+}
+.mallItroduction_list{
+	height: 318px;
+}
+.mallItroduction_list li{
+	width: 318px;
+	float: left;
+}
+.mallItroduction_list_txt{
+	height: 52px;
+	padding-left: 24px;
+	width: 294px;
+}
+.mallItroduction_list_txt p{
+	float: left;
+}
+.line02{
+	margin-top: 24px;
+	width: 46px;
+	height: 4px;
+	background: #e1e1e1;
+}
+.mallItroduction_list_txt_con{
+	width: 152px;
+	font-size: 20px;
+	line-height: 52px;
+	text-align: center;
+	color: #434545;
+}
+.english_txt{
+	width:318px ;
+	text-align: center;
+	color: #e1e1e1;
+}
+
+.mallItroduction_c_txt{
+	height: 104px;
+}
+.mallItroduction_c_txt span{
+	display: block;
+	width: 1001px;
+	height: 36px;
+	line-height: 36px;
+	text-align: center;
+	font-size: 14px;
+	color: #fb1f1f;
+}
+.mallItroduction_c_txt p{
+	width: 1001px;
+	height: 36px;
+	line-height: 36px;
+	text-align: center;
+	color: #ee7175;
+}
+.goodness_list{
+	height: 798px;
+}
+.goodness_list li{
+	float: left;
+	margin-bottom: 26px;
+}
+.goodness_list_l{
+	float: left;
+}
+.goodness_list_l img,.goodness_list_l p{
+	float: left;
+}
+.goodness_list_l p{
+	width: 338px;
+	height: 70px;
+	background: #f5f4f4;
+	margin-top: 40px;
+	padding-top: 10px;
+}
+.goodness_list_l p span{
+	display: block;
+	width: 338px;
+	height: 30px;
+	line-height: 30px;
+	color: #DB3E40;
+	text-align: center;
+	font-size: 14px;
+}
+.goodness_img{
+	height: 522px;
+	width: 1001px;
+	background: url(../img/mallintroduction_2.png) no-repeat center;
+}
+
+.goodness_title{
+	height: 78px;
+	padding-top: 30px;
+	background: #f8f7f7;
+	font-size: 26px;
+	line-height: 78px;
+	text-align: center;
+	margin-top: 56px;
+}
+
+
+
+
+
+
+
+
+
+
+
+

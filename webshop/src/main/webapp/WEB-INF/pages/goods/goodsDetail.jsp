@@ -18,24 +18,24 @@
 			<div class="goodsDetail">
 				<div class="goods">
 					<div class="left">
-						<img src="img/FX.jpg"/>
+						<img src="${result.data.goods.fullHeadImg }"/>
 					</div>
 					<div class="right">
 						<p class="tit">
 							<span class="con">
-								云南白药创可贴
+								${result.data.goods.name }
 							</span>
 							<span class="shop">
-								<img src="img/zhongqiliandong.png"/>
-								云南白药旗舰店 
+								<img src="${result.data.shop.fullHeadImg }"/>
+								${result.data.shop.name }
 							</span>
 						</p>
 						<div class="clear"></div>
 						<div class="price">
-							￥<b>199</b>
-							<span>最低实付价￥50</span>
+							￥<b>${result.data.goods.price }</b>
+							<span>最低实付价￥${result.data.goods.extras.miniPrice }</span>
 						</div>
-						<p class="freight">运费：<span>￥23</span></p>
+						<p class="freight">运费：<span>￥${result.data.goods.extras.freight }</span></p>
 						<div class="num">
 							<div class="shuliang">数量：</div>
 							<div class="numchange">
@@ -50,56 +50,41 @@
 						</div>
 						<div class="clear"></div>
 						<p class="buluofen">
-							购买最多可获得<b>100</b>部落分！
+							购买最多可获得<b>${result.data.goods.extras.backPoint }</b>部落分！
 						</p>
 					</div>
 				</div>
 				<div class="clear"></div>
 				<div class="title">
 					<span class="titlecon">
-						<img src="img/didaopinzhi.png" alt="" />
+						<img src="${pageContext.servletContext.contextPath }/resources/img/didaopinzhi.png" alt="" />
 						<b>商品参数</b>
 					</span>
 				</div>
+				<c:if test="${not empty result.data.goods.extras.detailsJson }">
 				<div class="detailList">
+					<c:forEach items="${result.data.goods.extra.detailsJson }" var="detail">
 					<div class="li">
-						<span class="tit">品牌名称：</span>
-						<span class="con">云南白药</span>
+						<span class="tit">${detail.label }：</span>
+						<span class="con">${detail.value }</span>
 					</div>
-					<div class="li">
-						<span class="tit">品牌名称：</span>
-						<span class="con">云南白药</span>
-					</div>
-					<div class="li">
-						<span class="tit">品牌名称：</span>
-						<span class="con">云南白药</span>
-					</div>
-					<div class="li">
-						<span class="tit">品牌名称：</span>
-						<span class="con">云南白药</span>
-					</div>
-					<div class="li">
-						<span class="tit">品牌名称：</span>
-						<span class="con">云南白药</span>
-					</div>
-					<div class="li">
-						<span class="tit">品牌名称：</span>
-						<span class="con">云南白药</span>
-					</div>
+					</c:forEach>
 					<div class="clear"></div>
 				</div>
+				</c:if>
 				<div class="title">
 					<span class="titlecon">
-						<img src="img/didaopinzhi.png" alt="" />
+						<img src="${pageContext.servletContext.contextPath }/resources/img/didaopinzhi.png" alt="" />
 						<b>商品详情</b>
 					</span>
 				</div>
-				<div class="introduce">
-					<img src="img/FX.jpg"/>
-					<img src="img/FX.jpg"/>
-					<img src="img/qr.png"/>
-					<img src="img/FX.jpg"/>
-				</div>
+				<c:if test="${not empty result.data.goods.extras.fullDetailImg }">
+					<div class="introduce">
+						<c:forEach items="${result.data.goods.extras.fullDetailImg }" var="img">
+						<img src="${img }"/>
+						</c:forEach>
+					</div>
+				</c:if>
 				<div class="clear"></div>
 			</div>
 			<!--footer-->

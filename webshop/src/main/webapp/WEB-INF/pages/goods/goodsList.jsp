@@ -1,17 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
-		<%@include file="util/script.jsp" %>
+		<%@include file="../util/script.jsp" %>
 		<script type="text/javascript" src="${pageContext.servletContext.contextPath }/resources/js/goodsList.js"></script>
 		<title>首页</title>
 	</head>
 	<body>
 		<div class="p-login-main">
 			<!--navigation-->
-			<%@include file="util/head.jsp" %>
+			<%@include file="../util/head.jsp" %>
 			<!--goodsDetail-->
 			<div class="goodslist">
 				<div class="brand">
@@ -20,26 +21,14 @@
 							品牌
 						</div>
 						<div class="right">
-							<div><img src="img/qr.png"/></div>
+							<div><img src="${pageContext.servletContext.contextPath }/resources/img/qr.png"/></div>
 							<div class="active">
-								<img src="img/jinpaifuwu.png"/>
+								<img src="${pageContext.servletContext.contextPath }/resources/img/jinpaifuwu.png"/>
 								<span>X</span>
 							</div>
-							<div><img src="img/qr.png"/></div>
-							<div><img src="img/qr.png"/></div>
-							<div><img src="img/qr.png"/></div>
-							<div><img src="img/qr.png"/></div>
-							<div><img src="img/qr.png"/></div>
-							<div><img src="img/qr.png"/></div>
-							<div><img src="img/qr.png"/></div>
-							<div><img src="img/qr.png"/></div>
-							<div><img src="img/qr.png"/></div>
-							<div><img src="img/qr.png"/></div>
-							<div><img src="img/qr.png"/></div>
-							<div><img src="img/qr.png"/></div>
-							<div><img src="img/qr.png"/></div>
-							<div><img src="img/qr.png"/></div>
-							<div><img src="img/qr.png"/></div>
+							<c:forEach items="${result.data.shops }" var="shop">
+							<div><img src="${shop.fullHeadImg }"/></div>
+							</c:forEach>
 						</div>
 					</div>
 					<div class="clear"></div>
@@ -71,69 +60,14 @@
 					</div>
 				</div>
 				<div class="goodslistCon">
-					<div>
-						<div class="li">
-							<img src="img/FX.jpg" alt="" />
-							<p class="tit">即使商品质量好，也不能漫天要价.</p>
-							<p class="money">
-								<span class="truemoney">￥123</span>
-								<span class="minmoney">最低实付价￥<b>50</b></span>
-							</p>
-						</div>
-						<div class="li">
-							<img src="img/FX.jpg" alt="" />
-							<p class="tit">即使商品质量好，也不能漫天要价.</p>
-							<p class="money">
-								<span class="truemoney">￥123</span>
-								<span class="minmoney">最低实付价￥<b>50</b></span>
-							</p>
-						</div>
-						<div class="li">
-							<img src="img/FX.jpg" alt="" />
-							<p class="tit">即使商品质量好，也不能漫天要价.</p>
-							<p class="money">
-								<span class="truemoney">￥123</span>
-								<span class="minmoney">最低实付价￥<b>50</b></span>
-							</p>
-						</div>
-						<div class="li">
-							<img src="img/FX.jpg" alt="" />
-							<p class="tit">即使商品质量好，也不能漫天要价.</p>
-							<p class="money">
-								<span class="truemoney">￥123</span>
-								<span class="minmoney">最低实付价￥<b>50</b></span>
-							</p>
-						</div>
-						<div class="li">
-							<img src="img/FX.jpg" alt="" />
-							<p class="tit">即使商品质量好，也不能漫天要价.</p>
-							<p class="money">
-								<span class="truemoney">￥123</span>
-								<span class="minmoney">最低实付价￥<b>50</b></span>
-							</p>
-						</div>
-						<div class="li">
-							<img src="img/FX.jpg" alt="" />
-							<p class="tit">即使商品质量好，也不能漫天要价.</p>
-							<p class="money">
-								<span class="truemoney">￥123</span>
-								<span class="minmoney">最低实付价￥<b>50</b></span>
-							</p>
-						</div>
-						<div class="li">
-							<img src="img/FX.jpg" alt="" />
-							<p class="tit">即使商品质量好，也不能漫天要价.</p>
-							<p class="money">
-								<span class="truemoney">￥123</span>
-								<span class="minmoney">最低实付价￥<b>50</b></span>
-							</p>
-						</div>
+					<div id="goodsResult">
+						
 					</div>
 					<div class="clear"></div>
 				</div>
 			</div>
 			<!--footer-->
-			<%@include file="util/foot.jsp" %>
+			<%@include file="../util/foot.jsp" %>
 		</div>
 	</body>
 </html>
