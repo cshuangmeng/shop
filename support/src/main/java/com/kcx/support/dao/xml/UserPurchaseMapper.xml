@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kcx.support.dao.UserPurchaseMapper">
+
+	<!-- 表头 -->
+	<sql id="userPurchaseHead">
+		select id,user_id userId,level_id levelId,money,platform,platform_bill_no platformBillNo
+		,create_time createTime,pay_time payTime,state,purchase_no purchaseNo from user_purchase t
+	</sql>
+
+	<!-- 查询所有订单 -->
+	<select id="queryUserPurchases" resultType="com.kcx.support.pojo.UserPurchase">
+		<include refid="userPurchaseHead"/>
+		<trim prefix="where" prefixOverrides="and">
+			<if test="param.userId!=null">
+				and t.user_id=#{param.userId}
+			</if>
+			<if test="param.id!=null">
+				and t.id=#{param.id}
+			</if>
+			<if test="param.levelId!=null">
+				and t.level_id=#{param.levelId}
+			</if>
+			<if test="param.purchaseNo!=null">
+				and t.purchase_no=#{param.purchaseNo}
+			</if>
+			<if test="param.ids!=null and param.ids.size()>0">
+				and t.id in
+				<foreach collection="param.ids" item="id" open="(" separator="," close=")">
+					#{id}
+				</foreach>
+			</if>
+		</trim>
+		<if test="param.orderBy!=null">
+			order by ${param.orderBy}
+		</if>
+		<if test="param.limit!=null and param.limit>0">
+			limit #{param.offset},#{param.limit}
+		</if>
+	</select>
+	
+	<!-- 保存订单信息 -->
+	<insert id="addUserPurchase" keyProperty="id" useGeneratedKeys="true" parameterType="com.kcx.support.pojo.UserPurchase">
+		insert into user_purchase(user_id,level_id,money,platform,create_time,purchase_no)
+		values(#{userId},#{levelId},#{money},#{platform},#{createTime},#{purchaseNo})
+	</insert>
+	
+	<!-- 更新订单信息 -->
+	<update id="updateUserPurchase" parameterType="com.kcx.support.pojo.UserPurchase">
+		update user_purchase set level_id=#{levelId},money=#{money},platform=#{platform}
+		,platform_bill_no=#{platformBillNo},pay_time=#{payTime},state=#{state},purchase_no=#{purchaseNo} where id=#{id}
+	</update>
+	
+</mapper>  

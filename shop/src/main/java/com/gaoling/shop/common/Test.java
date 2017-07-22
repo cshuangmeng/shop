@@ -14,7 +14,7 @@ public class Test {
 	
 	public static void main(String[] args) {
 		try {
-			String[] str={"4003022001201706186275734163"};
+			/*String[] str={"4003022001201706186275734163"};
 			PayParam pay=new PayParam();
 			for(String no:str){
 				pay.setAmount(59);
@@ -25,10 +25,19 @@ public class Test {
 				pay.setOutTradeNo(no);
 				pay.setTradeNo(DateUtil.getCurrentTime("yyyyMMddHHmmssSSS")+DataUtil.createNums(3));
 				System.out.println(no+"退款结果:"+weiXinRefundRequest(pay));
-			}
+			}*/
+			download();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public static void download(){
+		String token="rRx0jEJkQr8UoMurjU5-_KyTpQRdGLPTkmc-6vqAS1HsJivjTG9_0n7JTKOH8xGFjzEr1A5H8TwWxFZns8L9FY-SJ8DVh9QapVGAH0h9a-0RMDRe57rKfujdKe_g1-nWLPIgADADHA";
+		String mediaId="z9b33J3jtA2gY_iM58OQFNvS6dgVfYADDlSk4xcfqs_50gn3bejEFAX_GeIMURuN";
+		String url="http://file.api.weixin.qq.com/cgi-bin/media/get?access_token="+token+"&media_id="+mediaId;
+		System.out.println(url);
+		HttpClientUtil.getNetWorkInfo(url, "D:/Temp/1.mp3");
 	}
 
 	public static boolean weiXinRefundRequest(PayParam param)throws Exception{

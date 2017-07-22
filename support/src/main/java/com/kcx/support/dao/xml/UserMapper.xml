@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kcx.support.dao.UserMapper">
+
+	<!-- 表头 -->
+	<sql id="userHead">
+		select id,name,openid openId,province,city,image,create_time createTime,last_time lastTime from `user` t
+	</sql>
+
+	<!-- 查询所有订单 -->
+	<select id="queryUsers" resultType="com.kcx.support.pojo.User">
+		<include refid="userHead"/>
+		<trim prefix="where" prefixOverrides="and">
+			<if test="param.openId!=null">
+				and t.openid=#{param.openId}
+			</if>
+			<if test="param.id!=null">
+				and t.id=#{param.id}
+			</if>
+			<if test="param.ids!=null and param.ids.size()>0">
+				and t.id in
+				<foreach collection="param.ids" item="id" open="(" separator="," close=")">
+					#{id}
+				</foreach>
+			</if>
+		</trim>
+		<if test="param.orderBy!=null">
+			order by ${param.orderBy}
+		</if>
+		<if test="param.limit!=null and param.limit>0">
+			limit #{param.offset},#{param.limit}
+		</if>
+	</select>
+	
+</mapper>  
