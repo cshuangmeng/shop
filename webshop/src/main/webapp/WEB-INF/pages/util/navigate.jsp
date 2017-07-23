@@ -10,7 +10,7 @@
 				<img style="margin-top: 4px;" src="${pageContext.servletContext.contextPath }/resources/img/corner_01.png"/>
 			</li>
 			<li style="color: #DB3E40;" class="mySpace_left_con_2">订单管理</li>
-			<li class="mySpace_left_con_3">收货地址</li>
+			<li class="mySpace_left_con_3"><a href="${pageContext.servletContext.contextPath }/user/address">收货地址</a></li>
 		</ul>
 		<ul style="margin: 20px 0;" class="mySpace_left_con">
 			<li class="mySpace_left_con_1">
