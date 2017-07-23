@@ -46,13 +46,6 @@ public class UserService extends CommonService{
 		}
 		String code=DataUtil.createNums(4);
 		//发送验证码
-		if(SMSUtil.send(mobile, code)){
-			//存储验证码
-			int expireMins=getInteger("sms_code_expire_mins");
-			MemcachedUtil.getInstance().setData(AppConstant.CHECKCODE_PREFIX+mobile, code, expireMins);
-			Logger.getLogger("file").info("UserService | sendCode | mobile="+mobile+" | code="+code);
-			return putResult();
-		}
 		return putResult(AppConstant.SMS_SEND_FAILURE);
 	}
 	
@@ -65,17 +58,12 @@ public class UserService extends CommonService{
 					+",code="+code+",openId="+openId+",password="+password+",platform="+platform);
 			return putResult(AppConstant.PARAM_IS_NULL);
 		}
-		//检查验证码是否正确
-		String saveCode=MemcachedUtil.getInstance().getData(AppConstant.CHECKCODE_PREFIX+cellphone,"");
-		if(!saveCode.equals(code)){
-			return putResult(AppConstant.CHECK_CODE_INCORRECT);
-		}
 		//使用微信注册
 		JSONObject json=null;
 		if(StringUtils.isNotEmpty(openId)){
 			String url=AppConstant.WEIXIN_SNS_USERINFO_URL+"&access_token="+AppConstant.USERMP_ACCESS_TOKEN+"&openid="+openId;
 			if(platform==AppConstant.PLATFORM_TYPE_ENUM.PC.getType()){
-				url=AppConstant.PC_SNS_USERINFO_URL+"?access_token="+MemcachedUtil.getInstance().getData(openId, "")+"&openid="+openId;
+				//url=AppConstant.PC_SNS_USERINFO_URL+"?access_token="+MemcachedUtil.getInstance().getData(openId, "")+"&openid="+openId;
 			}
 			String response=HttpClientUtil.getNetWorkInfo(url, "");
 			if(StringUtils.isNotEmpty(response)){

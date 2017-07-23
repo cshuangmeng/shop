@@ -87,7 +87,8 @@
 	padding: 20px 38px 0 16px;
 	width: 266px;
 	height: 141px;
-	background: url(../img/border01.jpg);
+	background: url(../img/border01.jpg) no-repeat center;
+	background-size: 100%;
 	float: left;
 }
 .address_con_txt1{
@@ -106,7 +107,7 @@
 	line-height: 24px;
 }
 .address_con_txt2{
-	height: 46px;
+	height: 15px;
 	line-height: 46px;
 	font-size: 14px;
 }
@@ -135,8 +136,9 @@
 .address_con2{
 	float: left;
 	width: 232px;
-	height: 158px;
-	background: url(../img/border02.jpg);
+	height: 141px;
+	background: url(../img/border02.jpg) no-repeat center;
+	background-size: 100% 100%;
 	cursor: pointer;
 }
 .address_con2 img{

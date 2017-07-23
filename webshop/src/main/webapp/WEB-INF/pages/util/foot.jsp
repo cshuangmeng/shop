@@ -39,7 +39,7 @@
 				<img src="${pageContext.servletContext.contextPath }/resources/img/qr.png"/>
 				<p>关注公众号，军不可一日无帅</p>
 			</div>
+			<div class="clear"></div>
 		</div>
-		<div class="clear"></div>
 	</div>
 </div>

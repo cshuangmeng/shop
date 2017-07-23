@@ -90,7 +90,7 @@ public class WeiXinService extends CommonService{
 			appId=AppConstant.USERPC_APP_ID;
 			secret=AppConstant.USERPC_SECRET_KEY;
 		}
-		String openId=MemcachedUtil.getInstance().getData(code,"");
+		String openId=null;//MemcachedUtil.getInstance().getData(code,"");
 		String unionId=null;
 		String token=null;
 		if(StringUtils.isEmpty(openId)){
@@ -101,14 +101,14 @@ public class WeiXinService extends CommonService{
 				unionId=json.getString("unionid");
 				token=json.getString("access_token");
 				//保存code与openId的关系
-				MemcachedUtil.getInstance().setData(code, openId+","+unionId, getInteger("openId_code_save_mins"));
+				//MemcachedUtil.getInstance().setData(code, openId+","+unionId, getInteger("openId_code_save_mins"));
 				//保存openId与accessToken的关系
-				MemcachedUtil.getInstance().setData(openId, token, getInteger("openId_code_save_mins"));
+				//MemcachedUtil.getInstance().setData(openId, token, getInteger("openId_code_save_mins"));
 			}
 		}else{
 			unionId=openId.split(",")[1];
 			openId=openId.split(",")[0];
-			token=MemcachedUtil.getInstance().getData(openId, "");
+			//token=MemcachedUtil.getInstance().getData(openId, "");
 		}
 		//更新用户头像
 		String url=AppConstant.WEIXIN_SNS_USERINFO_URL+"&access_token="+AppConstant.USERMP_ACCESS_TOKEN+"&openid="+openId;

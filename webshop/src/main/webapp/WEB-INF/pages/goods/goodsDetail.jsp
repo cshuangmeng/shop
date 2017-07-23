@@ -13,7 +13,12 @@
 	<body>
 		<div class="p-login-main">
 			<!--navigation-->
-			<%@include file="../util/head.jsp" %>
+			<div class="commonTop">
+				<%@include file="../util/head.jsp" %>
+			</div>
+			<div class="commomNavigation">
+				<%@include file="../util/menu.jsp" %>
+			</div>
 			<!--goodsDetail-->
 			<div class="goodsDetail">
 				<div class="goods">
@@ -61,8 +66,8 @@
 						<b>商品参数</b>
 					</span>
 				</div>
-				<c:if test="${not empty result.data.goods.extras.detailsJson }">
 				<div class="detailList">
+					<c:if test="${not empty result.data.goods.extras.detailsJson }">
 					<c:forEach items="${result.data.goods.extra.detailsJson }" var="detail">
 					<div class="li">
 						<span class="tit">${detail.label }：</span>
@@ -70,8 +75,8 @@
 					</div>
 					</c:forEach>
 					<div class="clear"></div>
+					</c:if>
 				</div>
-				</c:if>
 				<div class="title">
 					<span class="titlecon">
 						<img src="${pageContext.servletContext.contextPath }/resources/img/didaopinzhi.png" alt="" />
@@ -88,7 +93,9 @@
 				<div class="clear"></div>
 			</div>
 			<!--footer-->
-			<%@include file="../util/foot.jsp" %>
+			<div class="commonBot">
+				<%@include file="../util/foot.jsp" %>
+			</div>
 		</div>
 	</body>
 </html>

@@ -10,7 +10,12 @@
 	</head>
 	<body>
 		<!--navigation-->
-		<%@include file="../util/head.jsp" %>
+		<div class="commonTop">
+			<%@include file="../util/head.jsp" %>
+		</div>
+		<div class="commomNavigation">
+			<%@include file="../util/menu.jsp" %>
+		</div>
 		<!--body-->
 		<div class="mySpace">
 			<%@include file="../util/navigate.jsp" %>
@@ -41,10 +46,31 @@
 							<img src="${pageContext.servletContext.contextPath }/resources/img/6_03.png" />
 						</li>
 					</ul>
+					<ul class="goods_address_title_con_1">
+						<li>
+							<img src="${pageContext.servletContext.contextPath }/resources/img/1_04.png"/>
+							<p>陈陈陈</p>
+						</li>
+						<li>
+							<img src="${pageContext.servletContext.contextPath }/resources/img/2_04.png"/>
+							<p>上海市普陀区兰溪路   君悦苑3号楼   </p>
+						</li>
+						<li>
+							<img src="${pageContext.servletContext.contextPath }/resources/img/3_04.png"/>
+							<p>152001010101</p>
+						</li>
+						<li class="corner_top">
+							<p>默认地址</p>
+						</li>
+						<li class="corner_bottom">
+							<img src="${pageContext.servletContext.contextPath }/resources/img/6_03.png" />
+						</li>
+					</ul>
 					<ul class="goods_address_title_con_2">
 						<li class="X"></li>
 						<li class="Y"></li>
 					</ul>
+					<div class="clear"></div>
 				</div>
 				<p class="add_goods_address">
 					新增收货地址
@@ -88,6 +114,8 @@
 			</div>
 		</div>
 		<!--footer-->
-		<%@include file="../util/foot.jsp" %>
+		<div class="commonBot">
+			<%@include file="../util/foot.jsp" %>
+		</div>
 	</body>
 </html>

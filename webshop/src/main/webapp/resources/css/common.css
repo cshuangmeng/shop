@@ -183,3 +183,6 @@ button,input,textarea,div,img{
 	color: #1f1f1f;
 	cursor: pointer;
 }
+.clear{
+	clear: both;
+}

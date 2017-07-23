@@ -59,7 +59,6 @@
 }
 .message_cue_con2_xia{
 	padding-top: 20px;
-	height: 126px;
 }
 
 .message_cue_con3{
@@ -68,8 +67,10 @@
 
 .message_cue_con2_title3{
 	height: 60px;
-	padding-top: 24px;
-	font-size: 16px;
+    line-height: 60px;
+    margin-bottom: 20px;
+    padding-top: 24px;
+    font-size: 16px;
 }
 .message_cue_con2_title3 p{
 	line-height: 60px;
