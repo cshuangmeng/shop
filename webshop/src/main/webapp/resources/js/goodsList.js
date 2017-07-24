@@ -1,6 +1,5 @@
 $(function(){
-	var $more = $('#js-more'),
-		$moreList = $('#js-moreList');
+	var $more = $('#js-more'),$moreList = $('#js-moreList');
 	
 	//显示隐藏更多
 	$more.mouseenter(function(){
@@ -9,6 +8,10 @@ $(function(){
     $more.mouseleave(function(){
 		$moreList.css("display","none");
 	});
+    //商品分页
+    $.post(contextPath+"/goods/search",parseQueryString(window.location),function(data){
+    		$("#goodsResult").append(data);
+    })
 	
 	//商品列表定位
 	position();
@@ -21,7 +24,6 @@ $(function(){
 			}
 		});
 	}
-	
 	
 });
 

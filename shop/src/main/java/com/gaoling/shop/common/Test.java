@@ -1,12 +1,14 @@
 package com.gaoling.shop.common;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.springframework.context.support.GenericXmlApplicationContext;
 
+import com.gaoling.shop.order.service.OrderService;
 import com.gaoling.shop.system.pojo.PayParam;
+import com.gaoling.shop.user.service.UserService;
 
 import net.sf.json.JSONObject;
 
@@ -14,6 +16,7 @@ public class Test {
 	
 	public static void main(String[] args) {
 		try {
+	        
 			/*String[] str={"4003022001201706186275734163"};
 			PayParam pay=new PayParam();
 			for(String no:str){

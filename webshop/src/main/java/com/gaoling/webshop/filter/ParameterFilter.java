@@ -10,6 +10,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+import com.gaoling.webshop.common.AppConstant;
+import com.gaoling.webshop.common.ThreadCache;
+
 public class ParameterFilter extends HandlerInterceptorAdapter {
 
 	@Override
@@ -24,7 +27,8 @@ public class ParameterFilter extends HandlerInterceptorAdapter {
             params.put(pName, request.getParameter(pName));
             queryString+=queryString.length()>0?"&"+pName+"="+request.getParameter(pName):pName+"="+request.getParameter(pName);
         }
-		Logger.getLogger("file").info(request.getRequestURI()+(queryString.length()>0?"?"+queryString:""));
+        ThreadCache.setData(AppConstant.HTTP_PARAM_NAME, params);
+		Logger.getLogger("ParameterFilter").info(request.getRequestURI()+(queryString.length()>0?"?"+queryString:""));
 		return true;
 	}
 	

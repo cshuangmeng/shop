@@ -1,0 +1,167 @@
+.dianpujieshao{
+	width: 1000px;
+	margin: 0 auto;
+	height: 100px;
+}
+.dianpujieshao .img{
+	float: left;
+	height: 80px;
+	width: 80px;
+	margin-top: 10px;
+	margin-right: 20px;
+}
+.dianpujieshao .img img{
+	display: block;
+	height: 80px;
+	width: 80px;
+	border-radius: 4px;
+}
+.dianpujieshao .name{
+	float: left;
+	line-height: 100px;
+	font-size: 14px;
+	color: #000;
+}
+.dianpujieshao .guanzhu{
+	height: 20px;
+	width: 78px;
+	border-radius: 20px;
+	border: 1px solid #ddd;
+	float: right;
+	text-align: center;
+	line-height: 20px;
+	margin-top: 40px;
+	cursor: pointer;
+	font-size: 12px;
+}
+.dianpujieshao .fensishu{
+	float: right;
+	margin-right: 30px;
+	width: 100px;
+	text-align: center;
+	margin-top: 31px;
+}
+.dianpujieshao .fensishu .num{
+	font-size: 16px;
+	line-height: 24px;
+}
+.dianpujieshao .fensishu .tit{
+	font-size: 12px;
+	line-height: 14px;
+}
+/*xinpinTit*/
+.xinpinTit{
+	width: 1000px;
+	margin: 0 auto;
+	margin-top: 30px;
+	border-bottom: 2px solid #cc2c27;
+}
+.xinpinTit .tit{
+	height: 36px;
+	width: 130px;
+	line-height: 36px;
+	background: #cc2c27;
+	color: #fff;
+	font-size: 12px;
+	text-align: center;
+}
+/*rexaioTit*/
+.rexaioTit{
+	width: 1000px;
+	margin: 0 auto;
+	margin-top: 30px;
+	border-bottom: 2px solid #cc2c27;
+}
+.rexaioTit .tit{
+	height: 36px;
+	width: 130px;
+	line-height: 36px;
+	background: #cc2c27;
+	color: #fff;
+	font-size: 12px;
+	text-align: center;
+}
+/*xinpinList*/
+.xinpinList{
+	width: 1000px;
+	margin: 0 auto;
+	margin-top: 30px;
+}
+.xinpinList .li{
+	width: 220px;
+	float: left;
+	margin-right: 40px;
+	margin-bottom: 20px;
+}
+.xinpinList .li img{
+	display: block;
+	width: 100%;
+}
+.xinpinList .li .tit{
+	font-size: 16px;
+	color: #333;
+	line-height: 24px;
+	margin-top: 10px;
+	width: 100%;
+	display: block;
+	overflow: hidden;
+	text-overflow:ellipsis;
+	white-space: nowrap;
+}
+.xinpinList .li .money{
+	line-height: 32px;
+}
+.xinpinList .li .truemoney{
+	float: left;
+	color: #CC2C26;
+	font-size: 24px;
+}
+.xinpinList .li .minmoney{
+	float: right;
+	color: #ff7700;
+	font-size: 14px;
+	line-height: 24px;
+    margin-top: 6px;
+}
+/*rexaioList*/
+.rexaioList{
+	width: 1000px;
+	margin: 0 auto;
+	margin-top: 30px;
+}
+.rexaioList .li{
+	width: 220px;
+	float: left;
+	margin-right: 40px;
+	margin-bottom: 20px;
+}
+.rexaioList .li img{
+	display: block;
+	width: 100%;
+}
+.rexaioList .li .tit{
+	font-size: 16px;
+	color: #333;
+	line-height: 24px;
+	margin-top: 10px;
+	width: 100%;
+	display: block;
+	overflow: hidden;
+	text-overflow:ellipsis;
+	white-space: nowrap;
+}
+.rexaioList .li .money{
+	line-height: 32px;
+}
+.rexaioList .li .truemoney{
+	float: left;
+	color: #CC2C26;
+	font-size: 24px;
+}
+.rexaioList .li .minmoney{
+	float: right;
+	color: #ff7700;
+	font-size: 14px;
+	line-height: 24px;
+    margin-top: 6px;
+}

@@ -14,6 +14,7 @@ import com.gaoling.webshop.common.DataUtil;
 import com.gaoling.webshop.common.DateUtil;
 import com.gaoling.webshop.common.OSSUtil;
 import com.gaoling.webshop.goods.dao.ShopDao;
+import com.gaoling.webshop.goods.pojo.Goods;
 import com.gaoling.webshop.goods.pojo.Shop;
 import com.gaoling.webshop.goods.pojo.ShopFollower;
 import com.gaoling.webshop.system.pojo.Result;
@@ -30,6 +31,8 @@ public class ShopService extends CommonService{
 	private ShopFollowerService shopFollowerService;
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private GoodsService goodsService;
 	
 	//查询店铺详情
 	public Result loadShopDetail(int id,String uuid){
@@ -46,6 +49,8 @@ public class ShopService extends CommonService{
 				shop.getExtras().put("isFollowed", null!=follower?1:0);
 			}
 		}
+		//加载店铺新品商品
+		List<Goods> newGoods=goodsService.queryGoods(DataUtil.mapOf("shopId",shop.getId(),"orderBy","order by t.create_time desc","limit 0,10"));
 		return putResult(shop);
 	}
 	

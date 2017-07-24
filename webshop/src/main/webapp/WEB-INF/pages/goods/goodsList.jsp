@@ -27,13 +27,11 @@
 							品牌
 						</div>
 						<div class="right">
-							<div><img src="${pageContext.servletContext.contextPath }/resources/img/qr.png"/></div>
+							<c:forEach items="${result.data.shops }" var="shop">
 							<div class="active">
-								<img src="${pageContext.servletContext.contextPath }/resources/img/jinpaifuwu.png"/>
+								<img src="${shop.fullHeadImg }"/>
 								<span>X</span>
 							</div>
-							<c:forEach items="${result.data.shops }" var="shop">
-							<div><img src="${shop.fullHeadImg }"/></div>
 							</c:forEach>
 						</div>
 					</div>
@@ -61,8 +59,8 @@
 					</div>
 					<div  class="right">
 						<b>1/25</b>
-						<span><</span>
-						<span>下一页 ></span>
+						<span>&lt; 上一页</span>
+						<span>下一页 &gt;</span>
 					</div>
 				</div>
 				<div class="goodslistCon">

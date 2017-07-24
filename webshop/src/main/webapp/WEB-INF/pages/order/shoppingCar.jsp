@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -42,43 +43,23 @@
 					</p>
 				</div>
 				<ul class="MiddleConGoods">
+					<c:forEach items="${result.data }" var="shop">
+					<c:forEach items="${shop.goods }" var="goods">
 					<li>
-						<img style="margin-left: 30px;" class="goodsImage" src="${pageContext.servletContext.contextPath }/resources/img/goods.png" />
-						<p class="goods_introduce">尚可茶品精选名茶专场-青云碧螺春两罐10g</p>
-						<p class="goods_price">¥3402</p>
+						<a href="${pageContext.servletContext.contextPath }/goods/info?id=${goods.goodsId}"><img style="margin-left: 30px;" class="goodsImage" src="${goods.headImg }" /></a>
+						<p class="goods_introduce">${goods.goodsName }</p>
+						<p class="goods_price">¥${goods.price }</p>
 						<div class="count">
 							<span class="add">+</span>
-							<span class="numberCode">1</span>
+							<span class="numberCode">${goods.amount }</span>
 							<!--<input  class="numberCode" type="text" value="1" />-->
 							<span class="minus">-</span>
 						</div>
-						<p class="goods_price_end">¥3402</p>
+						<p class="goods_price_end">¥${goods.price * goods.amount }</p>
 						<img class="delectImg" src="${pageContext.servletContext.contextPath }/resources/img/delect.png"/>
 					</li>
-					<li>
-						<img style="margin-left: 30px;" class="goodsImage" src="${pageContext.servletContext.contextPath }/resources/img/goods.png" />
-						<p class="goods_introduce">尚可茶品精选名茶专场-青云碧螺春两罐10g</p>
-						<p class="goods_price">¥3402</p>
-						<div class="count">
-							<span class="add">+</span>
-							<span class="numberCode">1</span>
-							<span class="minus">-</span>
-						</div>
-						<p class="goods_price_end">¥3402</p>
-						<img class="delectImg" src="${pageContext.servletContext.contextPath }/resources/img/delect.png"/>
-					</li>
-					<li>
-						<img style="margin-left: 30px;" class="goodsImage" src="${pageContext.servletContext.contextPath }/resources/img/goods.png" />
-						<p class="goods_introduce">尚可茶品精选名茶专场-青云碧螺春两罐10g</p>
-						<p class="goods_price">¥3402</p>
-						<div class="count">
-							<span class="add">+</span>
-							<span class="numberCode">1</span>
-							<span class="minus">-</span>
-						</div>
-						<p class="goods_price_end">¥3402</p>
-						<img class="delectImg" src="${pageContext.servletContext.contextPath }/resources/img/delect.png"/>
-					</li>
+					</c:forEach>
+					</c:forEach>
 				</ul>
 				<div class="fare">
 					<button class="fareBtn">运费</button>

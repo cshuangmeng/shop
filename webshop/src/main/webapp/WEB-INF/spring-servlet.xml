@@ -33,6 +33,20 @@
 	<!-- 启用缓存注解功能 -->
 	<cache:annotation-driven />
 	
+	<mvc:interceptors>
+		<!-- 用户端非法请求拦截器 -->
+		<mvc:interceptor>
+			<mvc:mapping path="/**/**"/>
+			<bean class="com.gaoling.webshop.filter.ParameterFilter" />
+		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/user/**"/>
+			<mvc:exclude-mapping path="/user/login"/>
+			<mvc:exclude-mapping path="/user/register"/>
+			<bean class="com.gaoling.webshop.filter.LoginFilter" />
+		</mvc:interceptor>
+	</mvc:interceptors>
+	
 	<!-- 启用缓存管理器 -->
 	 <bean id="cacheManager" class="org.springframework.cache.support.SimpleCacheManager">
 		<property name="caches">

@@ -21,6 +21,11 @@ public class AppConstant {
 	// 微信公众号支付方式
 	public static final String WEIXIN_TRADE_TYPE_JSAPI = "JSAPI";
 
+	// 用户信息存储变量名
+	public static final String STORE_USER_PARAM_NAME = "user";
+	// 访问参数存储变量名
+	public static final String HTTP_PARAM_NAME = "httpParam";
+
 	public static String ALIDAYU_SMS_URL;// 阿里大于短信发送地址
 	public static String ALIDAYU_APP_KEY;// 阿里大于appKey
 	public static String ALIDAYU_APP_SECRET;// 阿里大于appSecret

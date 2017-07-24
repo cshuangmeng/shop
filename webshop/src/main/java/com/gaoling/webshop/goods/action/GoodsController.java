@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gaoling.webshop.common.AppConstant;
 import com.gaoling.webshop.common.DataUtil;
@@ -36,16 +35,9 @@ public class GoodsController {
 	
 	//搜索商品
 	@RequestMapping("/search")
-	@ResponseBody
-	public Result searchGoods(@RequestParam HashMap<Object,Object> param,Model model){
-		Result result=null;
-		try {
-			result=goodsService.loadGoods(param);
-		} catch (Exception e) {
-			result=goodsService.putResult(AppConstant.SYSTEM_ERROR_CODE);
-			e.printStackTrace();
-		}
-		return result;
+	public String searchGoods(@RequestParam HashMap<Object,Object> param,Model model){
+		model.addAttribute("result", goodsService.loadGoods(param));
+		return "goods/goodsResult";
 	}
 	
 	//加载商品详情

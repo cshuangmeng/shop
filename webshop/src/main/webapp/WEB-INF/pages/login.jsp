@@ -14,7 +14,12 @@
 	<body>
 		<div class="p-login-main">
 			<!--navigation-->
-			<%@include file="util/head.jsp" %>
+			<div class="commonTop">
+				<%@include file="util/head.jsp" %>
+			</div>
+			<div class="commomNavigation">
+				<%@include file="util/menu.jsp" %>
+			</div>
 			<!--body-->
 			<div class="p-login">
 				<div class="loginImg">
@@ -56,7 +61,9 @@
 			<div class="logincontainer" id="login_container">
 			</div>
 			<!--footer-->
-			<%@include file="util/foot.jsp" %>
+			<div class="commonBot">
+				<%@include file="util/foot.jsp" %>
+			</div>
 		</div>
 	</body>
 </html>

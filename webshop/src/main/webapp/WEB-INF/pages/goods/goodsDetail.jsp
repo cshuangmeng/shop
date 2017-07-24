@@ -32,7 +32,7 @@
 							</span>
 							<span class="shop">
 								<img src="${result.data.shop.fullHeadImg }"/>
-								${result.data.shop.name }
+								<a href="${pageContext.servletContext.contextPath }/shop/info?id=${result.data.shop.id}"/>${result.data.shop.name }</a>
 							</span>
 						</p>
 						<div class="clear"></div>
@@ -68,7 +68,7 @@
 				</div>
 				<div class="detailList">
 					<c:if test="${not empty result.data.goods.extras.detailsJson }">
-					<c:forEach items="${result.data.goods.extra.detailsJson }" var="detail">
+					<c:forEach items="${result.data.goods.extras.detailsJson }" var="detail">
 					<div class="li">
 						<span class="tit">${detail.label }：</span>
 						<span class="con">${detail.value }</span>

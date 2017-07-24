@@ -11,6 +11,7 @@
 	font-size: 14px;
 	color: #8c8c8c;
 	height: 42px;
+	margin-top：30px；
 }
 /*.MiddleConBlank{
 	height: 40px;
@@ -52,8 +53,9 @@
 	cursor: pointer;
 }
 .goods_introduce{
-	margin-left: 14px;
-	cursor: pointer;
+ margin-left: 14px;
+ cursor: pointer;
+ width: 230px;
 }
 .goods_introduce,.goods_price,.count span{
 	color: #333;

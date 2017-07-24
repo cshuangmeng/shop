@@ -1,22 +1,24 @@
 package com.gaoling.webshop.goods.action;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.gaoling.webshop.common.AppConstant;
+import com.gaoling.webshop.common.ThreadCache;
 import com.gaoling.webshop.goods.pojo.Cooperation;
 import com.gaoling.webshop.goods.pojo.ShopFollower;
 import com.gaoling.webshop.goods.service.CooperationService;
 import com.gaoling.webshop.goods.service.ShopService;
 import com.gaoling.webshop.system.pojo.Result;
+import com.gaoling.webshop.user.pojo.User;
 
-@RestController
+@Controller
 @RequestMapping("/shop")
 @CrossOrigin(methods = RequestMethod.POST, origins = AppConstant.TRUST_CROSS_ORIGINS)
 public class ShopController {
@@ -28,8 +30,9 @@ public class ShopController {
 	
 	//加载门店信息
 	@RequestMapping("/info")
-	public String loadShopDetail(@RequestParam(defaultValue="0")String id,@RequestParam(required=false)String uuid,Model model){
-		Result result=shopService.loadShopDetail(Integer.parseInt(id),uuid);
+	public String loadShopDetail(@RequestParam(defaultValue="0")String id,Model model){
+		User user=(User)ThreadCache.getData(AppConstant.STORE_USER_PARAM_NAME);
+		Result result=shopService.loadShopDetail(Integer.parseInt(id),null!=user?user.getUuid():null);
 		model.addAttribute("result",result);
 		return "shop/shopDetail";
 	}
