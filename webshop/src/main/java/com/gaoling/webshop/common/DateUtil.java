@@ -1,15 +1,16 @@
 package com.gaoling.webshop.common;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+
+import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.commons.lang3.time.DateUtils;
 
 public class DateUtil {
 
 	// 获取系统当前时间
 	public static String getCurrentTime() {
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		return format.format(new Date());
+		return DateFormatUtils.format(new Date(),"yyyy-MM-dd HH:mm:ss");
 	}
 	
 	// 获取系统当前时间
@@ -19,62 +20,58 @@ public class DateUtil {
 
 	// 获取系统当前时间
 	public static String getCurrentTime(String pattern) {
-		SimpleDateFormat format = new SimpleDateFormat(pattern);
-		return format.format(new Date());
+		return DateFormatUtils.format(new Date(),pattern);
 	}
 	
 	// 日期加减
 	public static String getDateOfInterval(String date, int interval, String pattern) throws Exception {
-		SimpleDateFormat sdf = new SimpleDateFormat(pattern);
 		Calendar c = Calendar.getInstance();
-		c.setTime(sdf.parse(date));
+		c.setTime(DateUtils.parseDate(date,pattern));
 		c.add(Calendar.DAY_OF_MONTH, interval);
-		return sdf.format(c.getTime());
+		return DateFormatUtils.format(c.getTime(),pattern);
 	}
 
 	// 分钟加减
 	public static String getMinsOfInterval(String date, int interval, String pattern) throws Exception {
-		SimpleDateFormat sdf = new SimpleDateFormat(pattern);
 		Calendar c = Calendar.getInstance();
-		c.setTime(sdf.parse(date));
+		c.setTime(DateUtils.parseDate(date,pattern));
 		c.add(Calendar.MINUTE, interval);
-		return sdf.format(c.getTime());
+		return DateFormatUtils.format(c.getTime(),pattern);
 	}
 
 	// 小时加减
 	public static String getHoursOfInterval(String date, int interval, String pattern) throws Exception {
-		SimpleDateFormat sdf = new SimpleDateFormat(pattern);
 		Calendar c = Calendar.getInstance();
-		c.setTime(sdf.parse(date));
+		c.setTime(DateUtils.parseDate(date,pattern));
 		c.add(Calendar.HOUR_OF_DAY, interval);
-		return sdf.format(c.getTime());
+		return DateFormatUtils.format(c.getTime(),pattern);
 	}
 
 	// 日期格式化
 	public static String formatDate(String date, String pattern, String targetPattern) throws Exception {
-		SimpleDateFormat sf = new SimpleDateFormat(pattern);
-		SimpleDateFormat tf = new SimpleDateFormat(targetPattern);
-		return tf.format(sf.parse(date));
+		return DateFormatUtils.format(DateUtils.parseDate(date,pattern),targetPattern);
 	}
 
 	// 格式化时间
 	public static String formatDate(Date date) {
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		return format.format(date);
+		return DateFormatUtils.format(date,"yyyy-MM-dd HH:mm:ss");
+	}
+	
+	// 格式化时间
+	public static String formatDateToDay(Date date) {
+		return DateFormatUtils.format(date,"yyyy-MM-dd");
 	}
 
 	// 格式化时间
 	public static String formatDate(long date) {
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		return format.format(date);
+		return DateFormatUtils.format(date,"yyyy-MM-dd HH:mm:ss");
 	}
 
 	// 计算两个时间之间的分钟数
 	public static int getMinsIntervalOfTime(String time1, String time2) {
 		try {
-			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			Date date1 = format.parse(time1);
-			Date date2 = format.parse(time2);
+			Date date1 = DateUtils.parseDate(time1,"yyyy-MM-dd HH:mm:ss");
+			Date date2 = DateUtils.parseDate(time2,"yyyy-MM-dd HH:mm:ss");
 			long mills = date2.getTime() - date1.getTime();
 			return Math.round(mills / (60 * 1000.0f));
 		} catch (Exception e) {
@@ -86,9 +83,8 @@ public class DateUtil {
 	// 计算两个时间之间的天数
 	public static int getDaysIntervalOfTime(String time1, String time2) {
 		try {
-			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-			Date date1 = format.parse(time1);
-			Date date2 = format.parse(time2);
+			Date date1 = DateUtils.parseDate(time1,"yyyy-MM-dd");
+			Date date2 = DateUtils.parseDate(time2,"yyyy-MM-dd");
 			long mills = date2.getTime() - date1.getTime();
 			return Math.round(mills / (24 * 60 * 60 * 1000.0f));
 		} catch (Exception e) {
@@ -99,11 +95,10 @@ public class DateUtil {
 
 	// 判断两个日期是否在同一个月份
 	public static boolean isSameMonth(String date1, String date2, String pattern) throws Exception {
-		SimpleDateFormat format = new SimpleDateFormat(pattern);
 		Calendar c1 = Calendar.getInstance();
 		Calendar c2 = Calendar.getInstance();
-		c1.setTime(format.parse(date1));
-		c2.setTime(format.parse(date2));
+		c1.setTime(DateUtils.parseDate(date1,pattern));
+		c2.setTime(DateUtils.parseDate(date2,pattern));
 		return c1.get(Calendar.MONTH) == c2.get(Calendar.MONTH);
 	}
 	
@@ -121,9 +116,8 @@ public class DateUtil {
 	
 	// 日期比较
 	public static int compareDate(String date1, String date2) throws Exception {
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-		Date d1 = format.parse(date1);
-		Date d2 = format.parse(date2);
+		Date d1 = DateUtils.parseDate(date1,"yyyy-MM-dd");
+		Date d2 = DateUtils.parseDate(date2,"yyyy-MM-dd");
 		if (d1.getTime() > d2.getTime()) {
 			return 1;
 		} else if (d1.getTime() < d2.getTime()) {

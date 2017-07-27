@@ -23,49 +23,26 @@
 			<div class="member">
 				<ul class="member_con">
 					<li>
-						<img src="${pageContext.servletContext.contextPath }/resources/img/person.png"/>
+						<img src="${sessionScope.user.headImg }1"/>
 					</li>
 					<li style="margin: 0 80px 0 28px;">
-						<p>部落名称：王者部落</p>
-						<p>部落币：200</p>
-						<p>勇士：6</p>
+						<p>部落名称：${result.data.tribe.nickname }</p>
+						<p>部落币：${result.data.tribe.coin }</p>
+						<p>勇士：${result.data.size }</p>
 					</li>
 					<li>
-						<p>部落ID：123456</p>
-						<p>征战天数：100</p>
+						<p>部落ID：${result.data.tribe.id }</p>
+						<p>征战天数：${result.data.tribe.extras.days }</p>
 					</li>
 				</ul>
 				<ul class="member_list">
+					<c:forEach items="${result.data.members }" var="member">
 					<li class="member_list_title">
-						<p>成员昵称</p>
-						<p style="margin:0 236px;">成员ID</p>
-						<p>加入时间</p>
+						<p>${member.nickname }</p>
+						<p style="margin:0 236px;">${member.tribeId }</p>
+						<p>${member.joinTime }</p>
 					</li>
-					<li class="member_list_con_1">
-						<p>成员1</p>
-						<p style="margin: 0 242px;">1234455</p>
-						<p>2017-03-26</p>
-					</li>
-					<li class="member_list_con_1">
-						<p>成员1</p>
-						<p style="margin: 0 242px;">1234455</p>
-						<p>2017-03-26</p>
-					</li>
-					<li class="member_list_con_1">
-						<p>成员1</p>
-						<p style="margin: 0 242px;">1234455</p>
-						<p>2017-03-26</p>
-					</li>
-					<li class="member_list_con_1">
-						<p>成员1</p>
-						<p style="margin: 0 242px;">1234455</p>
-						<p>2017-03-26</p>
-					</li>
-					<li class="member_list_con_1">
-						<p>成员1</p>
-						<p style="margin: 0 242px;">1234455</p>
-						<p>2017-03-26</p>
-					</li>
+					</c:forEach>
 				</ul>
 				<div class="member_page">
 					<p style="margin-left: 200px;">上一页</p>

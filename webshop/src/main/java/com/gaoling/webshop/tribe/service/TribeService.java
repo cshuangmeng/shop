@@ -10,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.gaoling.webshop.common.AppConstant;
 import com.gaoling.webshop.common.DataUtil;
+import com.gaoling.webshop.common.DateUtil;
+import com.gaoling.webshop.common.ThreadCache;
 import com.gaoling.webshop.system.pojo.Result;
 import com.gaoling.webshop.system.service.CommonService;
 import com.gaoling.webshop.tribe.dao.TribeDao;
@@ -28,22 +30,18 @@ public class TribeService extends CommonService{
 	private TribeMemberService tribeMemberService;
 	
 	//获取我的部落成员列表
-	public Result getMyTribeInfo(String uuid){
-		//检查参数
-		if(StringUtils.isEmpty(uuid)){
-			return putResult(AppConstant.PARAM_IS_NULL);
-		}
+	public Result getMyTribeInfo(){
 		//加载用户
-		User user=userService.getUserByUUID(uuid);
+		User user=(User)ThreadCache.getData(AppConstant.STORE_USER_PARAM_NAME);
 		if(null==user){
 			return putResult(AppConstant.USER_NOT_EXISTS);
 		}
 		Tribe tribe=getTribeByUserId(user.getId());
-		if(null!=tribe){
-			List<Map<String,Object>> members=tribeMemberService.queryMyTribeMembers(tribe.getId());
-			return putResult(DataUtil.mapOf("tribe",tribe,"members",members));
-		}
-		return putResult();
+		//计算存在天数
+		tribe.getExtras().put("days", DateUtil.getDaysIntervalOfTime(DateUtil.formatDateToDay(tribe.getCreateTime())
+				, DateUtil.formatDateToDay(DateUtil.nowDate())));
+		List<Map<String,Object>> members=tribeMemberService.queryMyTribeMembers(tribe.getId());
+		return putResult(DataUtil.mapOf("tribe",tribe,"members",members,"size",members.size()));
 	}
 	
 	//编辑部落名称

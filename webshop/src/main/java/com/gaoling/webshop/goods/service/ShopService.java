@@ -22,6 +22,8 @@ import com.gaoling.webshop.system.service.CommonService;
 import com.gaoling.webshop.user.pojo.User;
 import com.gaoling.webshop.user.service.UserService;
 
+import net.sf.json.JSONObject;
+
 @Service
 public class ShopService extends CommonService{
 
@@ -50,7 +52,23 @@ public class ShopService extends CommonService{
 			}
 		}
 		//加载店铺新品商品
-		List<Goods> newGoods=goodsService.queryGoods(DataUtil.mapOf("shopId",shop.getId(),"orderBy","order by t.create_time desc","limit 0,10"));
+		JSONObject json=JSONObject.fromObject(getString("shop_goods_list_pagesize"));
+		List<Goods> newGoods=goodsService.queryGoods(DataUtil.mapOf("shopId",shop.getId()
+				,"orderBy",json.getJSONObject("list1").get("orderBy"),"offset",0,"limit"
+				,json.getJSONObject("list1").getInt("pagesize")));
+		newGoods.stream().forEach(g->{
+			float miniPrice=g.getCoinEnable()>0||g.getPointEnable()>0?Math.round(g.getPrice()*g.getCashDiscount()):g.getPrice();
+			g.getExtras().put("miniPrice", miniPrice);
+		});
+		List<Goods> hotGoods=goodsService.queryGoods(DataUtil.mapOf("shopId",shop.getId()
+				,"orderBy",json.getJSONObject("list2").get("orderBy"),"offset",0,"limit"
+				,json.getJSONObject("list1").getInt("pagesize")));
+		hotGoods.stream().forEach(g->{
+			float miniPrice=g.getCoinEnable()>0||g.getPointEnable()>0?Math.round(g.getPrice()*g.getCashDiscount()):g.getPrice();
+			g.getExtras().put("miniPrice", miniPrice);
+		});
+		shop.getExtras().put("newGoods", newGoods);
+		shop.getExtras().put("hotGoods", hotGoods);
 		return putResult(shop);
 	}
 	

@@ -1,6 +1,8 @@
 package com.gaoling.webshop.tribe.pojo;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Tribe {
 
@@ -13,6 +15,7 @@ public class Tribe {
 	private int point;
 	private int state;
 	private Date createTime;
+	private Map<String, Object> extras = new HashMap<String, Object>();
 
 	public int getId() {
 		return id;
@@ -85,7 +88,15 @@ public class Tribe {
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
-	
+
+	public Map<String, Object> getExtras() {
+		return extras;
+	}
+
+	public void setExtras(Map<String, Object> extras) {
+		this.extras = extras;
+	}
+
 	// 部落状态
 	public static enum STATE_TYPE_ENUM {
 		INACTIVE(0), ACTIVATED(1), DISABLED(2);
@@ -99,5 +110,5 @@ public class Tribe {
 			return state;
 		}
 	}
-	
+
 }

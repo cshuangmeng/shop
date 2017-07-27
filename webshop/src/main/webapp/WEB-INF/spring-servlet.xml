@@ -45,6 +45,18 @@
 			<mvc:exclude-mapping path="/user/register"/>
 			<bean class="com.gaoling.webshop.filter.LoginFilter" />
 		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/address/**"/>
+			<bean class="com.gaoling.webshop.filter.LoginFilter" />
+		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/order/**"/>
+			<bean class="com.gaoling.webshop.filter.LoginFilter" />
+		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/tribe/**"/>
+			<bean class="com.gaoling.webshop.filter.LoginFilter" />
+		</mvc:interceptor>
 	</mvc:interceptors>
 	
 	<!-- 启用缓存管理器 -->

@@ -4,12 +4,12 @@ import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.gaoling.webshop.common.AppConstant;
 import com.gaoling.webshop.common.DataUtil;
+import com.gaoling.webshop.common.ThreadCache;
 import com.gaoling.webshop.order.pojo.Order;
 import com.gaoling.webshop.order.service.OrderService;
 import com.gaoling.webshop.pay.dao.UserTradeLogDao;
@@ -18,7 +18,6 @@ import com.gaoling.webshop.pay.pojo.UserTradeLog;
 import com.gaoling.webshop.system.pojo.Result;
 import com.gaoling.webshop.system.service.CommonService;
 import com.gaoling.webshop.user.pojo.User;
-import com.gaoling.webshop.user.service.UserService;
 
 import net.sf.json.JSONObject;
 
@@ -29,8 +28,6 @@ public class UserTradeLogService extends CommonService{
 	private UserTradeLogDao userTradeLogDao;
 	@Autowired
 	private OrderService orderService;
-	@Autowired
-	private UserService userService;
 	
 	//保存流水记录
 	public void addUserTradeLog(UserTradeLog userTradeLog){
@@ -38,13 +35,9 @@ public class UserTradeLogService extends CommonService{
 	}
 	
 	//查询用户流水记录
-	public Result queryUserTradeLogs(String uuid){
-		//检查参数
-		if(StringUtils.isEmpty(uuid)){
-			return putResult(AppConstant.PARAM_IS_NULL);
-		}
+	public Result queryUserTradeLogs(){
 		//加载用户
-		User user=userService.getUserByUUID(uuid);
+		User user=(User)ThreadCache.getData(AppConstant.STORE_USER_PARAM_NAME);
 		if(null==user){
 			return putResult(AppConstant.USER_NOT_EXISTS);
 		}
@@ -84,7 +77,7 @@ public class UserTradeLogService extends CommonService{
 				log.put("amount", amount>=0?"+"+df.format(amount)+config.get("cash_name"):df.format(amount)+config.getString("cash_name"));
 			}
 		}
-		return putResult(DataUtil.mapOf("logs",logs));
+		return putResult(logs);
 	}
 	
 }

@@ -34,7 +34,7 @@
 				</c:otherwise>
 			</c:choose>
 			<div class="fensishu">
-				<p class="num">${result.data.flowers }</p>
+				<p class="num">${result.data.followers }</p>
 				<p class="tit">粉丝数</p>
 			</div>
 			</div>
@@ -43,92 +43,32 @@
 				<div class="tit">新品上架</div>
 			</div>
 			<div class="xinpinList">
+				<c:forEach items="${result.data.extras.newGoods }" var="goods">
 				<div class="li">
-					<img src="${pageContext.servletContext.contextPath }/resources/img/FX.jpg" alt="" />
-					<p class="tit">即使商品质量好，也不能漫天要价.</p>
+					<a href="${pageContext.servletContext.contextPath }/goods/info?id=${goods.id }"><img src="${goods.fullHeadImg }" alt="" /></a>
+					<p class="tit">${goods.name }</p>
 					<p class="money">
-						<span class="truemoney">￥123</span>
-						<span class="minmoney">最低实付价￥<b>50</b></span>
+						<span class="truemoney">￥${goods.price }</span>
+						<span class="minmoney">最低实付价￥<b>${goods.extras.miniPrice }</b></span>
 					</p>
 				</div>
-				<div class="li">
-					<img src="${pageContext.servletContext.contextPath }/resources/img/FX.jpg" alt="" />
-					<p class="tit">即使商品质量好，也不能漫天要价.</p>
-					<p class="money">
-						<span class="truemoney">￥123</span>
-						<span class="minmoney">最低实付价￥<b>50</b></span>
-					</p>
-				</div>
-				<div class="li">
-					<img src="${pageContext.servletContext.contextPath }/resources/img/FX.jpg" alt="" />
-					<p class="tit">即使商品质量好，也不能漫天要价.</p>
-					<p class="money">
-						<span class="truemoney">￥123</span>
-						<span class="minmoney">最低实付价￥<b>50</b></span>
-					</p>
-				</div>
-				<div class="li">
-					<img src="${pageContext.servletContext.contextPath }/resources/img/FX.jpg" alt="" />
-					<p class="tit">即使商品质量好，也不能漫天要价.</p>
-					<p class="money">
-						<span class="truemoney">￥123</span>
-						<span class="minmoney">最低实付价￥<b>50</b></span>
-					</p>
-				</div>
-				<div class="li">
-					<img src="${pageContext.servletContext.contextPath }/resources/img/FX.jpg" alt="" />
-					<p class="tit">即使商品质量好，也不能漫天要价.</p>
-					<p class="money">
-						<span class="truemoney">￥123</span>
-						<span class="minmoney">最低实付价￥<b>50</b></span>
-					</p>
-				</div>
+				</c:forEach>
 				<div class="clear"></div>
 			</div>
 			<div class="rexaioTit">
 				<div class="tit">销售明星</div>
 			</div>
 			<div class="rexaioList">
+				<c:forEach items="${result.data.extras.hotGoods }" var="goods">
 				<div class="li">
-					<img src="${pageContext.servletContext.contextPath }/resources/img/FX.jpg" alt="" />
-					<p class="tit">即使商品质量好，也不能漫天要价.</p>
+					<a href="${pageContext.servletContext.contextPath }/goods/info?id=${goods.id }"><img src="${goods.fullHeadImg }" alt="" /></a>
+					<p class="tit">${goods.name }</p>
 					<p class="money">
-						<span class="truemoney">￥123</span>
-						<span class="minmoney">最低实付价￥<b>50</b></span>
+						<span class="truemoney">￥${goods.price }</span>
+						<span class="minmoney">最低实付价￥<b>${goods.extras.miniPrice }</b></span>
 					</p>
 				</div>
-				<div class="li">
-					<img src="${pageContext.servletContext.contextPath }/resources/img/FX.jpg" alt="" />
-					<p class="tit">即使商品质量好，也不能漫天要价.</p>
-					<p class="money">
-						<span class="truemoney">￥123</span>
-						<span class="minmoney">最低实付价￥<b>50</b></span>
-					</p>
-				</div>
-				<div class="li">
-					<img src="${pageContext.servletContext.contextPath }/resources/img/FX.jpg" alt="" />
-					<p class="tit">即使商品质量好，也不能漫天要价.</p>
-					<p class="money">
-						<span class="truemoney">￥123</span>
-						<span class="minmoney">最低实付价￥<b>50</b></span>
-					</p>
-				</div>
-				<div class="li">
-					<img src="${pageContext.servletContext.contextPath }/resources/img/FX.jpg" alt="" />
-					<p class="tit">即使商品质量好，也不能漫天要价.</p>
-					<p class="money">
-						<span class="truemoney">￥123</span>
-						<span class="minmoney">最低实付价￥<b>50</b></span>
-					</p>
-				</div>
-				<div class="li">
-					<img src="${pageContext.servletContext.contextPath }/resources/img/FX.jpg" alt="" />
-					<p class="tit">即使商品质量好，也不能漫天要价.</p>
-					<p class="money">
-						<span class="truemoney">￥123</span>
-						<span class="minmoney">最低实付价￥<b>50</b></span>
-					</p>
-				</div>
+				</c:forEach>
 				<div class="clear"></div>
 			</div>
 			<!--footer-->

@@ -126,16 +126,12 @@ public class UserController extends CommonService{
 	}
 	
 	//下发用户交易记录
-	@RequestMapping("/tradeLog")
-	public Result userTradeLog(@RequestParam(required=false)String uuid){
-		Result result=null;
-		try {
-			result=userTradeLogService.queryUserTradeLogs(uuid);
-		} catch (Exception e) {
-			result=userService.putResult(AppConstant.SYSTEM_ERROR_CODE);
-			e.printStackTrace();
-		}
-		return result;
+	@RequestMapping("/account")
+	public String userTradeLog(Model model){
+		Result result=userTradeLogService.queryUserTradeLogs();
+		System.out.println(JSONObject.fromObject(result));
+		model.addAttribute("result", result);
+		return "user/myAccount";
 	}
 	
 }

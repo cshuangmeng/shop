@@ -17,6 +17,8 @@ import com.gaoling.webshop.order.pojo.Order;
 import com.gaoling.webshop.order.service.OrderService;
 import com.gaoling.webshop.system.pojo.Result;
 
+import net.sf.json.JSONObject;
+
 @Controller
 @RequestMapping("/order")
 @CrossOrigin(methods = RequestMethod.POST, origins = AppConstant.TRUST_CROSS_ORIGINS)
@@ -63,15 +65,11 @@ public class OrderController {
 	
 	//订单列表
 	@RequestMapping("/list")
-	public Result orderList(@RequestParam(required=false)String uuid,@RequestParam(defaultValue="-1")String state){
-		Result result=null;
-		try {
-			result=orderService.queryOrderList(uuid, Integer.parseInt(state));
-		} catch (Exception e) {
-			result=orderService.putResult(AppConstant.SYSTEM_ERROR_CODE);
-			e.printStackTrace();
-		}
-		return result;
+	public String orderList(@RequestParam(defaultValue="-1")String state,Model model){
+		Result result=orderService.queryOrderList(Integer.parseInt(state));
+		System.out.println(JSONObject.fromObject(result));
+		model.addAttribute("result", result);
+		return "user/orderList";
 	}
 	
 	//订单再支付

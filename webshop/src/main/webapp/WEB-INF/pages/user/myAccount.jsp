@@ -22,8 +22,8 @@
 			<!--我的钱包-->
 			<div class="wallet">
 				<div class="wallet_top">
-					<span style="margin:0 224px 0 30px;">部落币：100</span>
-					<span>部落分：100</span>
+					<span style="margin:0 224px 0 30px;">部落币：${sessionScope.user.coin }</span>
+					<span>部落分：${sessionScope.user.point }</span>
 				</div>
 				<div class="wallet_bottom">
 					<p class="wallet_bottom_1">
@@ -35,12 +35,24 @@
 							<span>事件</span>
 							<span>全部类型</span>
 							<span>金额</span>
-							<span>对应订单号</span>
-							<span>操作</span>
 						</div>
-						<div class="wallet_bottom_2_con">
-							<p>当前没有交易记录，先去逛会吧...</p>
-						</div>
+						<c:choose>
+							<c:when test="${not empty result.data }">
+								<c:forEach items="${result.data }" var="log">
+								<div class="wallet_bottom_2_title">
+									<span style="margin-left: 20px;">${log.tradeNo }</span>
+									<span>${log.item }</span>
+									<span>${log.desc }</span>
+									<span>${log.amount }</span>
+								</div>
+								</c:forEach>
+							</c:when>
+							<c:otherwise>
+								<div class="wallet_bottom_2_con">
+									<p>当前没有交易记录，先去逛会吧...</p>
+								</div>
+							</c:otherwise>
+						</c:choose>
 					</div>
 				</div>
 			</div>

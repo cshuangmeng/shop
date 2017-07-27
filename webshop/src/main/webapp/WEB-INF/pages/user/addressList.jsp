@@ -23,49 +23,33 @@
 			<div class="goods_address">
 				<div class="goods_address_title">
 					<p class="goods_address_title_txt1">已保存的收获地址</p>
-					<p class="goods_address_title_txt2">您已经创建1个收货地址，最多可以创建10个</p>
+					<p class="goods_address_title_txt2">您已经创建${result.data.size }个收货地址，最多可以创建10个</p>
 				</div>
 				<div class="goods_address_title_con">
+					<c:forEach items="${result.data.addresses }" var="address">
 					<ul class="goods_address_title_con_1">
 						<li>
 							<img src="${pageContext.servletContext.contextPath }/resources/img/1_04.png"/>
-							<p>陈陈陈</p>
+							<p>${address.consigner }</p>
 						</li>
 						<li>
 							<img src="${pageContext.servletContext.contextPath }/resources/img/2_04.png"/>
-							<p>上海市普陀区兰溪路   君悦苑3号楼   </p>
+							<p>${address.address }</p>
 						</li>
 						<li>
 							<img src="${pageContext.servletContext.contextPath }/resources/img/3_04.png"/>
-							<p>152001010101</p>
+							<p>${address.mobile }</p>
 						</li>
+						<c:if test="${address.isDefault>0 }">
 						<li class="corner_top">
 							<p>默认地址</p>
 						</li>
+						</c:if>
 						<li class="corner_bottom">
 							<img src="${pageContext.servletContext.contextPath }/resources/img/6_03.png" />
 						</li>
 					</ul>
-					<ul class="goods_address_title_con_1">
-						<li>
-							<img src="${pageContext.servletContext.contextPath }/resources/img/1_04.png"/>
-							<p>陈陈陈</p>
-						</li>
-						<li>
-							<img src="${pageContext.servletContext.contextPath }/resources/img/2_04.png"/>
-							<p>上海市普陀区兰溪路   君悦苑3号楼   </p>
-						</li>
-						<li>
-							<img src="${pageContext.servletContext.contextPath }/resources/img/3_04.png"/>
-							<p>152001010101</p>
-						</li>
-						<li class="corner_top">
-							<p>默认地址</p>
-						</li>
-						<li class="corner_bottom">
-							<img src="${pageContext.servletContext.contextPath }/resources/img/6_03.png" />
-						</li>
-					</ul>
+					</c:forEach>
 					<ul class="goods_address_title_con_2">
 						<li class="X"></li>
 						<li class="Y"></li>
@@ -75,11 +59,12 @@
 				<p class="add_goods_address">
 					新增收货地址
 				</p>
+				<form action="${pageContext.servletContext.contextPath }/address/update" method="post">
 				<ul class="add_goods_address_con">
 					<li class="add_goods_address_con_1">
 						<div class="add_goods_address_con_1_img"></div>
 						<p>收货人</p>
-						<input type="text" value="收货人姓名" />
+						<input type="text" value="" name="consigner"/>
 					</li>
 					<li class="add_goods_address_con_2">
 						<div class="add_goods_address_con_2_img"></div>
@@ -88,29 +73,16 @@
 						<input type="text" value="市" />
 						<input type="text" value="区/县" />
 						<input style="margin-left: 13px;" type="text" value="乡镇/街道" />
-						<input style="background: none;" class="last_input" type="text" value="详细地址" />
+						<input style="background: none;" name="address" class="last_input" type="text" value="详细地址" />
 					</li>
 					<li class="add_goods_address_con_1">
 						<div class="add_goods_address_con_1_img"></div>
 						<p>手机号</p>
-						<input style="width: 168px;" type="text" value="手机号" />
-					</li>
-				</ul>
-				<ul id="radio_choice">
-					<li>
-						<input type="radio" checked="checked" name="choice" />
-						<span>家庭地址</span>
-					</li>
-					<li style="margin: 0 90px;">
-						<input type="radio" name="choice" />
-						<span>家庭地址</span>
-					</li>
-					<li>
-						<input type="radio" name="choice" />
-						<span>其他</span>
+						<input style="width: 168px;" type="text" value="" name="mobile" />
 					</li>
 				</ul>
 				<p class="keep_address">保存收货地址</p>
+				</form>
 			</div>
 		</div>
 		<!--footer-->

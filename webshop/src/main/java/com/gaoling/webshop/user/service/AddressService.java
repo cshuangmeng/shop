@@ -4,13 +4,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.gaoling.webshop.common.AppConstant;
 import com.gaoling.webshop.common.DataUtil;
 import com.gaoling.webshop.common.DateUtil;
+import com.gaoling.webshop.common.ThreadCache;
 import com.gaoling.webshop.system.pojo.Result;
 import com.gaoling.webshop.system.service.CommonService;
 import com.gaoling.webshop.user.dao.AddressDao;
@@ -22,31 +22,22 @@ public class AddressService extends CommonService{
 
 	@Autowired
 	private AddressDao addressDao;
-	@Autowired
-	private UserService userService;
 	
 	//加载用户地址
-	public Result loadMyAddresses(String uuid){
-		//检查参数
-		if(StringUtils.isEmpty(uuid)){
-			return putResult(AppConstant.PARAM_IS_NULL);
-		}
+	public Result loadMyAddresses(){
 		//加载用户
-		User user=userService.getUserByUUID(uuid);
+		User user=(User)ThreadCache.getData(AppConstant.STORE_USER_PARAM_NAME);
 		if(null==user){
 			return putResult(AppConstant.USER_NOT_EXISTS);
 		}
-		return putResult(queryAddresses(DataUtil.mapOf("userId",user.getId())));
+		List<Address> addresses=queryAddresses(DataUtil.mapOf("userId",user.getId()));
+		return putResult(DataUtil.mapOf("addresses",addresses,"size",addresses.size()));
 	}
 	
 	//新增地址
-	public Result saveNewAddress(Address address,String uuid){
-		//检查参数
-		if(StringUtils.isEmpty(uuid)){
-			return putResult(AppConstant.PARAM_IS_NULL);
-		}
+	public Result saveNewAddress(Address address){
 		//加载用户
-		User user=userService.getUserByUUID(uuid);
+		User user=(User)ThreadCache.getData(AppConstant.STORE_USER_PARAM_NAME);
 		if(null==user){
 			return putResult(AppConstant.USER_NOT_EXISTS);
 		}
@@ -58,13 +49,9 @@ public class AddressService extends CommonService{
 	}
 	
 	//新增地址
-	public Result getAddressInfo(String uuid,int id){
-		//检查参数
-		if(StringUtils.isEmpty(uuid)){
-			return putResult(AppConstant.PARAM_IS_NULL);
-		}
+	public Result getAddressInfo(int id){
 		//加载用户
-		User user=userService.getUserByUUID(uuid);
+		User user=(User)ThreadCache.getData(AppConstant.STORE_USER_PARAM_NAME);
 		if(null==user){
 			return putResult(AppConstant.USER_NOT_EXISTS);
 		}
@@ -77,13 +64,9 @@ public class AddressService extends CommonService{
 	}
 	
 	//修改地址
-	public Result updateOldAddress(Address address,String uuid){
-		//检查参数
-		if(StringUtils.isEmpty(uuid)||address.getId()<=0){
-			return putResult(AppConstant.PARAM_IS_NULL);
-		}
+	public Result updateOldAddress(Address address){
 		//加载用户
-		User user=userService.getUserByUUID(uuid);
+		User user=(User)ThreadCache.getData(AppConstant.STORE_USER_PARAM_NAME);
 		if(null==user){
 			return putResult(AppConstant.USER_NOT_EXISTS);
 		}

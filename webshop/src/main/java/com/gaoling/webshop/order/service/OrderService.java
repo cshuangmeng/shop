@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.gaoling.webshop.common.AppConstant;
 import com.gaoling.webshop.common.DataUtil;
 import com.gaoling.webshop.common.DateUtil;
+import com.gaoling.webshop.common.ThreadCache;
 import com.gaoling.webshop.goods.pojo.Goods;
 import com.gaoling.webshop.goods.service.GoodsService;
 import com.gaoling.webshop.order.dao.OrderDao;
@@ -83,24 +84,22 @@ public class OrderService extends CommonService{
 	}
 	
 	//查询订单列表
-	public Result queryOrderList(String uuid,int state){
-		//检查参数
-		if(StringUtils.isEmpty(uuid)){
-			return putResult(AppConstant.PARAM_IS_NULL);
-		}
+	public Result queryOrderList(int state){
 		//加载用户
-		User user=userService.getUserByUUID(uuid);
+		User user=(User)ThreadCache.getData(AppConstant.STORE_USER_PARAM_NAME);
 		if(null==user){
 			return putResult(AppConstant.USER_NOT_EXISTS);
 		}
-		List<Map<String,Object>> orders=orderDao.queryOrderList(DataUtil.mapOf("userId",user.getId(),"states",Arrays.asList(state)));
+		List<Map<String,Object>> orders=orderDao.queryOrderList(DataUtil.mapOf("userId",user.getId(),"state",state));
 		//按照订单号分组订单
 		Map<String,List<Map<String,Object>>> orderMap=orders.stream().collect(Collectors
 				.groupingBy(r->r.get("tradeNo").toString(),Collectors.toList()));
 		List<Map<Object,Object>> result=orderMap.entrySet().stream().map(k->{
 			Map<String,Object> mainOrder=k.getValue().stream().filter(v->Integer.parseInt(v.get("refId").toString())==0).findFirst().get();
 			List<Map<Object,Object>> goods=k.getValue().stream().map(v->DataUtil.mapOf("id",v.get("goodsId"),"name"
-					,v.get("goodsName"),"headImg",AppConstant.OSS_CDN_SERVER+v.get("headImg"),"amount",v.get("amount"))).collect(Collectors.toList());
+					,v.get("goodsName"),"headImg",AppConstant.OSS_CDN_SERVER+v.get("headImg")
+					,"price",v.get("price"),"typeName",v.get("typeName")
+					,"amount",v.get("amount"))).collect(Collectors.toList());
 			float totalPrice=k.getValue().stream().map(v->{
 				float price=Float.parseFloat(v.get("listPrice").toString());
 				int point=Integer.parseInt(v.get("point").toString());
@@ -111,7 +110,7 @@ public class OrderService extends CommonService{
 					,"tradeNo",k.getKey(),"totalPrice",totalPrice,"goods",goods,"state",mainOrder.get("state")
 					,"point",mainOrder.get("point"),"coin",mainOrder.get("coin"),"payWay",mainOrder.get("payWay"));
 		}).sorted((a,b)->b.get("createTime").toString().compareTo(a.get("createTime").toString())).collect(Collectors.toList());
-		return putResult(DataUtil.mapOf("orders",result));
+		return putResult(DataUtil.mapOf("orders",result,"size",result.size()));
 	}
 	
 	//用户下单

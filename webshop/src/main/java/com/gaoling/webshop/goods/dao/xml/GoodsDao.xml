@@ -6,7 +6,9 @@
 	<!-- 表头 -->
 	<sql id="goodsHead">
 		select id,`name`,type_id typeId,shop_id shopId,price,cash_discount cashDiscount,details,head_img headImg,info_imgs infoImgs,detail_imgs detailImgs
-		,coin_enable coinEnable,point_enable pointEnable,state,create_time createTime from goods t where t.state=1
+		,coin_enable coinEnable,point_enable pointEnable,state,create_time createTime
+		,(select count(1) from `order` where goods_id=t.id and state in (1,2,3)) orderAmount
+		from goods t where t.state=1
 	</sql>
 
 	<!-- 查询所有商品 -->

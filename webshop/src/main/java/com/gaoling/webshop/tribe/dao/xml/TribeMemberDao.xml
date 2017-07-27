@@ -21,7 +21,8 @@
 	
 	<!-- 加载指定部落成员列表 -->
 	<select id="queryMyTribeMembers" resultType="java.util.Map">
-		select t1.id,t1.head_img headImg,t1.nickname,date_format(t.join_time,'%Y-%m-%d %H:%i:%s') joinTime from tribe_member t inner join `user` t1 on (t.user_id=t1.id)
+		select t1.id userId,t2.id tribeId,t1.head_img headImg,t1.nickname,date_format(t.join_time,'%Y-%m-%d %H:%i:%s') joinTime from tribe_member t
+		inner join `user` t1 on (t.user_id=t1.id)  inner join tribe t2 on (t2.user_id=t1.id)
 		where t.tribe_id=#{tribeId} order by t.join_time desc
 	</select>
 	

@@ -5,26 +5,26 @@
 	<div class="mySpace_left_con_t">
 		<ul class="mySpace_left_con">
 			<li class="mySpace_left_con_1">
-				<img src="${pageContext.servletContext.contextPath }/resources/img/1_03.png"/>
+				<img src="${sessionScope.user.headImg }1"/>
 				<p>我的账户</p>
 				<img style="margin-top: 4px;" src="${pageContext.servletContext.contextPath }/resources/img/corner_01.png"/>
 			</li>
-			<li style="color: #DB3E40;" class="mySpace_left_con_2">订单管理</li>
-			<li class="mySpace_left_con_3"><a href="${pageContext.servletContext.contextPath }/user/address">收货地址</a></li>
+			<li style="color: #DB3E40;" class="mySpace_left_con_2"><a href="${pageContext.servletContext.contextPath }/order/list">订单管理</a></li>
+			<li class="mySpace_left_con_3"><a href="${pageContext.servletContext.contextPath }/address/list">收货地址</a></li>
 		</ul>
 		<ul style="margin: 20px 0;" class="mySpace_left_con">
 			<li class="mySpace_left_con_1">
 				<img src="${pageContext.servletContext.contextPath }/resources/img/5_03.png"/>
 				<p>我的资产</p>
 			</li>
-			<li class="mySpace_left_con_2">钱包</li>
+			<li class="mySpace_left_con_2"><a href="${pageContext.servletContext.contextPath }/user/account">钱包</a></li>
 		</ul>
 		<ul class="mySpace_left_con">
 			<li class="mySpace_left_con_1">
 				<img src="${pageContext.servletContext.contextPath }/resources/img/3_03.png"/>
 				<p>我的部落</p>
 			</li>
-			<li class="mySpace_left_con_2">成员</li>
+			<li class="mySpace_left_con_2"><a href="${pageContext.servletContext.contextPath }/tribe/info">成员</a></li>
 		</ul>
 	</div>
 </div>
