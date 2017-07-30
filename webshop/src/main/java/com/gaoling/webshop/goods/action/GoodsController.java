@@ -28,22 +28,22 @@ public class GoodsController {
 	
 	//进入商品列表
 	@RequestMapping("/list")
-	public String goodsListIndex(@RequestParam HashMap<Object,Object> param,Model model){
+	public String goodsListIndex(Model model){
 		model.addAttribute("result",shopService.putResult(DataUtil.mapOf("shops",shopService.queryShops(DataUtil.mapOf()))));
 		return "goods/goodsList";
 	}
 	
 	//搜索商品
 	@RequestMapping("/search")
-	public String searchGoods(@RequestParam HashMap<Object,Object> param,Model model){
+	public String searchGoods(@RequestParam HashMap<Object,Object> param,Model model)throws Exception{
 		model.addAttribute("result", goodsService.loadGoods(param));
 		return "goods/goodsResult";
 	}
 	
 	//加载商品详情
 	@RequestMapping("/info")
-	public String loadGoodsDetail(@RequestParam(defaultValue="0")String id,@RequestParam(required=false)String uuid,Model model){
-		Result result=goodsService.loadGoodsDetail(Integer.parseInt(id),uuid);
+	public String loadGoodsDetail(@RequestParam(defaultValue="0")String id,Model model){
+		Result result=goodsService.loadGoodsDetail(Integer.parseInt(id));
 		model.addAttribute("result",result);
 		return "goods/goodsDetail";
 	}

@@ -46,6 +46,13 @@
 				and (t.id=#{param.mainOrderId} or t.ref_id=#{param.mainOrderId})
 			</if>
 		</trim>
+		<if test="param.orderBy!=null">
+			order by $(param.orderBy)
+		</if>
+		order by t.create_time desc
+		<if test="param.limit!=null and param.limit>0">
+			limit #(param.offset),#(param.limit)
+		</if>
 	</select>
 	
 	<!-- 查询订单列表 -->
@@ -70,7 +77,12 @@
 				#{typeId}
 			</foreach>
 		</if>
-		order by t.create_time desc,t.id desc
+		<if test="param.orderBy!=null">
+			order by ${param.orderBy}
+		</if>
+		<if test="param.limit!=null and param.limit>0">
+			limit #{param.offset},#{param.limit}
+		</if>
 	</select>
 	
 	<!-- 查询单一订单 -->

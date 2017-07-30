@@ -2,7 +2,9 @@ package com.gaoling.webshop.order.pojo;
 
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -30,6 +32,7 @@ public class Order {
 	private Date createTime;
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date signTime;
+	private Map<String, Object> extras = new HashMap<String, Object>();
 
 	public int getId() {
 		return id;
@@ -181,6 +184,14 @@ public class Order {
 
 	public void setSignTime(Date signTime) {
 		this.signTime = signTime;
+	}
+
+	public Map<String, Object> getExtras() {
+		return extras;
+	}
+
+	public void setExtras(Map<String, Object> extras) {
+		this.extras = extras;
 	}
 
 	// 正常订单

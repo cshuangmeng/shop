@@ -23,7 +23,7 @@
 			<div class="member">
 				<ul class="member_con">
 					<li>
-						<img src="${sessionScope.user.headImg }1"/>
+						<img src="${sessionScope.user.headImg }"/>
 					</li>
 					<li style="margin: 0 80px 0 28px;">
 						<p>部落名称：${result.data.tribe.nickname }</p>

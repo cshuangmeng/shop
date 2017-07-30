@@ -20,6 +20,7 @@
 				<%@include file="../util/menu.jsp" %>
 			</div>
 			<!--goodsDetail-->
+			<input type="hidden" id="goodsId" value="${result.data.goods.id }"/>
 			<div class="goodsDetail">
 				<div class="goods">
 					<div class="left">
@@ -49,7 +50,7 @@
 								<button class="increase">+</button>
 							</div>
 						</div>
-						<div class="btn">
+						<div class="btn" enable="${result.data.goods.extras.buyEnable }" amount="${result.data.goods.extras.buyEnable }">
 							<div class="shopcar">加入购物车</div>
 							<div class="pay">立即购买</div>
 						</div>

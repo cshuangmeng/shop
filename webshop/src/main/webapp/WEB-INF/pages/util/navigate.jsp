@@ -7,7 +7,7 @@
 			<li class="mySpace_left_con_1">
 				<img src="${sessionScope.user.headImg }1"/>
 				<p>我的账户</p>
-				<img style="margin-top: 4px;" src="${pageContext.servletContext.contextPath }/resources/img/corner_01.png"/>
+				
 			</li>
 			<li style="color: #DB3E40;" class="mySpace_left_con_2"><a href="${pageContext.servletContext.contextPath }/order/list">订单管理</a></li>
 			<li class="mySpace_left_con_3"><a href="${pageContext.servletContext.contextPath }/address/list">收货地址</a></li>

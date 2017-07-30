@@ -50,7 +50,7 @@ public class PayService {
 		paramMap.put("timeStamp", param.getTimestamp());
 		paramMap.put("time_start",param.getStartTime());
 		paramMap.put("trade_type",param.getTradeType());
-		paramMap.put("openid",param.getOpenId());
+		paramMap.put("product_id", param.getTradeNo());
 		paramMap.put("notify_url", AppConstant.USERMP_PAY_NOTIFY);
 		paramMap.put("sign", SignUtil.signValue(paramMap, "MD5",AppConstant.USERMP_PAY_SECRET_KEY).toUpperCase());
 		Logger.getLogger("file").info("<------请求参数----->"+JSONObject.fromObject(paramMap).toString());
@@ -69,6 +69,7 @@ public class PayService {
 					resultMap.put("signType", "MD5");
 					resultMap.put("paySign", SignUtil.signValue(resultMap, "MD5",AppConstant.USERMP_PAY_SECRET_KEY).toUpperCase());
 					resultMap.put("out_trade_no",paramMap.get("out_trade_no"));
+					resultMap.put("codeUrl", responseMap.get("code_url"));
 				}
 			}
 		}

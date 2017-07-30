@@ -12,6 +12,7 @@ import com.gaoling.webshop.goods.pojo.Goods;
 public interface GoodsDao {
 
 	List<Goods> queryGoods(@Param("param")Map<Object,Object> param);
+	int queryGoodsCount(@Param("param")Map<Object,Object> param);
 	void addGoods(Goods goods);
 	
 }

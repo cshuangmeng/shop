@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<input type="hidden" name="page" value="${result.data.page }"/>
+<input type="hidden" name="total" value="${result.data.total }"/>
 <c:if test="${not empty result.data.goods }">
 <c:forEach items="${result.data.goods }" var="g">
 <a href="${pageContext.servletContext.contextPath }/goods/info?id=${g.id}">

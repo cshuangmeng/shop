@@ -10,10 +10,9 @@
 		,(select count(1) from `order` where goods_id=t.id and state in (1,2,3)) orderAmount
 		from goods t where t.state=1
 	</sql>
-
-	<!-- 查询所有商品 -->
-	<select id="queryGoods" resultType="com.gaoling.webshop.goods.pojo.Goods">
-		<include refid="goodsHead"/>
+	
+	<!-- 查询条件 -->
+	<sql id="goodsWhere">
 		<if test="param.typeId!=null">
 			and t.type_id=#{param.typeId}
 		</if>
@@ -26,6 +25,23 @@
 		<if test="param.shopId!=null">
 			and t.shop_id=#{param.shopId}
 		</if>
+		<choose>
+			<when test="param.minPrice!=null and param.maxPrice!=null">
+				and t.price between ${param.minPrice} and ${param.maxPrice}
+			</when>
+			<when test="param.minPrice!=null">
+				and t.price&gt;=${param.minPrice}
+			</when>
+			<when test="param.maxPrice!=null">
+				and t.price&lt;=${param.maxPrice}
+			</when>
+		</choose>
+		<if test="param.shopIds!=null and param.shopIds.size()>0">
+			and t.shop_id in
+			<foreach collection="param.shopIds" item="shopId" open="(" separator="," close=")">
+				#{shopId}
+			</foreach>
+		</if>
 		<if test="param.ids!=null and param.ids.size()>0">
 			and t.id in
 			<foreach collection="param.ids" item="id" open="(" separator="," close=")">
@@ -34,10 +50,25 @@
 		</if>
 		<if test="param.orderBy!=null">
 			order by ${param.orderBy}
+			<if test="param.orderRule!=null">
+				${param.orderRule}
+			</if>
 		</if>
 		<if test="param.limit!=null and param.limit>0">
 			limit #{param.offset},#{param.limit}
 		</if>
+	</sql>
+
+	<!-- 查询所有商品 -->
+	<select id="queryGoods" resultType="com.gaoling.webshop.goods.pojo.Goods">
+		<include refid="goodsHead"/>
+		<include refid="goodsWhere"/>
+	</select>
+	
+	<!-- 查询商品数量 -->
+	<select id="queryGoodsCount" resultType="int">
+		select count(1) as amount from goods t where t.state=1
+		<include refid="goodsWhere"/>
 	</select>
 	
 	<!-- 保存商品信息 -->

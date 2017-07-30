@@ -59,7 +59,7 @@
 				<p class="add_goods_address">
 					新增收货地址
 				</p>
-				<form action="${pageContext.servletContext.contextPath }/address/update" method="post">
+				<form action="${pageContext.servletContext.contextPath }/address/update" method="post" style="margin-bottom:100px;">
 				<ul class="add_goods_address_con">
 					<li class="add_goods_address_con_1">
 						<div class="add_goods_address_con_1_img"></div>

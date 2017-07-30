@@ -134,6 +134,7 @@ input::-webkit-input-placeholder{
     width: 19px;
     top: 16px;
     right: 15px;
+    cursor: pointer;
 }
 
 /*footer*/

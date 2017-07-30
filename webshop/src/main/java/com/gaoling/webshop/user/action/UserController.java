@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gaoling.webshop.common.AppConstant;
 import com.gaoling.webshop.common.ThreadCache;
@@ -75,6 +76,13 @@ public class UserController extends CommonService{
 		return "redirect:/index";
 	}
 	
+	//用户登录
+	@RequestMapping("/logout")
+	public String logout(HttpServletRequest request){
+		request.getSession().invalidate();
+		return "redirect:/login";
+	}
+	
 	//我的购物车
 	@RequestMapping("/car")
 	public String myShoppingCar(Model model){
@@ -87,11 +95,11 @@ public class UserController extends CommonService{
 	
 	//增加指定数量的商品至购物车中
 	@RequestMapping("/addGoods")
-	public Result addShoppingCar(@RequestParam(required=false) String uuid
-			,@RequestParam(defaultValue="0")String goodsId,@RequestParam(defaultValue="0")String amount){
+	@ResponseBody
+	public Result addShoppingCar(@RequestParam(defaultValue="0")String goodsId,@RequestParam(defaultValue="0")String amount){
 		Result result=null;
 		try {
-			result=shoppingCarService.addGoodsToShoppingCar(Integer.parseInt(goodsId), uuid, Integer.parseInt(amount));
+			result=shoppingCarService.addGoodsToShoppingCar(Integer.parseInt(goodsId), Integer.parseInt(amount));
 		} catch (Exception e) {
 			result=userService.putResult(AppConstant.SYSTEM_ERROR_CODE);
 			e.printStackTrace();
@@ -101,10 +109,11 @@ public class UserController extends CommonService{
 	
 	//删除购物车内的商品
 	@RequestMapping("/dropGoods")
-	public Result dropShoppingCar(@RequestParam(required=false) String uuid,@RequestParam(defaultValue="0")String goodsId){
+	@ResponseBody
+	public Result dropShoppingCar(@RequestParam(defaultValue="0")String goodsId){
 		Result result=null;
 		try {
-			result=shoppingCarService.removeGoodsFromShoppingCar(uuid, Integer.parseInt(goodsId));
+			result=shoppingCarService.removeGoodsFromShoppingCar(Integer.parseInt(goodsId));
 		} catch (Exception e) {
 			result=userService.putResult(AppConstant.SYSTEM_ERROR_CODE);
 			e.printStackTrace();
@@ -114,10 +123,11 @@ public class UserController extends CommonService{
 	
 	//一次添加多个商品至购物车
 	@RequestMapping("/addMultiGoods")
-	public Result addMultiShoppingCar(@RequestParam(required=false)String uuid,@RequestParam(required=false)String items){
+	@ResponseBody
+	public Result addMultiShoppingCar(@RequestParam(required=false)String items){
 		Result result=null;
 		try {
-			result=shoppingCarService.addMultiGoodsToShoppingCar(items, uuid);
+			result=shoppingCarService.addMultiGoodsToShoppingCar(items);
 		} catch (Exception e) {
 			result=userService.putResult(AppConstant.SYSTEM_ERROR_CODE);
 			e.printStackTrace();

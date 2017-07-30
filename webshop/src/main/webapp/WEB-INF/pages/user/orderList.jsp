@@ -36,9 +36,9 @@
 				</div>
 				<ul class="mySpace_right_title_01_con">
 					<li style="margin:0 52px 0 14px;">
-						<img  src="${goods.headImg1 }"/>
+						<img  src="${goods.headImg }"/>
 					</li>
-					<li>
+					<li style="width:210px;">
 						<p>${goods.name }</p>
 						<p>${goods.typeName }</p>
 					</li>

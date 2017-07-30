@@ -1,5 +1,6 @@
 package com.gaoling.webshop.goods.service;
 
+import java.net.URLDecoder;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,7 @@ import com.gaoling.webshop.common.AppConstant;
 import com.gaoling.webshop.common.DataUtil;
 import com.gaoling.webshop.common.DateUtil;
 import com.gaoling.webshop.common.OSSUtil;
+import com.gaoling.webshop.common.ThreadCache;
 import com.gaoling.webshop.goods.dao.GoodsDao;
 import com.gaoling.webshop.goods.pojo.Goods;
 import com.gaoling.webshop.goods.pojo.Shop;
@@ -23,7 +25,6 @@ import com.gaoling.webshop.order.service.OrderService;
 import com.gaoling.webshop.system.pojo.Result;
 import com.gaoling.webshop.system.service.CommonService;
 import com.gaoling.webshop.user.pojo.User;
-import com.gaoling.webshop.user.service.UserService;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -37,16 +38,11 @@ public class GoodsService extends CommonService{
 	private OrderService orderService;
 	@Autowired
 	private ShopService shopService;
-	@Autowired
-	private UserService userService;
 	
 	//查询商品详情
-	public Result loadGoodsDetail(int id,String uuid){
+	public Result loadGoodsDetail(int id){
 		Goods goods=getGoods(id);
-		if(null==goods){
-			return putResult(AppConstant.GOODS_NOT_EXISTS);
-		}
-		User user=StringUtils.isNotEmpty(uuid)?userService.getUserByUUID(uuid):null;
+		User user=(User)ThreadCache.getData(AppConstant.STORE_USER_PARAM_NAME);
 		Shop shop=shopService.getShop(goods.getShopId());
 		//追加其他参数
 		int sellAmount=orderService.queryOrders(DataUtil.mapOf("goodsId",id,"states"
@@ -112,9 +108,38 @@ public class GoodsService extends CommonService{
 	}
 	
 	//查询商品列表
-	public Result loadGoods(Map<Object,Object> param){
+	public Result loadGoods(Map<Object,Object> param)throws Exception{
+		//设置门店
+		if(!DataUtil.isEmpty(param.get("shopIds"))){
+			param.put("shopIds", Arrays.asList(param.get("shopIds").toString().split(","))
+					.stream().map(s->Integer.parseInt(s)).collect(Collectors.toList()));
+		}
 		int typeId=null!=param.get("typeId")?Integer.parseInt(param.get("typeId").toString()):0;
-		JSONObject json=JSONObject.fromObject(getString("prepare_sell_recommend"));
+		int total=queryGoodsCount(param);
+		//分页设置
+		JSONObject json=JSONObject.fromObject(getString("goods_list_pagesize"));
+		int page=!DataUtil.isEmpty(param.get("page"))?Integer.parseInt(param.get("page").toString()):1;
+		int limit=json.getInt("pagesize");
+		param.put("offset", (page-1)*limit);
+		param.put("limit", limit);
+		//拼装排序规则
+		if(Goods.GOODS_SORT_TYPE_ENUM.COMPRE.getType()==Integer.parseInt(param.get("sort").toString())){
+			param.put("orderBy", "t.create_time");
+		}else if(Goods.GOODS_SORT_TYPE_ENUM.PRICE.getType()==Integer.parseInt(param.get("sort").toString())){
+			param.put("orderBy", "t.price");
+		}else if(Goods.GOODS_SORT_TYPE_ENUM.DISCOUNT.getType()==Integer.parseInt(param.get("sort").toString())){
+			param.put("orderBy", "t.cash_discount");
+		}
+		if(!DataUtil.isEmpty(param.get("rule"))&&Integer.parseInt(param.get("rule").toString())>0){
+			param.put("orderRule", "desc");
+		}else{
+			param.put("orderRule", "asc");
+		}
+		//商品名称解码
+		if(!DataUtil.isEmpty(param.get("name"))){
+			param.put("name", URLDecoder.decode(URLDecoder.decode(param.get("name").toString(), "UTF-8"), "UTF-8"));
+		}
+		json=JSONObject.fromObject(getString("prepare_sell_recommend"));
 		List<Goods> goods=queryGoods(param);
 		goods.stream().forEach(g->{
 			float miniPrice=g.getCoinEnable()>0||g.getPointEnable()>0?Math.round(g.getPrice()*g.getCashDiscount()):g.getPrice();
@@ -125,9 +150,11 @@ public class GoodsService extends CommonService{
 					.stream().map(i->AppConstant.OSS_CDN_SERVER+i).reduce((a,b)->a+","+b).get();
 			JSONObject recommend=json.getJSONObject("goods_type_"+typeId);
 			recommend.put("imgs", infoImgs);
-			return putResult(DataUtil.mapOf("goods",goods,"recommend",recommend));
+			return putResult(DataUtil.mapOf("goods",goods,"recommend",recommend,"page",page
+					,"total",total%limit>0?total/limit+1:total/limit));
 		}else{
-			return putResult(DataUtil.mapOf("goods",goods));
+			return putResult(DataUtil.mapOf("goods",goods,"page",page
+					,"total",total%limit>0?total/limit+1:total/limit));
 		}
 	}
 	
@@ -210,6 +237,11 @@ public class GoodsService extends CommonService{
 	//加载商品
 	public List<Goods> queryGoods(Map<Object,Object> param){
 		return goodsDao.queryGoods(param);
+	}
+	
+	//查询商品数量
+	public int queryGoodsCount(Map<Object,Object> param){
+		return goodsDao.queryGoodsCount(param);
 	}
 	
 }

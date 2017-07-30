@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.gaoling.webshop.common.AppConstant;
 import com.gaoling.webshop.common.DataUtil;
 import com.gaoling.webshop.common.DateUtil;
+import com.gaoling.webshop.common.ThreadCache;
 import com.gaoling.webshop.goods.pojo.Goods;
 import com.gaoling.webshop.goods.service.GoodsService;
 import com.gaoling.webshop.system.pojo.Result;
@@ -67,19 +68,19 @@ public class ShoppingCarService extends CommonService{
 				.groupingBy(r->r.get("shopName")+"_"+r.get("shopId"),Collectors.toList()));
 		List<Map<Object,Object>> car=result.entrySet().stream().map(k->DataUtil.mapOf("shopName",k.getKey().split("_")[0]
 				,"shopId",k.getKey().split("_")[1],"goods",k.getValue())).collect(Collectors.toList());
-		return putResult(car);
+		return putResult(DataUtil.mapOf("car",car,"freight",getInteger("freight")));
 	}
 	
 	//一次添加多个商品
 	@Transactional
-	public Result addMultiGoodsToShoppingCar(String items,String uuid){
+	public Result addMultiGoodsToShoppingCar(String items){
 		if(StringUtils.isEmpty(items)){
 			return putResult(AppConstant.PARAM_IS_NULL);
 		}
 		String[] data=null;
 		for(String item:items.split("_")){
 			data=item.split(",");
-			Result r=addGoodsToShoppingCar(Integer.parseInt(data[0]), uuid, Integer.parseInt(data[1]));
+			Result r=addGoodsToShoppingCar(Integer.parseInt(data[0]), Integer.parseInt(data[1]));
 			if(r.getCode()>0){
 				return r;
 			}
@@ -89,14 +90,9 @@ public class ShoppingCarService extends CommonService{
 	
 	//添加购物车
 	@Transactional
-	public Result addGoodsToShoppingCar(int goodsId,String uuid,int amount){
-		//检查参数
-		if(StringUtils.isEmpty(uuid)){
-			return putResult(AppConstant.PARAM_IS_NULL);
-		}
-		amount=amount<=0?1:amount;
+	public Result addGoodsToShoppingCar(int goodsId,int amount){
 		//加载用户
-		User user=userService.getUserByUUID(uuid);
+		User user=(User)ThreadCache.getData(AppConstant.STORE_USER_PARAM_NAME);
 		if(null==user){
 			return putResult(AppConstant.USER_NOT_EXISTS);
 		}
@@ -129,16 +125,9 @@ public class ShoppingCarService extends CommonService{
 	
 	//移除购物车
 	@Transactional
-	public Result removeGoodsFromShoppingCar(String uuid,int goodsId){
-		//检查参数
-		if(StringUtils.isEmpty(uuid)){
-			return putResult(AppConstant.PARAM_IS_NULL);
-		}
+	public Result removeGoodsFromShoppingCar(int goodsId){
 		//加载用户
-		User user=userService.getUserByUUID(uuid);
-		if(null==user){
-			return putResult(AppConstant.USER_NOT_EXISTS);
-		}
+		User user=(User)ThreadCache.getData(AppConstant.STORE_USER_PARAM_NAME);
 		shoppingCarDao.removeGoodsFromShoppingCar(user.getId(), Arrays.asList(goodsId));
 		return putResult();
 	}

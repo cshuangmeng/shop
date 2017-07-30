@@ -12,6 +12,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.gaoling.webshop.common.AppConstant;
 import com.gaoling.webshop.common.ThreadCache;
+import com.gaoling.webshop.user.pojo.User;
 
 public class ParameterFilter extends HandlerInterceptorAdapter {
 
@@ -27,7 +28,11 @@ public class ParameterFilter extends HandlerInterceptorAdapter {
             params.put(pName, request.getParameter(pName));
             queryString+=queryString.length()>0?"&"+pName+"="+request.getParameter(pName):pName+"="+request.getParameter(pName);
         }
+        User user=(User)request.getSession().getAttribute(AppConstant.STORE_USER_PARAM_NAME);
         ThreadCache.setData(AppConstant.HTTP_PARAM_NAME, params);
+        if(null!=user){
+        	ThreadCache.setData(AppConstant.STORE_USER_PARAM_NAME, user);
+        }
 		Logger.getLogger("ParameterFilter").info(request.getRequestURI()+(queryString.length()>0?"?"+queryString:""));
 		return true;
 	}

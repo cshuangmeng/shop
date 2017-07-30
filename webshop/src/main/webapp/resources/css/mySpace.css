@@ -1,6 +1,6 @@
 .mySpace{
 	width: 1001px;
-	height: 810px;
+	
 	padding-top: 18px;
 	margin: 0 auto;
 }
@@ -53,7 +53,7 @@
 /*订单管理*/
 .mySpace_right{
 	width: 758px;
-	height:599px;
+	
 	float: left;
 }
 .mySpace_right_title{
@@ -79,6 +79,10 @@
 .mySpace_right_title_01_con{
 	padding-top: 24px;
 	height: 106px;
+}
+.mySpace_right_title_01_con li img{
+	width:70px;
+	display:block;
 }
 .mySpace_right_title_01_con li{
 	float: left;
@@ -116,7 +120,6 @@
 .goods_address{
 	width: 710px;
 	padding-left: 48px;
-	height:599px;
 	float: left;
 }
 .goods_address_title{
@@ -148,6 +151,10 @@
 	position: relative;
 	float: left;
 	margin-right: 20px;
+}
+.goods_address_title_con_1 p{
+	width:210px;
+	display:block;white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
 }
 .goods_address_title_con_1 li{
 	width: 290px;
@@ -358,7 +365,12 @@
 	font-size: 14px;
 	margin-left: 74px;
 	color: #242424;
+	float:left;
 	
+}
+.wallet_bottom_2_title .eve{
+	display:block;white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+	width:70px;
 }
 .wallet_bottom_2_con{
 	width:722px ;

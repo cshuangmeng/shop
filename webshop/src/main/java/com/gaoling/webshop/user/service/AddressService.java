@@ -87,17 +87,10 @@ public class AddressService extends CommonService{
 	}
 	
 	//获取用户的下单地址
-	public Address getNewOrderAddresses(int userId){
+	public List<Address> getNewOrderAddresses(int userId){
 		List<Address> addresses=queryAddresses(DataUtil.mapOf("userId",userId));
-		Address def=null;
-		Optional<Address> ip=addresses.stream().filter(a->a.getIsDefault()>0).findFirst();
-		if(ip.isPresent()){
-			def=ip.get();
-		}else if(addresses.size()>0){
-			addresses.sort((a,b)->b.getCreateTime().compareTo(a.getCreateTime()));
-			def=addresses.get(0);
-		}
-		return def;
+		addresses.sort((a,b)->b.getIsDefault()-a.getIsDefault());
+		return addresses;
 	}
 	
 	//查询地址

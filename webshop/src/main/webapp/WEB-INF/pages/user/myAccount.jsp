@@ -32,7 +32,7 @@
 					<div class="wallet_bottom_2">
 						<div class="wallet_bottom_2_title">
 							<span style="margin-left: 20px;">交易编号</span>
-							<span>事件</span>
+							<span style="margin-left: 177px;">事件</span>
 							<span>全部类型</span>
 							<span>金额</span>
 						</div>
@@ -41,7 +41,7 @@
 								<c:forEach items="${result.data }" var="log">
 								<div class="wallet_bottom_2_title">
 									<span style="margin-left: 20px;">${log.tradeNo }</span>
-									<span>${log.item }</span>
+									<span class="eve">${log.item }</span>
 									<span>${log.desc }</span>
 									<span>${log.amount }</span>
 								</div>

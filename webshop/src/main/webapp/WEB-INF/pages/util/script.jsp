@@ -5,6 +5,7 @@
 <script type="text/javascript" src="${pageContext.servletContext.contextPath }/resources/js/jquery.min.js"></script>
 <script type="text/javascript" src="${pageContext.servletContext.contextPath }/resources/js/config.js"></script>
 <script type="text/javascript" src="${pageContext.servletContext.contextPath }/resources/js/common.js"></script>
+<script type="text/javascript" src="${pageContext.servletContext.contextPath }/resources/js/qrcode.js"></script>
 <script type="text/javascript" src="${pageContext.servletContext.contextPath }/resources/js/bootstrap.min.js"></script>
 <!-- CSRF TOKEN -->
 <meta name="_csrf" content="${_csrf.token}"/>

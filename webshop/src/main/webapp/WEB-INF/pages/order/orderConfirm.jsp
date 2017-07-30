@@ -6,6 +6,7 @@
 		<meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
 		<link rel="stylesheet" type="text/css" href="${pageContext.servletContext.contextPath }/resources/css/orderConfirm.css"/>
 		<%@include file="../util/script.jsp" %>
+		<script type="text/javascript" src="${pageContext.servletContext.contextPath }/resources/js/orderConfirm.js"></script>
 		<title>首页</title>
 	</head>
 	<body>
@@ -22,50 +23,67 @@
 				<div class="middleAddress">
 					<p class="address_txt1">请确认收货地址</p>
 					<ul class="address_con">
-						<li class="address_con1">
+						<c:if test="${not empty result.data.addresses[0] }">
+						<li class="address_con1" addressId=${result.data.addresses[0].id }>
 							<div class="address_con_txt1">
-								<p class="address_con_txt_left">上海市普陀区兰溪路&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;君悦苑3号楼</p>
-								<p class="address_con_txt_right">&nbsp;&nbsp;(陈陈陈)</p>
+								<p class="address_con_txt_left">${result.data.addresses[0].address }</p>
+								<p class="address_con_txt_right">${result.data.addresses[0].consigner }</p>
 							</div>
 							<p class="address_con_txt2">
-								15201010001
+								${result.data.addresses[0].mobile }
 							</p>
 							<div class="address_con_txt3">
 								<p class="address_con_txt3_l">修改</p>
-								<p class="address_con_txt3_r">#282727</p>
 							</div>
 							<img class="corner" src="${pageContext.servletContext.contextPath }/resources/img/right.png"/>
 						</li>
-						<li class="address_con1" style="margin: 0 64px;">
+						</c:if>
+						<c:if test="${not empty result.data.addresses[1] }">
+						<li class="address_con1">
 							<div class="address_con_txt1">
-								<p class="address_con_txt_left">上海市普陀区兰溪路&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;君悦苑3号楼</p>
-								<p class="address_con_txt_right">&nbsp;&nbsp;(陈陈陈)</p>
+								<p class="address_con_txt_left">${result.data.addresses[1].address }</p>
+								<p class="address_con_txt_right">${result.data.addresses[1].consigner }</p>
 							</div>
 							<p class="address_con_txt2">
-								15201010001
+								${result.data.addresses[1].mobile }
 							</p>
 							<div class="address_con_txt3">
 								<p class="address_con_txt3_l">修改</p>
-								<p class="address_con_txt3_r">#282727</p>
 							</div>
 						</li>
+						</c:if>
 						<li class="address_con2">
 							<img src="${pageContext.servletContext.contextPath }/resources/img/addjpg.png" />
 						</li>
+						<c:forEach items="${result.data.addresses }" var="address" varStatus="state">
+						<c:if test="${state.count>2 }">
+						<li name="display" class="address_con1 display_none">
+							<div class="address_con_txt1">
+								<p class="address_con_txt_left">${address.address }</p>
+								<p class="address_con_txt_right">${address.consigner }</p>
+							</div>
+							<p class="address_con_txt2">
+								${address.mobile }
+							</p>
+							<div class="address_con_txt3">
+								<p class="address_con_txt3_l">修改</p>
+							</div>
+						</li>
+						</c:if>
+						</c:forEach>
+						<div class="clear"></div>
 					</ul>
 					<div class="addressShow">
 						<p class="addressShow_l">
-							<span>显示全部地址</span>
+							<span id="showAllAddress">显示全部地址</span>
 							<img src="${pageContext.servletContext.contextPath }/resources/img/boder.jpg"/>
 						</p>
 						<p class="addressShow_r">
-							<span>管理收货地址</span>
+							<span><a href="${pageContext.servletContext.contextPath }/address/list">管理收货地址</a></span>
 							<img src="${pageContext.servletContext.contextPath }/resources/img/boder.jpg"/>
 						</p>
 					</div>
 					<p class="address_txt2">请确认收货地址</p>
-					
-					
 				</div>
 				<div class="MiddleConTitle">
 					<p class="MiddleConTitle_1">
@@ -89,45 +107,29 @@
 					
 				</div>
 				<ul class="MiddleConGoods">
-					<li>
-						<img style="margin-left: 30px;" class="goodsImage" src="${pageContext.servletContext.contextPath }/resources/img/goods.png" />
-						<p class="goods_introduce">尚可茶品精选名茶专场-青云碧螺春两罐10g</p>
-						<p class="goods_price">¥3402</p>
+					<input type="hidden" name="totalMiniPrice" value="${result.data.totalMiniPrice }"/>
+					<input type="hidden" name="coinRate" value="${result.data.coinRate }"/>
+					<input type="hidden" name="pointRate" value="${result.data.pointRate }"/>
+					<c:forEach items="${result.data.goods }" var="shop">
+					<c:forEach items="${shop.goods }" var="goods">
+					<li goodsId="${goods.goodsId }">
+						<img style="margin-left: 30px;" class="goodsImage" src="${goods.headImg }" />
+						<p class="goods_introduce">${goods.name }</p>
+						<p class="goods_price">¥${goods.price }</p>
 						<div class="count" style="margin: 16px 120px 0 120px;">
-							<b class="numberCode">1</b>
+							<b class="numberCode">${goods.amount }</b>
 						</div>
 						<div class="preferential">
-							<p>省66</p>
-							<p>商品免运费</p>
+							<!-- <p>省66</p> -->
+							<p>${result.data.freight==0?"商品免运费":"运费："+result.data.freight }</p>
 						</div>
-						<p class="goods_price_end">¥3402</p>
+						<p class="goods_price_end">¥${goods.price*goods.amount }</p>
+						<input type="hidden" name="pointEnable" value="${goods.pointEnable }"/>
+						<input type="hidden" name="coinEnable" value="${goods.coinEnable }"/>
+						<input type="hidden" name="typeId" value="${goods.typeId }"/>
 					</li>
-					<li>
-						<img style="margin-left: 30px;" class="goodsImage" src="${pageContext.servletContext.contextPath }/resources/img/goods.png" />
-						<p class="goods_introduce">尚可茶品精选名茶专场-青云碧螺春两罐10g</p>
-						<p class="goods_price">¥3402</p>
-						<div class="count" style="margin: 16px 120px 0 120px;">
-							<b class="numberCode">1</b>
-						</div>
-						<div class="preferential">
-							<p>省66</p>
-							<p>商品免运费</p>
-						</div>
-						<p class="goods_price_end">¥3402</p>
-					</li>
-					<li>
-						<img style="margin-left: 30px;" class="goodsImage" src="${pageContext.servletContext.contextPath }/resources/img/goods.png" />
-						<p class="goods_introduce">尚可茶品精选名茶专场-青云碧螺春两罐10g</p>
-						<p class="goods_price">¥3402</p>
-						<div class="count" style="margin: 16px 120px 0 120px;">
-							<b class="numberCode">1</b>
-						</div>
-						<div class="preferential">
-							<p>省66</p>
-							<p>商品免运费</p>
-						</div>
-						<p class="goods_price_end">¥3402</p>
-					</li>
+					</c:forEach>
+					</c:forEach>
 				</ul>
 				<div class="fare">
 					<button class="fareBtn">运费</button>
@@ -140,41 +142,41 @@
 					<ul class="coupon">
 						<li style="margin-left: 30px;" class="cupon_con_l">
 							<p>填写部落番号</p>
-							<p class="cupon_con_l_1"></p>
-						</li>
-						<li style="margin: 0 160px;" class="cupon_con_c">
-							<p>本次使用</p>
-							<p class="cupon_con_c_1"></p>
-							<p>部落币（100）</p>
+							<p><input type="text" name="tribeId"/></p>
 						</li>
 						<li class="cupon_con_c">
 							<p>本次使用</p>
-							<p class="cupon_con_c_1"></p>
-							<p>部落币（100）</p>
+							<p><input type="text" name="coin"/></p>
+							<p>部落币（${result.data.coin }）</p>
+						</li>
+						<li class="cupon_con_c">
+							<p>本次使用</p>
+							<p><input type="text" name="point"/></p>
+							<p>部落分（${result.data.point }）</p>
 						</li>
 					</ul>
 					<ul class="priceAllCon">
 						<li>
-							<span style="color: #333;">¥20</span>
+							<span id="pointDeduct" style="color: #333;">¥0</span>
 							<span>部落分抵用</span>
 						</li>
 						<li>
-							<span style="color: #333;">¥20</span>
+							<span id="coinDeduct" style="color: #333;">¥0</span>
 							<span>部落币抵用</span>
 						</li>
 						<li>
-							<span style="color: #333;">¥442</span>
+							<span id="totalPrice" style="color: #333;">¥442</span>
 							<span>商品金额</span>
 						</li>
 						<li>
-							<span style="color: #d15553;">¥442</span>
-							<span style="width: 110px;">总金额（已免运费）</span>
+							<span id="payPrice" style="color: #d15553;">¥442</span>
+							<span style="width: 110px;">总金额${result.data.freight==0?"（已免运费）":"" }</span>
 						</li>
 					</ul>
 				</div>
 				<div class="payAll">
 					<p class="payAllLeft">
-						<span>返回购物车</span>
+						<span><a href="${pageContext.servletContext.contextPath }/user/car">返回购物车</a></span>
 						<img src="${pageContext.servletContext.contextPath }/resources/img/back.png" />
 					</p>
 					<p class="payAllRight">

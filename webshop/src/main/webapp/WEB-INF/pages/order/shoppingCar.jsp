@@ -7,7 +7,7 @@
 		<meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
 		<link rel="stylesheet" type="text/css" href="${pageContext.servletContext.contextPath }/resources/css/shoppingCar.css"/>
 		<%@include file="../util/script.jsp" %>
-		<script type="text/javascript" src="${pageContext.servletContext.contextPath }/resources/js/login.js"></script>
+		<script type="text/javascript" src="${pageContext.servletContext.contextPath }/resources/js/shoppingcar.js"></script>
 		<title>首页</title>
 	</head>
 	<body>
@@ -43,9 +43,9 @@
 					</p>
 				</div>
 				<ul class="MiddleConGoods">
-					<c:forEach items="${result.data }" var="shop">
+					<c:forEach items="${result.data.car }" var="shop">
 					<c:forEach items="${shop.goods }" var="goods">
-					<li>
+					<li goodsId=${goods.goodsId }>
 						<a href="${pageContext.servletContext.contextPath }/goods/info?id=${goods.goodsId}"><img style="margin-left: 30px;" class="goodsImage" src="${goods.headImg }" /></a>
 						<p class="goods_introduce">${goods.goodsName }</p>
 						<p class="goods_price">¥${goods.price }</p>
@@ -70,13 +70,13 @@
 				</div>
 				<div class="priceAll">
 					<ul class="priceAllCon">
-						<li>
+						<!-- <li>
 							<span style="color: #333;">¥442</span>
 							<span>商品金额</span>
-						</li>
+						</li> -->
 						<li>
-							<span style="color: #d15553;">¥442</span>
-							<span style="width: 110px;">总金额（已免运费）</span>
+							<span style="color: #d15553;" id="payPrice">¥442</span>
+							<span style="width: 110px;">总金额（${result.data.freight==0?"已免运费":"" }）</span>
 						</li>
 					</ul>
 				</div>

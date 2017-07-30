@@ -216,4 +216,18 @@ public class Goods {
 		}
 	}
 
+	// 商品列表排序规则
+	public static enum GOODS_SORT_TYPE_ENUM {
+		COMPRE(1), PRICE(2), DISCOUNT(3);
+		private int type;
+
+		private GOODS_SORT_TYPE_ENUM(int type) {
+			this.type = type;
+		}
+
+		public int getType() {
+			return type;
+		}
+	}
+
 }

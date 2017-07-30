@@ -20,6 +20,8 @@ public class AppConstant {
 
 	// 微信公众号支付方式
 	public static final String WEIXIN_TRADE_TYPE_JSAPI = "JSAPI";
+	// 微信原生支付方式
+	public static final String WEIXIN_TRADE_TYPE_NATIVE = "NATIVE";
 
 	// 用户信息存储变量名
 	public static final String STORE_USER_PARAM_NAME = "user";

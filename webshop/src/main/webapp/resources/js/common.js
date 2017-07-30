@@ -33,7 +33,6 @@
 	
 	//监听401响应码完成页面跳转到登录页面
 	$(document).ajaxError(function (event, jqXHR, ajaxSettings, thrownError) {
-		alert(jqXHR.status);
 		if (jqXHR.status == "401") {
 			window.location.replace(contextPath+"/login");
 		}
@@ -74,7 +73,7 @@
 		}
 		return null;
 	}
-
+	
 	////////////////////////////////////////
 	//页面加载完毕后调用
 	////////////////////////////////////////
@@ -84,4 +83,13 @@
 		contextPath=$("meta[name='contextPath']").attr("content");
 		//绑定用户登出事件
 		$("#logout").click(logout);
+		//商品搜索
+		var key=decodeURI(null!=getQueryString("name")?getQueryString("name"):"");
+		$("div.search").find(":text").val(key);
+		$("div.search").find("img").click(function(){
+			key=$.trim($("div.search").find(":text").val());
+			if(key!=""){
+				location.href=contextPath+"/goods/list?name="+encodeURI(encodeURI(key));
+			}
+		});
 	});

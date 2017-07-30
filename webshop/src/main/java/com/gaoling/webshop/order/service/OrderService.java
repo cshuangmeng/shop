@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,6 +40,8 @@ import com.gaoling.webshop.user.service.AddressService;
 import com.gaoling.webshop.user.service.ShoppingCarService;
 import com.gaoling.webshop.user.service.UserService;
 
+import net.sf.json.JSONObject;
+
 @Service
 public class OrderService extends CommonService{
 
@@ -66,31 +67,27 @@ public class OrderService extends CommonService{
 	private TribeMemberService tribeMemberService;
 	
 	//查询订单详情
-	public Result queryOrderDetail(String uuid,int orderId){
-		//检查参数
-		if(StringUtils.isEmpty(uuid)){
-			return putResult(AppConstant.PARAM_IS_NULL);
-		}
+	public Result queryOrderDetail(int orderId){
 		//加载用户
-		User user=userService.getUserByUUID(uuid);
-		if(null==user){
-			return putResult(AppConstant.USER_NOT_EXISTS);
-		}
-		Order order=getOrder(orderId, false);
-		if(null==order||order.getUserId()!=user.getId()){
+		User user=(User)ThreadCache.getData(AppConstant.STORE_USER_PARAM_NAME);
+		List<Order> orders=queryOrders(DataUtil.mapOf("allOrders",true,"mainOrderId",orderId));
+		if(null==orders||orders.get(0).getUserId()!=user.getId()){
 			return putResult(AppConstant.NOT_MYSELF_OPERATE);
 		}
-		return putResult(DataUtil.mapOf("order",order));
+		orders.stream().forEach(o->o.getExtras().put("goods", goodsService.getGoods(o.getGoodsId())));
+		return putResult(orders);
 	}
 	
 	//查询订单列表
-	public Result queryOrderList(int state){
+	public Result queryOrderList(int state,int page){
 		//加载用户
 		User user=(User)ThreadCache.getData(AppConstant.STORE_USER_PARAM_NAME);
 		if(null==user){
 			return putResult(AppConstant.USER_NOT_EXISTS);
 		}
-		List<Map<String,Object>> orders=orderDao.queryOrderList(DataUtil.mapOf("userId",user.getId(),"state",state));
+		JSONObject json=JSONObject.fromObject(getString("user_order_list_pagesize"));
+		List<Map<String,Object>> orders=orderDao.queryOrderList(DataUtil.mapOf("userId",user.getId(),"state",state
+				,"orderBy",json.getString("orderBy"),"offset",(page-1)*json.getInt("pagesize"),"limit",json.getInt("pagesize")));
 		//按照订单号分组订单
 		Map<String,List<Map<String,Object>>> orderMap=orders.stream().collect(Collectors
 				.groupingBy(r->r.get("tradeNo").toString(),Collectors.toList()));
@@ -115,16 +112,9 @@ public class OrderService extends CommonService{
 	
 	//用户下单
 	@Transactional
-	public Result newOrder(String itemIds,String uuid,Order param,String ip)throws Exception{
-		//检查参数
-		if(StringUtils.isEmpty(itemIds)||StringUtils.isEmpty(uuid)){
-			return putResult(AppConstant.PARAM_IS_NULL);
-		}
+	public Result newOrder(String itemIds,Order param,String ip)throws Exception{
 		//加载用户
-		User user=userService.getUserByUUID(uuid);
-		if(null==user){
-			return putResult(AppConstant.USER_NOT_EXISTS);
-		}
+		User user=(User)ThreadCache.getData(AppConstant.STORE_USER_PARAM_NAME);
 		//查询购物车内容
 		List<Integer> ids=Arrays.asList(itemIds.split(",")).stream().map(i->Integer.parseInt(i)).collect(Collectors.toList());
 		List<ShoppingCar> cars=shoppingCarService.queryShoppingCars(DataUtil.mapOf("goodsIds",ids,"userId",user.getId()));
@@ -223,17 +213,11 @@ public class OrderService extends CommonService{
 	}
 	
 	@Transactional
-	public Result orderPay(String uuid,int orderId,String ip)throws Exception{
-		//检查参数
-		if(orderId<=0||StringUtils.isEmpty(uuid)){
-			return putResult(AppConstant.PARAM_IS_NULL);
-		}
+	public Result orderPay(int orderId,String ip)throws Exception{
 		//加载用户
-		User user=userService.getUserByUUID(uuid);
-		if(null==user){
-			return putResult(AppConstant.USER_NOT_EXISTS);
-		}
+		User user=(User)ThreadCache.getData(AppConstant.STORE_USER_PARAM_NAME);
 		List<Order> orders=queryOrders(DataUtil.mapOf("allOrders",true,"mainOrderId",orderId));
+		orders.stream().forEach(o->o.getExtras().put("goods", goodsService.getGoods(o.getGoodsId())));
 		Order mainOrder=orders.size()>0?orders.stream().filter(o->o.getRefId()==0).findFirst().get():null;
 		if(null==mainOrder||mainOrder.getUserId()!=user.getId()){
 			return putResult(AppConstant.NOT_MYSELF_OPERATE);
@@ -260,22 +244,19 @@ public class OrderService extends CommonService{
 		pay.setStartTime(DateUtil.getCurrentTime("yyyyMMddHHmmss"));
 		pay.setTimestamp(String.valueOf(new Date().getTime()/1000));
 		pay.setTradeNo(orders.get(0).getTradeNo());
-		pay.setTradeType(AppConstant.WEIXIN_TRADE_TYPE_JSAPI);
+		pay.setTradeType(AppConstant.WEIXIN_TRADE_TYPE_NATIVE);
 		Map<String,Object> payInfo=payService.operateUserPayRequest(pay);
-		return putResult(DataUtil.mapOf("payInfo",payInfo,"orderId",mainOrder.getId()));
+		return putResult(DataUtil.mapOf("payInfo",payInfo,"orders",orders
+				,"freight",getInteger("freight"),"point",orders.get(0).getPoint()
+				,"coin",orders.get(0).getCoin(),"pointRate",getInteger("point_to_cash_rate")
+				,"coinRate",getInteger("coin_to_cash_rate"),"totalPayPrice",totalPrice
+				,"address",addressService.getAddress(mainOrder.getAddressId())));
 	}
 	
 	//订单确认页数据加载
-	public Result confirmOrder(String itemIds,String uuid){
-		//检查参数
-		if(StringUtils.isEmpty(itemIds)||StringUtils.isEmpty(uuid)){
-			return putResult(AppConstant.PARAM_IS_NULL);
-		}
+	public Result confirmOrder(String itemIds){
 		//加载用户
-		User user=userService.getUserByUUID(uuid);
-		if(null==user){
-			return putResult(AppConstant.USER_NOT_EXISTS);
-		}
+		User user=(User)ThreadCache.getData(AppConstant.STORE_USER_PARAM_NAME);
 		//查询购物车内容
 		List<Integer> goodsIds=Arrays.asList(itemIds.split(",")).stream().map(i->Integer.parseInt(i)).collect(Collectors.toList());
 		List<Map<String,Object>> goods=shoppingCarService.queryMyShoppingCar(user.getId(),goodsIds);
@@ -311,7 +292,7 @@ public class OrderService extends CommonService{
 					,"goods",k.getValue(),"totalPrice",totalPrice,"totalPoint",totalPoint);
 		}).collect(Collectors.toList());
 		//获取用户的默认地址
-		Address address=addressService.getNewOrderAddresses(user.getId());
+		List<Address> addresses=addressService.getNewOrderAddresses(user.getId());
 		//拼装其他参数
 		float totalMiniPrice=goods.stream().map(g->{
 			float cashDiscount=Float.parseFloat(g.get("cashDiscount").toString());
@@ -325,8 +306,8 @@ public class OrderService extends CommonService{
 				?getInteger("coin_to_cash_rate"):0;
 		int pointRate=goods.stream().filter(g->Integer.parseInt(g.get("pointEnable").toString())>0).findAny().isPresent()
 				?getInteger("point_to_cash_rate"):0;
-		Map<String,Object> result=DataUtil.mapOf("goods",car,"address",address,"totalMiniPrice",totalMiniPrice
-			,"point",user.getPoint(),"coin",user.getCoin(),"pointRate",pointRate,"coinRate",coinRate);
+		Map<String,Object> result=DataUtil.mapOf("goods",car,"addresses",addresses,"totalMiniPrice",totalMiniPrice
+			,"point",user.getPoint(),"coin",user.getCoin(),"pointRate",pointRate,"coinRate",coinRate,"freight", getInteger("freight"));
 		return putResult(result);
 	}
 	
@@ -442,16 +423,9 @@ public class OrderService extends CommonService{
 	}
 	
 	//删除订单
-	public Result deleteOrder(String uuid,int orderId){
-		//检查参数
-		if(StringUtils.isEmpty(uuid)||orderId<=0){
-			return putResult(AppConstant.PARAM_IS_NULL);
-		}
+	public Result deleteOrder(int orderId){
 		//加载用户
-		User user=userService.getUserByUUID(uuid);
-		if(null==user){
-			return putResult(AppConstant.USER_NOT_EXISTS);
-		}
+		User user=(User)ThreadCache.getData(AppConstant.STORE_USER_PARAM_NAME);
 		Order order=getOrder(orderId, false);
 		//判断是否本人操作
 		if(null==order||order.getUserId()!=user.getId()){

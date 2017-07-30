@@ -62,18 +62,23 @@
 }
 
 .message_cue_con3{
-	height: 174px;
+	height: 100px;
+	width:40%;
+	float:left;
 }
 
 .message_cue_con2_title3{
-	height: 60px;
-    line-height: 60px;
+	height: 30px;
+    line-height: 30px;
     margin-bottom: 20px;
-    padding-top: 24px;
     font-size: 16px;
+    width:200px;
+    float:left;
 }
-.message_cue_con2_title3 p{
-	line-height: 60px;
+#qrcode{
+	margin-bottom: 20px;
+	float: left;
+	width: 30%;
 }
 .select{
 	height: 78px;

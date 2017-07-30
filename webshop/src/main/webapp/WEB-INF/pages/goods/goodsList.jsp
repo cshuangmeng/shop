@@ -28,9 +28,8 @@
 						</div>
 						<div class="right">
 							<c:forEach items="${result.data.shops }" var="shop">
-							<div class="active">
-								<img src="${shop.fullHeadImg }"/>
-								<span>X</span>
+							<div>
+								<img shopId=${shop.id } src="${shop.fullHeadImg }"/>
 							</div>
 							</c:forEach>
 						</div>
@@ -44,11 +43,11 @@
 				<div class="line"></div>
 				<div class="screen">
 					<div class="left">
-						<span class="active">综合</span>
+						<span class="active" sort=1>综合</span>
 						<b></b>
-						<span>价格</span>
+						<span sort=2>价格</span>
 						<b></b>
-						<span>折扣</span>
+						<span sort=3>折扣</span>
 						<b></b>
 						<div class="price">
 							<input type="text" placeholder="￥"/>
@@ -57,7 +56,7 @@
 							<button>确定</button>
 						</div>
 					</div>
-					<div  class="right">
+					<div id="pageTool" class="right">
 						<b>1/25</b>
 						<span>&lt; 上一页</span>
 						<span>下一页 &gt;</span>
