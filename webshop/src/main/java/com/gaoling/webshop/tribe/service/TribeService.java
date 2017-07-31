@@ -38,6 +38,7 @@ public class TribeService extends CommonService{
 		}
 		Tribe tribe=getTribeByUserId(user.getId());
 		//计算存在天数
+		if()
 		tribe.getExtras().put("days", DateUtil.getDaysIntervalOfTime(DateUtil.formatDateToDay(tribe.getCreateTime())
 				, DateUtil.formatDateToDay(DateUtil.nowDate())));
 		List<Map<String,Object>> members=tribeMemberService.queryMyTribeMembers(tribe.getId());
