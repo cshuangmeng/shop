@@ -9,10 +9,9 @@
 		,`point`,ref_id refId,tribe_id tribeId,trade_no tradeNo,out_trade_no outTradeNo,address_id addressId
 		,express_number expressNumber,state,create_time createTime,sign_time signTime from `order` t
 	</sql>
-
-	<!-- 查询所有订单 -->
-	<select id="queryOrders" resultType="com.gaoling.webshop.order.pojo.Order">
-		<include refid="orderHead"/>
+	
+	<!-- 查询条件 -->
+	<sql id="orderWhere">
 		<trim prefix="where" prefixOverrides="and">
 			and t.state!=5
 			<if test="param.userId!=null">
@@ -53,6 +52,18 @@
 		<if test="param.limit!=null and param.limit>0">
 			limit #(param.offset),#(param.limit)
 		</if>
+	</sql>
+
+	<!-- 查询所有订单 -->
+	<select id="queryOrders" resultType="com.gaoling.webshop.order.pojo.Order">
+		<include refid="orderHead"/>
+		<include refid="orderWhere"/>
+	</select>
+	
+	<!-- 查询订单数目 -->
+	<select id="queryOrderCount" resultType="int">
+		select count(1) as amount from `order` t
+		<include refid="orderWhere"/>
 	</select>
 	
 	<!-- 查询订单列表 -->

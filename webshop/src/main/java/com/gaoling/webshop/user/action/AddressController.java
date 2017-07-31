@@ -35,9 +35,9 @@ public class AddressController {
 	
 	//添加用户地址
 	@RequestMapping("/save")
-	public String saveAddresses(@ModelAttribute Address address){
-		addressService.saveNewAddress(address);
-		return "redirect:/address/list";
+	@ResponseBody
+	public Result saveAddresses(@ModelAttribute Address address){
+		return addressService.saveNewAddress(address);
 	}
 	
 	//获取地址详情
@@ -56,9 +56,9 @@ public class AddressController {
 	
 	//更新用户地址
 	@RequestMapping("/update")
-	public String updateAddresses(@ModelAttribute Address address){
-		addressService.updateOldAddress(address);
-		return "redirect:/address/list";
+	@ResponseBody
+	public Result updateAddresses(@ModelAttribute Address address){
+		return addressService.updateOldAddress(address);
 	}
 	
 }

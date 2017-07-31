@@ -44,6 +44,9 @@ public class AddressService extends CommonService{
 		address.setState(Address.STATE_TYPE_ENUM.enabled.getState());
 		address.setCreateTime(DateUtil.nowDate());
 		addAddress(address);
+		if(address.getIsDefault()>0){
+			setDefault(user.getId(), address.getId());
+		}
 		return putResult();
 	}
 	
@@ -75,7 +78,13 @@ public class AddressService extends CommonService{
 			return putResult(AppConstant.NOT_MYSELF_OPERATE);
 		}
 		address.setState(oldAddress.getState());
+		address.setAreaId(oldAddress.getAreaId());
+		address.setAreaName(oldAddress.getAreaName());
+		address.setPostCode(oldAddress.getPostCode());
 		updateAddress(address);
+		if(address.getIsDefault()>0){
+			setDefault(user.getId(), address.getId());
+		}
 		return putResult();
 	}
 	
@@ -111,6 +120,11 @@ public class AddressService extends CommonService{
 	//更新地址
 	public void updateAddress(Address address){
 		addressDao.updateAddress(address);
+	}
+	
+	//更新地址
+	public void setDefault(int userId,int addressId){
+		addressDao.setDefault(userId, addressId);
 	}
 	
 }

@@ -25,10 +25,10 @@
 	background: #f8f8f7;
 	margin-bottom: 50px;
 }
-.left_personr{
+.left_person{
 	height: 278px;
 	width: 456px;
-	background: url(../img/interviwe_person_1.png) no-repeat center right;
+	background: url(../img/interview_person_1.png) no-repeat center right;
 	float: left;
 }
 .left_corner{
@@ -38,6 +38,7 @@
 	float: left;
 	
 }
+
 .interview_person_l_txt{
 	width: 470px;
 	height: 248px;
@@ -75,22 +76,22 @@
 	background: url(../img/right01.png) no-repeat center;
 	float: left;
 }
-.right_personr{
+.right_person{
 	height: 278px;
 	width: 456px;
 	background: url(../img/interview_person_2.png) no-repeat center left;
 	float: left;
 }
-.left_personr02{
+.left_person02{
 	height: 278px;
 	width: 456px;
-	background: url(../img/interviwe_person_3.png) no-repeat center right;
+	background: url(../img/interview_person_3.png) no-repeat center right;
 	float: left;
 }
-.right_personr02{
+.right_person02{
 	height: 278px;
 	width: 456px;
-	background: url(../img/interviwe_person_4.png) no-repeat center left;
+	background: url(../img/interview_person_4.png) no-repeat center left;
 	float: left;
 }
 .interview_bottom_txt{

@@ -38,11 +38,13 @@ public class TribeService extends CommonService{
 		}
 		Tribe tribe=getTribeByUserId(user.getId());
 		//计算存在天数
-		if()
-		tribe.getExtras().put("days", DateUtil.getDaysIntervalOfTime(DateUtil.formatDateToDay(tribe.getCreateTime())
-				, DateUtil.formatDateToDay(DateUtil.nowDate())));
-		List<Map<String,Object>> members=tribeMemberService.queryMyTribeMembers(tribe.getId());
-		return putResult(DataUtil.mapOf("tribe",tribe,"members",members,"size",members.size()));
+		if(null!=tribe){
+			tribe.getExtras().put("days", DateUtil.getDaysIntervalOfTime(DateUtil.formatDateToDay(tribe.getCreateTime())
+					, DateUtil.formatDateToDay(DateUtil.nowDate())));
+			List<Map<String,Object>> members=tribeMemberService.queryMyTribeMembers(tribe.getId());
+			return putResult(DataUtil.mapOf("tribe",tribe,"members",members,"size",members.size()));
+		}
+		return putResult();
 	}
 	
 	//编辑部落名称

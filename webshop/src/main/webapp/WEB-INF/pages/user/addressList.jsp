@@ -6,6 +6,7 @@
 		<meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
 		<link rel="stylesheet" type="text/css" href="${pageContext.servletContext.contextPath }/resources/css/mySpace.css"/>
 		<%@include file="../util/script.jsp" %>
+		<script type="text/javascript" src="${pageContext.servletContext.contextPath }/resources/js/address.js"></script>
 		<title>首页</title>
 	</head>
 	<body>
@@ -27,7 +28,7 @@
 				</div>
 				<div class="goods_address_title_con">
 					<c:forEach items="${result.data.addresses }" var="address">
-					<ul class="goods_address_title_con_1">
+					<ul class="goods_address_title_con_1" addressId=${address.id }>
 						<li>
 							<img src="${pageContext.servletContext.contextPath }/resources/img/1_04.png"/>
 							<p>${address.consigner }</p>
@@ -44,16 +45,18 @@
 						<li class="corner_top">
 							<p>默认地址</p>
 						</li>
-						</c:if>
 						<li class="corner_bottom">
 							<img src="${pageContext.servletContext.contextPath }/resources/img/6_03.png" />
 						</li>
+						</c:if>
 					</ul>
 					</c:forEach>
+					<!-- 
 					<ul class="goods_address_title_con_2">
 						<li class="X"></li>
 						<li class="Y"></li>
 					</ul>
+					 -->
 					<div class="clear"></div>
 				</div>
 				<p class="add_goods_address">
@@ -61,6 +64,7 @@
 				</p>
 				<form action="${pageContext.servletContext.contextPath }/address/update" method="post" style="margin-bottom:100px;">
 				<ul class="add_goods_address_con">
+					<input type="hidden" name="addressId"/>
 					<li class="add_goods_address_con_1">
 						<div class="add_goods_address_con_1_img"></div>
 						<p>收货人</p>
@@ -69,16 +73,23 @@
 					<li class="add_goods_address_con_2">
 						<div class="add_goods_address_con_2_img"></div>
 						<p style="margin-right: 0;">收货地址</p>
+						<!-- 
 						<input style="margin-left: 14px;" type="text" value="省/直辖市" />
 						<input type="text" value="市" />
 						<input type="text" value="区/县" />
 						<input style="margin-left: 13px;" type="text" value="乡镇/街道" />
-						<input style="background: none;" name="address" class="last_input" type="text" value="详细地址" />
+						<input style="background: none;" name="address" class="last_input" type="text" value="" />
+						 -->
+						<input type="text" value="" name="address"/>
 					</li>
 					<li class="add_goods_address_con_1">
 						<div class="add_goods_address_con_1_img"></div>
 						<p>手机号</p>
 						<input style="width: 168px;" type="text" value="" name="mobile" />
+					</li>
+					<li class="add_goods_address_con_1">
+						<div class="add_goods_address_con_1_img"></div>
+						<input type="checkbox" value="1" name="isDefault"/>设置为默认地址
 					</li>
 				</ul>
 				<p class="keep_address">保存收货地址</p>

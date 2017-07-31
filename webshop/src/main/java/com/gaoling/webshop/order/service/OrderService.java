@@ -82,10 +82,10 @@ public class OrderService extends CommonService{
 	public Result queryOrderList(int state,int page){
 		//加载用户
 		User user=(User)ThreadCache.getData(AppConstant.STORE_USER_PARAM_NAME);
-		if(null==user){
-			return putResult(AppConstant.USER_NOT_EXISTS);
-		}
 		JSONObject json=JSONObject.fromObject(getString("user_order_list_pagesize"));
+		Map<Object,Object> param=DataUtil.mapOf("userId",user.getId(),"state",state);
+		int total=queryOrderCount(param);
+		total=total%json.getInt("pagesize")>0?total/json.getInt("pagesize")+1:total/json.getInt("pagesize");
 		List<Map<String,Object>> orders=orderDao.queryOrderList(DataUtil.mapOf("userId",user.getId(),"state",state
 				,"orderBy",json.getString("orderBy"),"offset",(page-1)*json.getInt("pagesize"),"limit",json.getInt("pagesize")));
 		//按照订单号分组订单
@@ -107,7 +107,7 @@ public class OrderService extends CommonService{
 					,"tradeNo",k.getKey(),"totalPrice",totalPrice,"goods",goods,"state",mainOrder.get("state")
 					,"point",mainOrder.get("point"),"coin",mainOrder.get("coin"),"payWay",mainOrder.get("payWay"));
 		}).sorted((a,b)->b.get("createTime").toString().compareTo(a.get("createTime").toString())).collect(Collectors.toList());
-		return putResult(DataUtil.mapOf("orders",result,"size",result.size()));
+		return putResult(DataUtil.mapOf("orders",result,"size",result.size(),"page",page,"total",total));
 	}
 	
 	//用户下单
@@ -514,6 +514,11 @@ public class OrderService extends CommonService{
 	//查询订单信息
 	public List<Order> queryOrders(Map<Object,Object> param){
 		return orderDao.queryOrders(param);
+	}
+	
+	//查询订单数目
+	public int queryOrderCount(Map<Object,Object> param){
+		return orderDao.queryOrderCount(param);
 	}
 	
 	//保存订单信息

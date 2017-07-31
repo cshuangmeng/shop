@@ -66,12 +66,22 @@ public class OrderController {
 	
 	//订单列表
 	@RequestMapping("/list")
-	public String orderList(@RequestParam(defaultValue="-1")String state,@RequestParam(defaultValue="1")int page
-			,Model model){
+	public String orderList(@RequestParam(defaultValue="-1")String state
+			,@RequestParam(defaultValue="1")int page,Model model){
 		Result result=orderService.queryOrderList(Integer.parseInt(state),page);
 		System.out.println(JSONObject.fromObject(result));
 		model.addAttribute("result", result);
 		return "user/orderList";
+	}
+	
+	//订单列表
+	@RequestMapping("/search")
+	public String orderSearch(@RequestParam(defaultValue="-1")String state
+			,@RequestParam(defaultValue="1")int page,Model model){
+		Result result=orderService.queryOrderList(Integer.parseInt(state),page);
+		System.out.println(JSONObject.fromObject(result));
+		model.addAttribute("result", result);
+		return "user/orderResult";
 	}
 	
 	//订单再支付

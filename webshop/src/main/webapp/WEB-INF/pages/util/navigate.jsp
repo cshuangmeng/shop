@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <div class="mySpace_left">
-	<div class="personImg">
+	<div class="personImg" headImg="${sessionScope.user.headImg }">
 	</div>
 	<div class="mySpace_left_con_t">
 		<ul class="mySpace_left_con">
 			<li class="mySpace_left_con_1">
-				<img src="${sessionScope.user.headImg }1"/>
+				<img src="${pageContext.servletContext.contextPath }/resources/img/1_03.png"/>
 				<p>我的账户</p>
 				
 			</li>
@@ -25,6 +25,7 @@
 				<p>我的部落</p>
 			</li>
 			<li class="mySpace_left_con_2"><a href="${pageContext.servletContext.contextPath }/tribe/info">成员</a></li>
+			<li class="mySpace_left_con_2"><a href="${pageContext.servletContext.contextPath }/chief">酋长之路</a></li>
 		</ul>
 	</div>
 </div>

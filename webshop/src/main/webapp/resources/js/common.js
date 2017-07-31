@@ -92,4 +92,17 @@
 				location.href=contextPath+"/goods/list?name="+encodeURI(encodeURI(key));
 			}
 		});
+		//更多栏目
+		var $more = $('#js-more'),
+		$moreList = $('#js-moreList');
+		//显示隐藏更多
+		$more.mouseenter(function(){
+			$moreList.css("display","block");
+		});
+	    $more.mouseleave(function(){
+			$moreList.css("display","none");
+		});
+	    if($("div.personImg").length>0&&$("div.personImg").attr("headImg")!=""){
+	    	$("div.personImg").css("background",'url('+$("div.personImg").attr("headImg")+')');
+	    }
 	});

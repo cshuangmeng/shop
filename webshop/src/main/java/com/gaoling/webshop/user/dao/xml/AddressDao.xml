@@ -37,4 +37,9 @@
 		,consigner=#{consigner},mobile=#{mobile},is_default=#{isDefault},post_code=#{postCode},state=#{state} where id=#{id}
 	</update>
 	
+	<!-- 设置默认地址 -->
+	<update id="setDefault">
+		update address set is_default=case when id=#{addressId} then 1 else 0 end where user_id=#{userId};
+	</update>
+	
 </mapper>  
