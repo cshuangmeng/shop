@@ -61,6 +61,7 @@ public class HttpClientUtil {
 					// 获取相应内容
 					HttpEntity entity = response.getEntity();
 					String result = new String(EntityUtils.toByteArray(entity));
+					Logger.getLogger("file").info(DateUtil.getCurrentTime()+"|"+url+"|"+result);
 					return result;
 				}
 			}
@@ -105,9 +106,9 @@ public class HttpClientUtil {
 				// 获取相应内容
 				HttpEntity entity = response.getEntity();
 				result = new String(EntityUtils.toByteArray(entity));
+				Logger.getLogger("file").info(DateUtil.getCurrentTime()+"|"+url+"|"+result);
 				return result;
 			}
-			Logger.getLogger("msg").info(DateUtil.getCurrentTime()+"|"+url+"|"+result);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -148,7 +149,7 @@ public class HttpClientUtil {
 				result = new String(EntityUtils.toByteArray(entity));
 				return result;
 			}
-			Logger.getLogger("msg").info(DateUtil.getCurrentTime()+"|"+url+"|"+result);
+			Logger.getLogger("file").info(DateUtil.getCurrentTime()+"|"+url+"|"+result);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {

@@ -2,6 +2,7 @@ package com.gaoling.webshop.user.action;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,10 +34,11 @@ public class UserController extends CommonService{
 	
 	//下发验证码
 	@RequestMapping("/code")
-	public Result sendCode(@RequestParam(required=false) String mobile){
+	@ResponseBody
+	public Result sendCode(@RequestParam(required=false) String cellphone){
 		Result result=null;
 		try {
-			result=userService.sendCode(mobile);
+			result=userService.sendCode(cellphone);
 		} catch (Exception e) {
 			result=userService.putResult(AppConstant.SYSTEM_ERROR_CODE);
 			e.printStackTrace();
@@ -46,37 +48,42 @@ public class UserController extends CommonService{
 	
 	//用户注册
 	@RequestMapping("/register")
+	@ResponseBody
 	public Result register(@RequestParam(required=false) String code
-			,@RequestParam(required=false) String cellphone,@RequestParam(defaultValue="0") int platform
-			,@RequestParam(required=false) String openId,@RequestParam(required=false) String password){
+			,@RequestParam(required=false) String cellphone,@RequestParam(required=false) String openId
+			,@RequestParam(required=false) String password)throws Exception{
 		Result result=null;
 		try {
-			result=userService.register(code, cellphone, openId, password, platform);
+			result=userService.register(openId, code, cellphone, password);;
 		} catch (Exception e) {
 			result=userService.putResult(AppConstant.SYSTEM_ERROR_CODE);
-			e.printStackTrace();
 		}
 		return result;
 	}
 	
 	//用户登录
 	@RequestMapping("/login")
-	public String login(@RequestParam(required=false) String unionId,@RequestParam(required=false) String cellphone
-			,@RequestParam(required=false) String password,@RequestParam(defaultValue="0") int platform,Model model
+	public String login(@RequestParam(required=false) String code,@RequestParam(required=false) String cellphone
+			,@RequestParam(required=false) String password,Model model
 			,HttpServletRequest request){
-		Result result=userService.login(unionId, cellphone, password, platform);
+		Result result=userService.login(code, cellphone, password);
 		if(result.getCode()!=AppConstant.SUCCESS){
-			model.addAttribute("result", result);
-			model.addAttribute("cellphone", cellphone);
-			model.addAttribute("password", password);
-			return "login";
+			if(StringUtils.isNotEmpty(code)){
+				model.addAttribute("openId", result.getData());
+				return "/register";
+			}else{
+				model.addAttribute("result", result);
+				model.addAttribute("cellphone", cellphone);
+				model.addAttribute("password", password);
+				return "login";
+			}
 		}else{
 			request.getSession().setAttribute(AppConstant.STORE_USER_PARAM_NAME, (User)result.getData());
 		}
 		return "redirect:/index";
 	}
 	
-	//用户登录
+	//用户登出
 	@RequestMapping("/logout")
 	public String logout(HttpServletRequest request){
 		request.getSession().invalidate();

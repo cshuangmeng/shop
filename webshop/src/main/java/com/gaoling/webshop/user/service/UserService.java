@@ -46,25 +46,34 @@ public class UserService extends CommonService{
 		}
 		String code=DataUtil.createNums(4);
 		//发送验证码
+		if(SMSUtil.send(mobile, code)){
+			//存储验证码
+			int expireMins=getInteger("sms_code_expire_mins");
+			MemcachedUtil.getInstance().setData(AppConstant.CHECKCODE_PREFIX+mobile, code, expireMins);
+			Logger.getLogger("file").info("UserService | sendCode | mobile="+mobile+" | code="+code);
+			return putResult();
+		}
 		return putResult(AppConstant.SMS_SEND_FAILURE);
 	}
 	
 	//用户注册
 	@Transactional
-	public Result register(String code,String cellphone,String openId,String password,int platform)throws Exception{
+	public Result register(String openId,String code,String cellphone,String password)throws Exception{
 		//检查参数是否填写
-		if(StringUtils.isEmpty(code)||StringUtils.isEmpty(cellphone)||(StringUtils.isEmpty(openId)&&StringUtils.isEmpty(password))){
+		if(StringUtils.isEmpty(code)||StringUtils.isEmpty(cellphone)||StringUtils.isEmpty(password)){
 			Logger.getLogger("file").info("UserService | register | cellphone="+cellphone
-					+",code="+code+",openId="+openId+",password="+password+",platform="+platform);
+					+",code="+code+",password="+password);
 			return putResult(AppConstant.PARAM_IS_NULL);
+		}
+		//检查验证码是否正确
+		String saveCode=MemcachedUtil.getInstance().getData(AppConstant.CHECKCODE_PREFIX+cellphone,"");
+		if(!saveCode.equals(code)){
+			return putResult(AppConstant.CHECK_CODE_INCORRECT);
 		}
 		//使用微信注册
 		JSONObject json=null;
 		if(StringUtils.isNotEmpty(openId)){
-			String url=AppConstant.WEIXIN_SNS_USERINFO_URL+"&access_token="+AppConstant.USERMP_ACCESS_TOKEN+"&openid="+openId;
-			if(platform==AppConstant.PLATFORM_TYPE_ENUM.PC.getType()){
-				//url=AppConstant.PC_SNS_USERINFO_URL+"?access_token="+MemcachedUtil.getInstance().getData(openId, "")+"&openid="+openId;
-			}
+			String url=AppConstant.PC_SNS_USERINFO_URL+"?access_token="+MemcachedUtil.getInstance().getData(openId, "")+"&openid="+openId;
 			String response=HttpClientUtil.getNetWorkInfo(url, "");
 			if(StringUtils.isNotEmpty(response)){
 				json=JSONObject.fromObject(response);
@@ -72,66 +81,56 @@ public class UserService extends CommonService{
 		}
 		//检查用户是否存在
 		User user=getUserByCellphone(cellphone);
-		if(null==user){//新用户
-			if(null!=json&&!json.containsKey("errcode")){//使用微信注册
-				user=new User();
-				user.setUuid(DataUtil.buildUUID());
-				user.setCellphone(cellphone);
-				user.setCreateTime(DateUtil.nowDate());
-				user.setHeadImg("user/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS")+DataUtil.createNums(6)+".jpg");
-				OSSUtil.uploadFileToOSS(new URL(json.getString("headimgurl")).openStream(), user.getHeadImg());
-				user.setLoginTime(user.getCreateTime());
-				user.setNickname(json.getString("nickname"));
-				user.setOpenId(platform!=AppConstant.PLATFORM_TYPE_ENUM.PC.getType()?openId:"");
-				user.setWebId(platform==AppConstant.PLATFORM_TYPE_ENUM.PC.getType()?openId:"");
-				user.setUnionId(json.getString("unionid"));
-				user.setPassword("");
-				user.setState(User.STATE_TYPE_ENUM.ACTIVATED.getState());
-				addUser(user);
-			}else{//使用手机号注册
-				user=new User();
-				user.setUuid(DataUtil.buildUUID());
-				user.setCellphone(cellphone);
-				user.setCreateTime(DateUtil.nowDate());
-				user.setHeadImg("");
-				user.setLoginTime(user.getCreateTime());
-				user.setNickname("");
-				user.setOpenId("");
-				user.setWebId("");
-				user.setUnionId("");
-				user.setPassword(password);
-				user.setState(User.STATE_TYPE_ENUM.ACTIVATED.getState());
-				addUser(user);
-			}
-		}else{//老用户
-			if(null!=json&&!json.containsKey("errcode")){//使用微信注册
-				OSSUtil.uploadFileToOSS(new URL(json.getString("headimgurl")).openStream(), user.getHeadImg());
-				user.setNickname(json.getString("nickname"));
-				user.setOpenId(platform!=AppConstant.PLATFORM_TYPE_ENUM.PC.getType()?openId:"");
-				user.setWebId(platform==AppConstant.PLATFORM_TYPE_ENUM.PC.getType()?openId:"");
-				user.setUnionId(json.getString("unionid"));
-				updateUser(user);
-			}
+		if(null!=user){
+			return putResult(AppConstant.USER_ALREADY_EXISTS);
 		}
+		user=new User();
+		user.setUuid(DataUtil.buildUUID());
+		user.setCellphone(cellphone);
+		user.setCreateTime(DateUtil.nowDate());
+		if(null!=json&&!json.containsKey("errcode")){
+			user.setHeadImg("user/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS")+DataUtil.createNums(6)+".jpg");
+			OSSUtil.uploadFileToOSS(new URL(json.getString("headimgurl")).openStream(), user.getHeadImg());
+		}else{
+			user.setHeadImg("");
+		}
+		user.setLoginTime(user.getCreateTime());
+		user.setNickname(null!=json&&!json.containsKey("errcode")?json.getString("nickname"):user.getCellphone());
+		user.setOpenId("");
+		user.setWebId(null!=openId?openId:"");
+		user.setUnionId(null!=json&&!json.containsKey("errcode")?json.getString("unionid"):"");
+		user.setPassword(password);
+		user.setState(User.STATE_TYPE_ENUM.ACTIVATED.getState());
+		addUser(user);
 		return putResult(user);
 	}
 	
 	//用户微信登录
-	public Result login(String unionId,String cellphone,String password,int platform){
+	public Result login(String code,String cellphone,String password){
 		//检查参数是否填写
-		if(StringUtils.isEmpty(unionId)&&(StringUtils.isEmpty(cellphone)||StringUtils.isEmpty(password))){
-			Logger.getLogger("file").info("UserService | login | unionId="+unionId+",cellphone="+cellphone+" password="+password);
+		if(StringUtils.isEmpty(code)&&(StringUtils.isEmpty(cellphone)||StringUtils.isEmpty(password))){
+			Logger.getLogger("file").info("UserService | login | code="+code+",cellphone="+cellphone+" password="+password);
 			return putResult(AppConstant.PARAM_IS_NULL);
 		}
 		//检查用户是否存在
 		User user=null;
-		if(StringUtils.isNotEmpty(unionId)){
-			user=getUserByUnionId(unionId);
+		if(StringUtils.isNotEmpty(code)){
+			String response=HttpClientUtil.getNetWorkInfo(AppConstant.API_GETOPENIDBYCODE+"&code="+code, "");
+			JSONObject json=DataUtil.isJSONObject(response)?JSONObject.fromObject(response):null;
+			if(null!=json&&json.getInt("code")==0&&StringUtils.isNotEmpty(json.getJSONObject("data").getString("unionId"))){
+				user=getUserByUnionId(json.getJSONObject("data").getString("unionId"));
+			}
+			if(null==user){
+				Result result=putResult(AppConstant.USER_NOT_EXISTS);
+				result.setData(json.getJSONObject("data").getString("openId"));
+				return result;
+			}
+			user.setWebId(json.getJSONObject("data").getString("openId"));
 		}else{
 			user=getUserByPassword(cellphone, password);
-		}
-		if(null==user){
-			return putResult(AppConstant.USER_NOT_EXISTS);
+			if(null==user){
+				return putResult(AppConstant.USER_OR_PASSWORD_INCORRECT);
+			}
 		}
 		//更新用户登录时间
 		user.setLoginTime(DateUtil.nowDate());

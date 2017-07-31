@@ -46,7 +46,7 @@ public class UserController extends CommonService{
 			,@RequestParam(required=false) String openId,@RequestParam(required=false) String password){
 		Result result=null;
 		try {
-			result=userService.register(code, cellphone, openId, password, platform);
+			result=userService.register(code, cellphone, openId);
 		} catch (Exception e) {
 			result=userService.putResult(AppConstant.SYSTEM_ERROR_CODE);
 			e.printStackTrace();
@@ -60,7 +60,7 @@ public class UserController extends CommonService{
 			,@RequestParam(required=false) String password,@RequestParam(defaultValue="0") int platform){
 		Result result=null;
 		try {
-			result=userService.login(unionId, cellphone, password, platform);
+			result=userService.login(unionId);
 		} catch (Exception e) {
 			result=userService.putResult(AppConstant.SYSTEM_ERROR_CODE);
 			e.printStackTrace();

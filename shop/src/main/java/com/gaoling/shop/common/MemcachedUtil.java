@@ -77,10 +77,10 @@ public class MemcachedUtil {
 	public String getData(String key,String def) {
 		try {
 			Object obj=StringUtils.isNotEmpty(key)?client.get(key):null;
-			Logger.getLogger("file").info(DateUtil.getCurrentTime()+" "+key+" get "+obj);
+			Logger.getLogger("file").info(key+" get "+obj);
 			return null!=obj?obj.toString():def;
 		} catch (Exception e) {
-			Logger.getLogger("file").info(DateUtil.getCurrentTime()+" "+key+" get failure! "+e.getMessage());
+			Logger.getLogger("file").info(key+" get failure! "+e.getMessage());
 			e.printStackTrace();
 		}
 		return def;

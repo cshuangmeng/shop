@@ -254,5 +254,15 @@
 			<artifactId>pinyin4j</artifactId>
 			<version>2.5.1</version>
 		</dependency>
+		<dependency>
+			<groupId>org.myjar</groupId>
+			<artifactId>java-memcached</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.myjar</groupId>
+			<artifactId>java-taobao</artifactId>
+			<version>1.0</version>
+		</dependency>
 	</dependencies>
 </project>

@@ -191,7 +191,7 @@ public class OrderService extends CommonService{
 			pay.setStartTime(DateUtil.getCurrentTime("yyyyMMddHHmmss"));
 			pay.setTimestamp(String.valueOf(new Date().getTime()/1000));
 			pay.setTradeNo(orders.get(0).getTradeNo());
-			pay.setTradeType(AppConstant.WEIXIN_TRADE_TYPE_JSAPI);
+			pay.setTradeType(AppConstant.WEIXIN_TRADE_TYPE_NATIVE);
 			payInfo=payService.operateUserPayRequest(pay);
 		}else{
 			orders.stream().forEach(o->o.setState(Order.STATE_TYPE_ENUM.NOSEND.getState()));

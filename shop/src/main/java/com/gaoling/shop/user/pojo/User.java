@@ -4,8 +4,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.gaoling.shop.common.AppConstant;
 
 public class User {
 
@@ -15,6 +19,9 @@ public class User {
 	private String openId;
 	private String webId;
 	private String unionId;
+	@JsonProperty("headImg")
+	private String fullHeadImg;
+	@JsonIgnore
 	private String headImg;
 	private String cellphone;
 	@JsonIgnore
@@ -142,6 +149,17 @@ public class User {
 
 	public Map<String, Object> getExtras() {
 		return extras;
+	}
+
+	public String getFullHeadImg() {
+		StringBuffer urls = new StringBuffer();
+		if (StringUtils.isNotEmpty(headImg)) {
+			for (String images : headImg.split(",")) {
+				urls.append(urls.length() > 0 ? "," : "");
+				urls.append(AppConstant.OSS_CDN_SERVER + images);
+			}
+		}
+		return urls.toString().length() > 0 ? urls.toString() : headImg;
 	}
 
 	// 用户状态

@@ -114,6 +114,10 @@ public class GoodsService extends CommonService{
 			param.put("shopIds", Arrays.asList(param.get("shopIds").toString().split(","))
 					.stream().map(s->Integer.parseInt(s)).collect(Collectors.toList()));
 		}
+		//商品名称解码
+		if(!DataUtil.isEmpty(param.get("name"))){
+			param.put("name", URLDecoder.decode(URLDecoder.decode(param.get("name").toString(), "UTF-8"), "UTF-8"));
+		}
 		int typeId=null!=param.get("typeId")?Integer.parseInt(param.get("typeId").toString()):0;
 		int total=queryGoodsCount(param);
 		//分页设置
@@ -134,10 +138,6 @@ public class GoodsService extends CommonService{
 			param.put("orderRule", "desc");
 		}else{
 			param.put("orderRule", "asc");
-		}
-		//商品名称解码
-		if(!DataUtil.isEmpty(param.get("name"))){
-			param.put("name", URLDecoder.decode(URLDecoder.decode(param.get("name").toString(), "UTF-8"), "UTF-8"));
 		}
 		json=JSONObject.fromObject(getString("prepare_sell_recommend"));
 		List<Goods> goods=queryGoods(param);

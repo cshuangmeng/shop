@@ -29,6 +29,7 @@
 					<form action="${pageContext.servletContext.contextPath }/user/login" method="post">
 					<p class="p01">如有帐号，请登录</p>
 					<p>
+						<input type="hidden" name="code"/>
 						<input name="cellphone" type="text" placeholder="手机号/用户名/邮箱" value="${cellphone }" />
 						<span class="error">请输入用户名</span>
 					</p>

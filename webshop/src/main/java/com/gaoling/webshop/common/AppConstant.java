@@ -18,8 +18,6 @@ public class AppConstant {
 	public static final int MY_TRIBE_PAGE = 23;// 我的部落页面
 	public static final int STORE_DETAIL_PAGE = 19;// 商城介绍页面
 
-	// 微信公众号支付方式
-	public static final String WEIXIN_TRADE_TYPE_JSAPI = "JSAPI";
 	// 微信原生支付方式
 	public static final String WEIXIN_TRADE_TYPE_NATIVE = "NATIVE";
 
@@ -34,14 +32,6 @@ public class AppConstant {
 	public static String ALIDAYU_FREE_SIGN;// 阿里大于商户签名
 	public static String ALIDAYU_TEMPLATE_CODE;// 阿里大于短信模板
 	public static String CHECKCODE_PREFIX;// 用户验证码存储变量名的前缀
-
-	public static int XINGE_IOSENV;// 信鸽ios开发证书编号
-	public static String XINGE_MESSAGE_TITLE;// 伏特加推送通知标题
-	public static String XINGE_ANDROID_ACCESS_ID;// 信鸽Android Access ID
-	public static String XINGE_ANDROID_SECRET_KEY;// 信鸽Android Secret Key
-	public static String XINGE_ANDROID_ACTIVITY;// 信鸽Android通知点击后跳转的Activity地址
-	public static String XINGE_IOS_ACCESS_ID;// 信鸽IOS Access ID
-	public static String XINGE_IOS_SECRET_KEY;// 信鸽IOS Secret Key
 
 	public static String USERMP_REQUEST_TOKEN;// 微信与服务器通信的token
 	public static String USERMP_APP_ID;// 用户端微信公众号AppID
@@ -66,6 +56,8 @@ public class AppConstant {
 	public static String WEIXIN_ORDER_QUERY;// 微信支付查询接口
 	public static String WEIXIN_ORDER_REFUND;// 微信申请退款接口
 	public static String WEIXIN_TEMPLATE_SEND;// 微信模板消息发送接口
+
+	public static String API_GETOPENIDBYCODE;// Code获取微信openid、unionid信息接口
 
 	public static String PC_SNS_USERINFO_URL;// PC端获取微信用户的昵称
 
@@ -96,6 +88,8 @@ public class AppConstant {
 	public static final int TRIBE_NOT_EXISTS = 113;
 	public static final int ORDER_STATE_INCORRECT = 114;
 	public static final int OUT_OF_BOUNDS = 115;
+	public static final int USER_ALREADY_EXISTS = 116;
+	public static final int USER_OR_PASSWORD_INCORRECT = 117;
 
 	static {
 		ALIDAYU_SMS_URL = PropertiesUtil.getProperty("alidayu_sms_url");
@@ -104,14 +98,6 @@ public class AppConstant {
 		ALIDAYU_FREE_SIGN = PropertiesUtil.getProperty("alidayu_free_sign");
 		ALIDAYU_TEMPLATE_CODE = PropertiesUtil.getProperty("alidayu_template_code");
 		CHECKCODE_PREFIX = PropertiesUtil.getProperty("checkcode_prefix");
-
-		XINGE_IOSENV = PropertiesUtil.getInteger("xinge.iosenv");
-		XINGE_MESSAGE_TITLE = PropertiesUtil.getProperty("xinge.message_title");
-		XINGE_ANDROID_ACCESS_ID = PropertiesUtil.getProperty("xinge.android_access_id");
-		XINGE_ANDROID_SECRET_KEY = PropertiesUtil.getProperty("xinge.android_secret_key");
-		XINGE_ANDROID_ACTIVITY = PropertiesUtil.getProperty("xinge.android_activity");
-		XINGE_IOS_ACCESS_ID = PropertiesUtil.getProperty("xinge.ios_access_id");
-		XINGE_IOS_SECRET_KEY = PropertiesUtil.getProperty("xinge.ios_secret_key");
 
 		USERMP_REQUEST_TOKEN = PropertiesUtil.getProperty("usermp.weixin_request_token");
 		USERMP_APP_ID = PropertiesUtil.getProperty("usermp.weixin_app_id");
@@ -135,6 +121,8 @@ public class AppConstant {
 		WEIXIN_ORDER_REFUND = PropertiesUtil.getProperty("wxapi.weixin_order_refund");
 		WEIXIN_TEMPLATE_SEND = PropertiesUtil.getProperty("wxapi.weixin_template_send");
 
+		API_GETOPENIDBYCODE = PropertiesUtil.getProperty("api.getUnionIdByCode");
+
 		MEMCACHED_ADDR = PropertiesUtil.getProperty("memcached.addr");
 
 		OSS_BUCKETNAME = PropertiesUtil.getProperty("cdn.oss_bucketname");
@@ -155,20 +143,6 @@ public class AppConstant {
 
 		public int getState() {
 			return state;
-		}
-	}
-
-	// 设备类型
-	public static enum PLATFORM_TYPE_ENUM {
-		MOBILE(1), PC(2);
-		private int type;
-
-		private PLATFORM_TYPE_ENUM(int type) {
-			this.type = type;
-		}
-
-		public int getType() {
-			return type;
 		}
 	}
 
