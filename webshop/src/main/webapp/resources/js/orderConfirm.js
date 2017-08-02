@@ -110,23 +110,23 @@ $(function(){
 		}
 		var orderId=0;
 		$.ajax({url:contextPath+"/order/new",
-			    data:{"itemIds":itemIds,
-			    	  "coin":$(":text[name='coin']").val()!=""?$(":text[name='coin']").val():0,
-			    	  "point":$(":text[name='point']").val()!=""?$(":text[name='point']").val():0,
-			    	  "tribeId":$(":text[name='tribeId']").val()!=""?$(":text[name='tribeId']").val():0,
-			    	  "addressId":$(".corner").parent().attr("addressId"),
-			    	  "price":setPayPrice()
-			    	 },
-			    type:"post",
-			    dataType:"json",
-			    success:function(data){
+		    data:{"itemIds":itemIds,
+		    	  "coin":$(":text[name='coin']").val()!=""?$(":text[name='coin']").val():0,
+		    	  "point":$(":text[name='point']").val()!=""?$(":text[name='point']").val():0,
+		    	  "tribeId":$(":text[name='tribeId']").val()!=""?$(":text[name='tribeId']").val():0,
+		    	  "addressId":$(".corner").parent().attr("addressId"),
+		    	  "price":setPayPrice()
+		    	 },
+		    type:"post",
+		    dataType:"json",
+		    success:function(data){
 			    	if(data.code==0){
 			    		orderId=data.data.orderId;
 			    		location.href=contextPath+"/order/payWay?orderId="+orderId;
 			    	}else{
 			    		alert(data.msg);
 			    	}
-			    }
+		    }
 		});
 	});
 	//绑定地址选择

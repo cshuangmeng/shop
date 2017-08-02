@@ -20,11 +20,12 @@
 				<%@include file="util/menu.jsp" %>
 			</div>
 			<!--banner-->
+			<c:if test="${not empty result.data.topBanners }">
 			<div class="banner">
 				<div id="myCarousel" class="carousel slide list">
 					<!-- 轮播（Carousel）项目 -->
 					<div class="carousel-inner" id="js-banner">
-						<c:forEach items="${result.data.bottomBanners }" var="banner">
+						<c:forEach items="${result.data.topBanners }" var="banner">
 						<div class="item">
 							<c:choose>
 								<c:when test="${not empty banner.url }">
@@ -42,6 +43,7 @@
 					<a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
 				</div>
 			</div>
+			</c:if>
 			<!--欢迎大礼包-->
 			<div class="hydlb">
 				<div class="tit">
@@ -92,11 +94,12 @@
 				</div>
 			</div>
 			<!--banner01-->
+			<c:if test="${not empty result.data.bottomBanners }">
 			<div class="banner01">
 				<div id="myCarousel01" class="carousel slide">
 					<!-- 轮播（Carousel）项目 -->
 					<div class="carousel-inner">
-						<c:forEach items="${result.data.topBanners }" var="banner">
+						<c:forEach items="${result.data.bottomBanners }" var="banner">
 						<div class="item item01">
 							<c:choose>
 								<c:when test="${not empty banner.url }">
@@ -116,6 +119,7 @@
 	   				    data-slide="next">&rsaquo;</a>
 				</div>
 			</div>
+			</c:if>
 			<!--品质生活-->
 			<div class="pzsh">
 				<div class="tit">

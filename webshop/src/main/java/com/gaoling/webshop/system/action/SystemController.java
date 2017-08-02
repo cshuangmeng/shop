@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.gaoling.webshop.goods.service.GoodsService;
+import com.gaoling.webshop.system.pojo.Result;
+
+import net.sf.json.JSONObject;
 
 @Controller
 public class SystemController {
@@ -29,7 +32,9 @@ public class SystemController {
 	//首页
 	@RequestMapping("/index")
 	public String index(Model model){
-		model.addAttribute("result", goodsService.loadIndexGoodsList());
+		Result result=goodsService.loadIndexGoodsList();
+		System.out.println(JSONObject.fromObject(result));
+		model.addAttribute("result", result);
 		return "index";
 	}
 	
