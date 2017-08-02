@@ -17,7 +17,6 @@ import com.gaoling.webshop.common.HttpClientUtil;
 import com.gaoling.webshop.common.MemcachedUtil;
 import com.gaoling.webshop.common.OSSUtil;
 import com.gaoling.webshop.common.SMSUtil;
-import com.gaoling.webshop.common.ThreadCache;
 import com.gaoling.webshop.system.pojo.Result;
 import com.gaoling.webshop.system.service.CommonService;
 import com.gaoling.webshop.tribe.pojo.Tribe;
@@ -50,7 +49,7 @@ public class UserService extends CommonService{
 		}
 		code=DataUtil.createNums(4);
 		//发送验证码
-		if(true||SMSUtil.send(mobile, code)){
+		if(SMSUtil.send(mobile, code)){
 			//存储验证码
 			int expireMins=getInteger("sms_code_expire_mins");
 			MemcachedUtil.getInstance().setData(AppConstant.CHECKCODE_PREFIX+mobile, code, expireMins);
