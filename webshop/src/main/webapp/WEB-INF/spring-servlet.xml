@@ -44,6 +44,8 @@
 			<mvc:exclude-mapping path="/user/login"/>
 			<mvc:exclude-mapping path="/user/code"/>
 			<mvc:exclude-mapping path="/user/register"/>
+			<mvc:exclude-mapping path="/user/verify"/>
+			<mvc:exclude-mapping path="/user/reset"/>
 			<bean class="com.gaoling.webshop.filter.LoginFilter" />
 		</mvc:interceptor>
 		<mvc:interceptor>

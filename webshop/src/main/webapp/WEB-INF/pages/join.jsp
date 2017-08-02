@@ -7,6 +7,7 @@
 		<meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
 		<link rel="stylesheet" type="text/css" href="${pageContext.servletContext.contextPath }/resources/css/joinContactUs.css"/>
 		<%@include file="util/script.jsp" %>
+		<script type="text/javascript" src="${pageContext.servletContext.contextPath }/resources/js/join.js"></script>
 		<title>联系我们</title>
 	</head>
 	<body>
@@ -40,8 +41,6 @@
 					<input type="text" placeholder="产品优势" />
 					<input type="text" placeholder="联系人"/>
 					<input type="text" placeholder="联系方式" />
-					<input class="joinUs_con_txt" type="text" placeholder="请输入内容" />
-					
 				</div>
 				<p class="joinUs_txt">申请加入</p>
 			</div>

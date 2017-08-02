@@ -25,6 +25,12 @@ public class AppConstant {
 	public static final String STORE_USER_PARAM_NAME = "user";
 	// 访问参数存储变量名
 	public static final String HTTP_PARAM_NAME = "httpParam";
+	// 图形验证码存储参数名
+	public static final String STORE_VERIFY_CODE_NAME = "verify";
+	// 图形验证码宽
+	public static final int VERIFY_CODE_WIDTH = 200;
+	// 图形验证码高
+	public static final int VERIFY_CODE_HEIGHT = 80;
 
 	public static String ALIDAYU_SMS_URL;// 阿里大于短信发送地址
 	public static String ALIDAYU_APP_KEY;// 阿里大于appKey
@@ -90,6 +96,7 @@ public class AppConstant {
 	public static final int OUT_OF_BOUNDS = 115;
 	public static final int USER_ALREADY_EXISTS = 116;
 	public static final int USER_OR_PASSWORD_INCORRECT = 117;
+	public static final int VERIFY_CODE_INCORRECT = 118;
 
 	static {
 		ALIDAYU_SMS_URL = PropertiesUtil.getProperty("alidayu_sms_url");

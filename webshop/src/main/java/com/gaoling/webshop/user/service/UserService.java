@@ -17,6 +17,7 @@ import com.gaoling.webshop.common.HttpClientUtil;
 import com.gaoling.webshop.common.MemcachedUtil;
 import com.gaoling.webshop.common.OSSUtil;
 import com.gaoling.webshop.common.SMSUtil;
+import com.gaoling.webshop.common.ThreadCache;
 import com.gaoling.webshop.system.pojo.Result;
 import com.gaoling.webshop.system.service.CommonService;
 import com.gaoling.webshop.tribe.pojo.Tribe;
@@ -35,7 +36,7 @@ public class UserService extends CommonService{
 	private TribeService tribeService;
 	
 	//下发验证码
-	public Result sendCode(String mobile){
+	public Result sendCode(String mobile,String verifyCode,String code){
 		if(StringUtils.isEmpty(mobile)){
 			Logger.getLogger("file").info("UserService | sendCode | mobile="+mobile);
 			return putResult(AppConstant.PARAM_IS_NULL);
@@ -44,9 +45,12 @@ public class UserService extends CommonService{
 			Logger.getLogger("file").info("UserService | sendCode | mobile="+mobile);
 			return putResult(AppConstant.DATA_FORMAT_INCORRECT);
 		}
-		String code=DataUtil.createNums(4);
+		if(StringUtils.isNotEmpty(verifyCode)&&!verifyCode.equalsIgnoreCase(code)){
+			return putResult(AppConstant.VERIFY_CODE_INCORRECT);
+		}
+		code=DataUtil.createNums(4);
 		//发送验证码
-		if(SMSUtil.send(mobile, code)){
+		if(true||SMSUtil.send(mobile, code)){
 			//存储验证码
 			int expireMins=getInteger("sms_code_expire_mins");
 			MemcachedUtil.getInstance().setData(AppConstant.CHECKCODE_PREFIX+mobile, code, expireMins);
@@ -141,6 +145,31 @@ public class UserService extends CommonService{
 			user.getExtras().put("tribeCode", tribe.getId());
 		}
 		return putResult(user);
+	}
+	
+	//重置修改密码
+	public Result resetPassword(String code,String cellphone,String password){
+		//检查参数是否填写
+		if(StringUtils.isEmpty(code)&&(StringUtils.isEmpty(cellphone))){
+			Logger.getLogger("file").info("UserService | login | code="+code+",cellphone="+cellphone+" password="+password);
+			return putResult(AppConstant.PARAM_IS_NULL);
+		}
+		//检查用户是否存在
+		User user=getUserByCellphone(cellphone);
+		if(null==user){
+			return putResult(AppConstant.USER_NOT_EXISTS);
+		}
+		//检查验证码是否正确
+		String saveCode=MemcachedUtil.getInstance().getData(AppConstant.CHECKCODE_PREFIX+cellphone,"");
+		if(!saveCode.equals(code)){
+			return putResult(AppConstant.CHECK_CODE_INCORRECT);
+		}
+		if(StringUtils.isNotEmpty(password)){
+			//更新密码
+			user.setPassword(password);
+			updateUser(user);
+		}
+		return putResult();
 	}
 	
 	//扣除/增加用户部落币、部落分

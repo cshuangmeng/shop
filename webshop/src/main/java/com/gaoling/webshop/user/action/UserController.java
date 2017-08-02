@@ -1,6 +1,7 @@
 package com.gaoling.webshop.user.action;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gaoling.webshop.common.AppConstant;
 import com.gaoling.webshop.common.ThreadCache;
+import com.gaoling.webshop.common.VerifyCodeUtil;
 import com.gaoling.webshop.pay.service.UserTradeLogService;
 import com.gaoling.webshop.system.pojo.Result;
 import com.gaoling.webshop.system.service.CommonService;
@@ -32,18 +34,36 @@ public class UserController extends CommonService{
 	@Autowired
 	private UserTradeLogService userTradeLogService;
 	
-	//下发验证码
+	//下发短信验证码
 	@RequestMapping("/code")
 	@ResponseBody
-	public Result sendCode(@RequestParam(required=false) String cellphone){
+	public Result sendCode(@RequestParam(required=false) String cellphone
+			,@RequestParam(required=false) String code,HttpServletRequest request){
 		Result result=null;
 		try {
-			result=userService.sendCode(cellphone);
+			String verifyCode=(String)request.getSession().getAttribute(AppConstant.STORE_VERIFY_CODE_NAME);
+			result=userService.sendCode(cellphone,verifyCode,code);
+			if(result.getCode()==AppConstant.SUCCESS){
+				request.getSession().removeAttribute(AppConstant.STORE_VERIFY_CODE_NAME);
+			}
 		} catch (Exception e) {
 			result=userService.putResult(AppConstant.SYSTEM_ERROR_CODE);
 			e.printStackTrace();
 		}
 		return result;
+	}
+	
+	//下发图形验证码
+	@RequestMapping("/verify")
+	public void verify(HttpServletRequest request,HttpServletResponse response){
+		try {
+			String code=VerifyCodeUtil.generateVerifyCode(4);
+			request.getSession();
+			request.getSession().setAttribute(AppConstant.STORE_VERIFY_CODE_NAME, code);
+			VerifyCodeUtil.outputImage(AppConstant.VERIFY_CODE_WIDTH, AppConstant.VERIFY_CODE_HEIGHT, response.getOutputStream(), code);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	//用户注册
@@ -81,6 +101,15 @@ public class UserController extends CommonService{
 			request.getSession().setAttribute(AppConstant.STORE_USER_PARAM_NAME, (User)result.getData());
 		}
 		return "redirect:/index";
+	}
+	
+	//用户重置密码
+	@RequestMapping("/reset")
+	@ResponseBody
+	public Result resetPassword(@RequestParam(required=false) String code,@RequestParam(required=false) String cellphone
+			,@RequestParam(required=false) String password,Model model
+			,HttpServletRequest request){
+		return userService.resetPassword(code, cellphone, password);
 	}
 	
 	//用户登出

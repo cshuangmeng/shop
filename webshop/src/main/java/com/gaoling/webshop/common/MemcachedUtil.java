@@ -52,14 +52,15 @@ public class MemcachedUtil {
 	// 存储
 	public void setData(String key, Object value, int mins) {
 		try {
-			client.set(key, value, new Date(System.currentTimeMillis()+mins*60*1000));
+			boolean result=client.set(key, value, mins);
+			System.out.println(result);
 			Logger.getLogger("file").info(DateUtil.getCurrentTime()+" "+key+" seted!mins is "+mins);
 		} catch (Exception e) {
 			Logger.getLogger("file").info(DateUtil.getCurrentTime()+" "+key+" set failure! "+e.getMessage());
 			e.printStackTrace();
 		}
 	}
-
+	
 	// 获取
 	public Object getData(String key) {
 		try {
@@ -87,7 +88,8 @@ public class MemcachedUtil {
 	}
 	
 	public static void main(String[] args) {
-		MemcachedUtil.getInstance().setData("cc_18310137109", "0000", 360);
+		//MemcachedUtil.getInstance().setData("pc_189107010471", "0000", 10);
+		MemcachedUtil.getInstance().getData("pc_189107010471");
 	}
 
 }
