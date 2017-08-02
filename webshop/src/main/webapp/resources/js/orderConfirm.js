@@ -104,6 +104,10 @@ $(function(){
 		$("li[goodsId]").each(function(i,v){
 			itemIds+=itemIds.length>0?","+$(this).attr("goodsId"):$(this).attr("goodsId");
 		});
+		if($(".corner").length<=0){
+			alert("请先选择收货地址");
+			return;
+		}
 		var orderId=0;
 		$.ajax({url:contextPath+"/order/new",
 			    data:{"itemIds":itemIds,
@@ -124,6 +128,11 @@ $(function(){
 			    	}
 			    }
 		});
+	});
+	//绑定地址选择
+	$("li.address_con1").click(function(){
+		$("li.address_con1 img").remove();
+		$(this).append("<img class=\"corner\" src=\""+contextPath+"/resources/img/right.png\"/>");
 	});
 	
 });

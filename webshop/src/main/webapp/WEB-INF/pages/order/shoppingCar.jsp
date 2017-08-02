@@ -23,7 +23,7 @@
 			<div class="shoppingCartMiddleCon">
 				<p class="MiddleConTitle">
 					<span style="font-weight: 800;font-size: 20px;font-family: '微软雅黑';color: #404040;margin-right: 34px;">
-					购物袋</span>请在<span style="color: #cf443f;">19分32秒</span>19分32秒内提交订单，下单后你另有30分钟的支付时间。
+					购物袋</span><!-- 请在<span style="color: #cf443f;">19分32秒</span>19分32秒内提交订单，下单后你另有30分钟的支付时间。 -->
 				</p>
 				<div class="MiddleConTitle_T">
 					<p class="MiddleConTitle_1">
@@ -81,10 +81,10 @@
 					</ul>
 				</div>
 				<div class="payAll">
-					<p class="payAllLeft">请在倒计时结束前结算</p>
+					<p class="payAllLeft"><!-- 请在倒计时结束前结算 --></p>
 					<p class="payAllRight">
 						<span style="margin-left: 50px;">立即结算</span>
-						<span style="margin-left: 10px;">19:21</span>
+						<!-- <span style="margin-left: 10px;">19:21</span> -->
 					</p>
 				</div>
 				<div class="bottomBlank">

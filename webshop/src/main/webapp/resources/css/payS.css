@@ -2,7 +2,7 @@
 	width: 640px;
 	margin: 130px auto;
 	border: 1px solid #ddd;
-	padding: 45px 180px;
+	text-align: center;
 }
 .con .headImg{
 	width: 380px;
@@ -19,7 +19,7 @@
 .con .headImg .headtit{
 	float: right;
 	margin-top: 10px;
-	margin-right: 30px;
+	margin-right: 80px;
 }
 .con .headImg .headtit p{
 	font-size: 24px;

@@ -30,6 +30,8 @@ public class AddressService extends CommonService{
 			return putResult(AppConstant.USER_NOT_EXISTS);
 		}
 		List<Address> addresses=queryAddresses(DataUtil.mapOf("userId",user.getId()));
+		//排序,默认地址排第一个
+		addresses.sort((a,b)->b.getIsDefault()-a.getIsDefault());
 		return putResult(DataUtil.mapOf("addresses",addresses,"size",addresses.size()));
 	}
 	

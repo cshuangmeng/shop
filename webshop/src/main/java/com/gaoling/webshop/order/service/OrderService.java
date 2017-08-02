@@ -70,12 +70,15 @@ public class OrderService extends CommonService{
 	public Result queryOrderDetail(int orderId){
 		//加载用户
 		User user=(User)ThreadCache.getData(AppConstant.STORE_USER_PARAM_NAME);
-		List<Order> orders=queryOrders(DataUtil.mapOf("allOrders",true,"mainOrderId",orderId));
-		if(null==orders||orders.get(0).getUserId()!=user.getId()){
+		Order order=null;
+		if(orderId>0){
+			order=getOrder(orderId, false);
+		}
+		if(null==order||order.getUserId()!=user.getId()){
 			return putResult(AppConstant.NOT_MYSELF_OPERATE);
 		}
-		orders.stream().forEach(o->o.getExtras().put("goods", goodsService.getGoods(o.getGoodsId())));
-		return putResult(orders);
+		order.getExtras().put("address", addressService.getAddress(order.getAddressId()));
+		return putResult(order);
 	}
 	
 	//查询订单列表
@@ -153,9 +156,7 @@ public class OrderService extends CommonService{
 			order.setTribeId(param.getTribeId());
 			order.setListPrice(goods.getPrice()*car.getAmount());
 			order.setPayWay(AppConstant.WEIXIN_PAY_WAY);
-			order.setPrice(goods.getPointEnable()>0||goods.getCoinEnable()>0
-					?Math.round(goods.getPrice()*goods.getCashDiscount())*order.getAmount()
-					:goods.getPrice()*order.getAmount());
+			order.setPrice(param.getPrice());
 			if(orders.size()<=0){
 				order.setCoin(param.getCoin());
 				order.setPoint(param.getPoint());
@@ -246,7 +247,7 @@ public class OrderService extends CommonService{
 		pay.setTradeNo(orders.get(0).getTradeNo());
 		pay.setTradeType(AppConstant.WEIXIN_TRADE_TYPE_NATIVE);
 		Map<String,Object> payInfo=payService.operateUserPayRequest(pay);
-		return putResult(DataUtil.mapOf("payInfo",payInfo,"orders",orders
+		return putResult(DataUtil.mapOf("payInfo",payInfo,"orders",orders,"orderId",orderId
 				,"freight",getInteger("freight"),"point",orders.get(0).getPoint()
 				,"coin",orders.get(0).getCoin(),"pointRate",getInteger("point_to_cash_rate")
 				,"coinRate",getInteger("coin_to_cash_rate"),"totalPayPrice",totalPrice
@@ -293,6 +294,8 @@ public class OrderService extends CommonService{
 		}).collect(Collectors.toList());
 		//获取用户的默认地址
 		List<Address> addresses=addressService.getNewOrderAddresses(user.getId());
+		//排序，默认地址排第一个
+		addresses.sort((a,b)->b.getIsDefault()-a.getIsDefault());
 		//拼装其他参数
 		float totalMiniPrice=goods.stream().map(g->{
 			float cashDiscount=Float.parseFloat(g.get("cashDiscount").toString());

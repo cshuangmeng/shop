@@ -33,13 +33,13 @@
 								${result.data.addresses[0].mobile }
 							</p>
 							<div class="address_con_txt3">
-								<p class="address_con_txt3_l">修改</p>
+								<p class="address_con_txt3_l"><a href="${pageContext.servletContext.contextPath }/address/list">修改</a></p>
 							</div>
 							<img class="corner" src="${pageContext.servletContext.contextPath }/resources/img/right.png"/>
 						</li>
 						</c:if>
 						<c:if test="${not empty result.data.addresses[1] }">
-						<li class="address_con1">
+						<li class="address_con1" addressId=${result.data.addresses[1].id }>
 							<div class="address_con_txt1">
 								<p class="address_con_txt_left">${result.data.addresses[1].address }</p>
 								<p class="address_con_txt_right">${result.data.addresses[1].consigner }</p>
@@ -48,16 +48,16 @@
 								${result.data.addresses[1].mobile }
 							</p>
 							<div class="address_con_txt3">
-								<p class="address_con_txt3_l">修改</p>
+								<p class="address_con_txt3_l"><a href="${pageContext.servletContext.contextPath }/address/list">修改</a></p>
 							</div>
 						</li>
 						</c:if>
 						<li class="address_con2">
-							<img src="${pageContext.servletContext.contextPath }/resources/img/addjpg.png" />
+							<a href="${pageContext.servletContext.contextPath }/address/list"><img src="${pageContext.servletContext.contextPath }/resources/img/addjpg.png" /></a>
 						</li>
 						<c:forEach items="${result.data.addresses }" var="address" varStatus="state">
 						<c:if test="${state.count>2 }">
-						<li name="display" class="address_con1 display_none">
+						<li name="display" class="address_con1 display_none" addressId=${address.id }>
 							<div class="address_con_txt1">
 								<p class="address_con_txt_left">${address.address }</p>
 								<p class="address_con_txt_right">${address.consigner }</p>
@@ -66,7 +66,7 @@
 								${address.mobile }
 							</p>
 							<div class="address_con_txt3">
-								<p class="address_con_txt3_l">修改</p>
+								<p class="address_con_txt3_l"><a href="${pageContext.servletContext.contextPath }/address/list">修改</a></p>
 							</div>
 						</li>
 						</c:if>

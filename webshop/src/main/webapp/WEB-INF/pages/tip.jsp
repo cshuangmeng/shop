@@ -5,10 +5,10 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
-		<link rel="stylesheet" type="text/css" href="${pageContext.servletContext.contextPath }/resources/css/payR.css"/>
 		<link rel="stylesheet" type="text/css" href="${pageContext.servletContext.contextPath }/resources/css/payS.css"/>
 		<%@include file="util/script.jsp" %>
-		<title>关于我们</title>
+		<script type="text/javascript" src="${pageContext.servletContext.contextPath }/resources/js/tip.js"></script>
+		<title>提示</title>
 	</head>
 	<body>
 		<div class="p-login-main">
@@ -19,7 +19,7 @@
 			<div class="commomNavigation">
 				<%@include file="util/menu.jsp" %>
 			</div>
-			<div class="con">
+			<div class="con" style="display: none;">
 			<div class="headImg">
 				<img src="${pageContext.servletContext.contextPath }/resources/img/payR.png"/>
 				<div class="headtit">
@@ -28,7 +28,7 @@
 				</div>
 			</div>
 			<div class="gerenzhongxin">
-				您可以选择<span>重新支付</span>或<span>个人中心</span>查看交易记录，建议去看看
+				您可以选择<span>重新支付</span>或<span><a href="${pageContext.servletContext.contextPath }/user/account">个人中心</a></span>查看交易记录，建议去看看
 			</div>
 			<div class="btn">
 				<div class="yesBtn">重新支付</div>
@@ -36,7 +36,7 @@
 			</div>
 			</div>
 			
-			<div class="con">
+			<div class="con" style="display: none;">
 			<div class="headImg">
 				<img src="${pageContext.servletContext.contextPath }/resources/img/payS.png"/>
 				<div class="headtit">

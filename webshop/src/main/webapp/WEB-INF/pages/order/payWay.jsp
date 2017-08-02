@@ -67,6 +67,7 @@
 				</li>
 			</ul>
 			<input type="hidden" name="codeUrl" value="${result.data.payInfo.codeUrl }"/>
+			<input type="hidden" name="orderId" value="${result.data.orderId }"/>
 			<div id="qrcode">
 				
 			</div>

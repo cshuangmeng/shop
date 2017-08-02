@@ -53,6 +53,7 @@ public class OrderController {
 	
 	//订单详情
 	@RequestMapping("/info")
+	@ResponseBody
 	public Result orderDetail(@RequestParam(defaultValue="0")String orderId){
 		Result result=null;
 		try {
