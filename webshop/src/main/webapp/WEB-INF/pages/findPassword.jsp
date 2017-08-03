@@ -30,12 +30,12 @@
 						<img class="passImg" src="${pageContext.servletContext.contextPath }/resources/img/pass01.jpg"/>
 						<p>
 							<span>登录名：</span>
-							<input class="name" type="text" placeholder="手机号/用户名/邮箱" name="" id="" value="" />
+							<input class="name" type="text" placeholder="手机号" />
 						</p>
 						<p>
 							<span>验证码：</span>
-							<input class="code" type="text" name="" id="" value="" />
-							<b>2341</b>
+							<input class="code" type="text" />
+							<img name="verifyCode" src="">
 							<span class="cursor">换一张</span>
 						</p>
 						<p>
@@ -60,11 +60,11 @@
 						<img class="passImg" src="${pageContext.servletContext.contextPath }/resources/img/pass03.png"/>
 						<p>
 							<span>新密码：</span>
-							<input class="newPass" type="text" placeholder="由6-20位字母、数字和符号组成" name="" id="" value="" />
+							<input class="newPass" type="password" placeholder="由6-12位字母、数字和符号组成" />
 						</p>
 						<p>
 							<span>确认密码：</span>
-							<input class="newPassAgain" type="text" placeholder="请再次输去上面的密码" name="" id="" value="" />
+							<input class="newPassAgain" type="password" placeholder="请再次输去上面的密码" />
 						</p>
 						<p>
 							<button>下一步</button>

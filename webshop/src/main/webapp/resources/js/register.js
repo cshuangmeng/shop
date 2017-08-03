@@ -7,11 +7,16 @@ $(function(){
 		var code=$(":text[name='code']");
 		var result=true;
 		$(".registerCon").find(":text,:password").each(function(i,v){
-			if($(v).val()==""){
+			if($.trim($(v).val())==""){
 				$(v).css({"border-color":"red","color":"red"});
 				result=false;
 			}
 		});
+		var reg=new RegExp("[a-z|A-z|0-9|_]{6,12}");
+		if(!reg.test(password.val())){
+			password.css({"border-color":"red","color":"red"});
+			return;
+		}
 		if(result&&password.val()!=confirm.val()){
 			confirm.css({"border-color":"red","color":"red"});
 			result=false;

@@ -31,7 +31,7 @@
 						<input type="text" placeholder="请输入手机号" name="cellphone" />
 					</p>
 					<p>
-						<input type="password" placeholder="密码由6-20位字母，数字和符号组成" name="password"/>
+						<input type="password" placeholder="密码由6-12位字母，数字和符号组成" name="password"/>
 					</p>
 					<p>
 						<input type="password" placeholder="请再次确认密码" name="confirm"/>
