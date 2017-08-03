@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -98,7 +99,9 @@ public class UserController extends CommonService{
 				return "login";
 			}
 		}else{
-			request.getSession().setAttribute(AppConstant.STORE_USER_PARAM_NAME, (User)result.getData());
+			Logger.getLogger("file").info("UserController | login | code="+code+",cellphone="+cellphone+" password="+password);
+			request.getSession(true).setAttribute(AppConstant.STORE_USER_PARAM_NAME, (User)result.getData());
+			Logger.getLogger("file").info("UserController | login | "+JSONObject.fromObject(request.getSession().getAttribute(AppConstant.STORE_USER_PARAM_NAME)));
 		}
 		return "redirect:/index";
 	}
