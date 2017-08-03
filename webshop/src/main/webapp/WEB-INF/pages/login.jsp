@@ -8,7 +8,7 @@
 		<link rel="stylesheet" type="text/css" href="${pageContext.servletContext.contextPath }/resources/css/login.css"/>
 		<%@include file="util/script.jsp" %>
 		<script src="${pageContext.servletContext.contextPath }/resources/js/login.js"></script>
-		<script src="http://res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js"></script>
+		<script src="https://res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js"></script>
 		<title>首页</title>
 	</head>
 	<body>
