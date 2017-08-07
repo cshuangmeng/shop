@@ -117,12 +117,14 @@ public class UserService extends CommonService{
 		}
 		//检查用户是否存在
 		User user=null;
+		Logger.getLogger("file").info("UserService | login | code="+code+",cellphone="+cellphone+" password="+password);
 		if(StringUtils.isNotEmpty(code)){
 			String response=HttpClientUtil.getNetWorkInfo(AppConstant.API_GETOPENIDBYCODE+"&code="+code, "");
 			JSONObject json=DataUtil.isJSONObject(response)?JSONObject.fromObject(response):null;
 			if(null!=json&&json.getInt("code")==0&&StringUtils.isNotEmpty(json.getJSONObject("data").getString("unionId"))){
 				user=getUserByUnionId(json.getJSONObject("data").getString("unionId"));
 			}
+			Logger.getLogger("file").info("UserService | login | "+(null!=user?user.getCellphone():""));
 			if(null==user){
 				Result result=putResult(AppConstant.USER_NOT_EXISTS);
 				result.setData(json.getJSONObject("data").getString("openId"));
