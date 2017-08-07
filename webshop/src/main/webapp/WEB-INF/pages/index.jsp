@@ -25,11 +25,14 @@
 				<div id="myCarousel" class="carousel slide list">
 					<!-- 轮播（Carousel）项目 -->
 					<div class="carousel-inner" id="js-banner">
+						<div class="item" style="display: none;">
+							<img src="${pageContext.servletContext.contextPath }/resources/img/ppqj_03.jpg" alt="">
+						</div>
 						<c:forEach items="${result.data.topBanners }" var="banner">
 						<div class="item">
 							<c:choose>
 								<c:when test="${not empty banner.url }">
-									<a href="${banner.url }"><img src="${banner.img }" alt=""/></a>
+									<a href="${pageContext.servletContext.contextPath }${banner.url }"><img src="${banner.img }" alt=""/></a>
 								</c:when>
 								<c:otherwise>
 									<img src="${banner.img }" alt=""/>
@@ -98,12 +101,15 @@
 			<div class="banner01">
 				<div id="myCarousel01" class="carousel slide">
 					<!-- 轮播（Carousel）项目 -->
-					<div class="carousel-inner">
+					<div class="carousel-inner" id="js-banner1">
+						<div class="item item01" style="display: none;">
+							<img src="${pageContext.servletContext.contextPath }/resources/img/ppqj_03.jpg" alt="">
+						</div>
 						<c:forEach items="${result.data.bottomBanners }" var="banner">
 						<div class="item item01">
 							<c:choose>
 								<c:when test="${not empty banner.url }">
-									<a href="${banner.url }"><img src="${banner.img }" alt=""/></a>
+									<a href="${pageContext.servletContext.contextPath }${banner.url }"><img src="${banner.img }" alt=""/></a>
 								</c:when>
 								<c:otherwise>
 									<img src="${banner.img }" alt=""/>
