@@ -21,26 +21,27 @@
 			</div>
 			<!--goodsDetail-->
 			<div class="goodslist">
-				<div class="brand">
-					<div>
-						<div class="left">
-							品牌
-						</div>
-						<div class="right">
+				<div class="searchList">
+					<div class="pinpai">
+						<div class="tit">品牌：</div>
+						<div class="list">
+							<span class="all" shopId=0>全部</span>
 							<c:forEach items="${result.data.shops }" var="shop">
-							<div>
-								<img shopId=${shop.id } src="${shop.fullHeadImg }"/>
-							</div>
+								<span shopId=${shop.id }>${shop.name }</span>
 							</c:forEach>
 						</div>
 					</div>
-					<div class="clear"></div>
+					<div class="pinpai">
+						<div class="tit">品类：</div>
+						<div class="list">
+							<span class="all" typeId=0>全部</span>
+							<span typeId=1>品质生活</span>
+							<span typeId=2>欢迎大礼包</span>
+							<span typeId=3>家庭健康</span>
+						</div>
+					</div>
+					<!--<div class="line"></div>-->
 				</div>
-				<div class="btn">
-					<button class="enture">确定</button>
-					<button class="cancel">取消</button>
-				</div>
-				<div class="line"></div>
 				<div class="screen">
 					<div class="left">
 						<span class="active" sort=1>综合</span>

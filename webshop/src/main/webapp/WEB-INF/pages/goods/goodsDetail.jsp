@@ -36,28 +36,38 @@
 								<a href="${pageContext.servletContext.contextPath }/shop/info?id=${result.data.shop.id}"/>${result.data.shop.name }</a>
 							</span>
 						</p>
-						<div class="clear"></div>
-						<div class="price">
-							￥<b>${result.data.goods.price }</b>
-							<span>最低实付价￥${result.data.goods.extras.miniPrice }</span>
-						</div>
-						<p class="freight">运费：<span>￥${result.data.goods.extras.freight }</span></p>
-						<div class="num">
-							<div class="shuliang">数量：</div>
-							<div class="numchange">
-								<button class="reduce">-</button>
-								<input type="text" class="changenum" value="1" class="num"/>
-								<button class="increase">+</button>
+						
+						<div class="goodsInfo">
+							<div class="money">
+								￥<b>${result.data.goods.price }</b>
+								最低实付价￥${result.data.goods.extras.miniPrice }
 							</div>
+							<div class="yunfei">
+								<b>运费</b>
+								<span>免运费</span>
+							</div>
+							<div class="num">
+								<b>数量</b>
+								<div class="numchange">
+									<button class="reduce">-</button>
+									<input type="text" class="changenum" value="1" class="num"/>
+									<button class="increase">+</button>
+								</div>
+								<div class="numtip" style="display: none;">
+									仅剩一件，抓紧时间抢购哦！
+								</div>
+							</div>
+							<p class="getBlf">
+								<c:if test="${result.data.goods.extras.backPoint>0 }">
+								购买最多可获得<b>${result.data.goods.extras.backPoint }</b>部落分！
+								</c:if>
+							</p>
 						</div>
-						<div class="btn" enable="${result.data.goods.extras.buyEnable }" amount="${result.data.goods.extras.buyEnable }">
+						<div class="btn">
 							<div class="shopcar">加入购物车</div>
 							<div class="pay">立即购买</div>
 						</div>
-						<div class="clear"></div>
-						<p class="buluofen">
-							购买最多可获得<b>${result.data.goods.extras.backPoint }</b>部落分！
-						</p>
+						
 					</div>
 				</div>
 				<div class="clear"></div>

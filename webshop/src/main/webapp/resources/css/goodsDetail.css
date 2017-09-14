@@ -1,43 +1,138 @@
-.goodsDetail{
+.goodsInfo {
+	background: #f7f6f6;
+	padding: 20px 15px;
+}
+
+.goodsInfo .money {
+	line-height: 24px;
+	height: 24px;
+	color: #cc2c27;
+	font-size: 12px;
+}
+
+.goodsInfo .money b {
+	font-size: 20px;
+	margin-right: 20px;
+	font-weight: 800;
+}
+
+.yunfei {
+	height: 24px;
+	margin-top: 15px;
+}
+
+.yunfei b {
+	font-weight: 100;
+	display: block;
+	float: left;
+	margin-right: 20px;
+	font-size: 12px;
+	color: #787878;
+}
+
+.yunfei span {
+	display: block;
+	padding: 0px 4px;
+	text-align: center;
+	background: #ff7700;
+	color: #fff;
+	width: 40px;
+	font-size: 12px;
+	float: left;
+}
+
+.num {
+	height: 24px;
+	margin-top: 15px;
+}
+
+.num b {
+	font-weight: 100;
+	display: block;
+	float: left;
+	margin-right: 20px;
+	font-size: 12px;
+	color: #787878;
+}
+
+.num .numtip {
+	float: left;
+	font-size: 12px;
+	line-height: 24px;
+	color: #fe871f;
+	font-weight: 800;
+}
+
+.getBlf {
+	height: 24px;
+	line-height: 24px;
+	font-size: 12px;
+	color: #787878s;
+	margin-top: 15px;
+}
+
+.getBlf b {
+	color: #cc2c27;
+	font-weight: 800;
+}
+
+.goodsDetail .goods .right div.btn {
+	margin-left: 0px;
+	margin-top: 20px;
+}
+
+.goodsDetail .goods .right .btn div.shopcar {
+	margin-right: 55px;
+}
+
+.goodsDetail {
 	width: 1000px;
 	margin: 0 auto;
 	padding-top: 30px;
 }
-.goodsDetail .goods .left{
+
+.goodsDetail .goods .left {
 	float: left;
 	margin-right: 67px;
 	width: 380px;
 }
-.goodsDetail .goods .left img{
+
+.goodsDetail .goods .left img {
 	display: block;
 	width: 100%;
 }
-.goodsDetail .goods .right{
+
+.goodsDetail .goods .right {
 	float: left;
 	width: 550px;
 }
-.goodsDetail .goods .right .tit{
+
+.goodsDetail .goods .right .tit {
 	padding-top: 16px;
 	line-height: 40px;
 	display: block;
 	width: 550px;
 }
-.goodsDetail .goods .right .tit .con{
+
+.goodsDetail .goods .right .tit .con {
 	float: left;
 }
-.goodsDetail .goods .right .tit .shop{
+
+.goodsDetail .goods .right .tit .shop {
 	float: right;
 	padding-left: 24px;
 	position: relative;
 }
-.goodsDetail .goods .right .tit .shop img{
+
+.goodsDetail .goods .right .tit .shop img {
 	display: block;
 	position: absolute;
 	top: 12px;
 	left: 0;
 	width: 16px;
 }
-.goodsDetail .goods .right .price{
+
+.goodsDetail .goods .right .price {
 	height: 84px;
 	width: 530px;
 	background: #fff1f1;
@@ -48,11 +143,13 @@
 	font-weight: 800;
 	position: relative;
 }
-.goodsDetail .goods .right .price b{
+
+.goodsDetail .goods .right .price b {
 	color: #cc2c27;
 	font-size: 40px;
 }
-.goodsDetail .goods .right .price span{
+
+.goodsDetail .goods .right .price span {
 	color: #cc2c27;
 	font-size: 12px;
 	display: block;
@@ -63,42 +160,49 @@
 	padding: 0 5px;
 	border: 1px solid #CC2C27;
 	position: absolute;
-    top: 20px;
-    left: 150px;
+	top: 20px;
+	left: 150px;
 }
-.goodsDetail .goods .right .freight{
+
+.goodsDetail .goods .right .freight {
 	line-height: 44px;
 	font-size: 12px;
 	color: #787878;
 }
-.goodsDetail .goods .right .freight span{
+
+.goodsDetail .goods .right .freight span {
 	color: #fe7800;
 	margin-left: 15px;
 }
-.goodsDetail .goods .right .num{
+
+.goodsDetail .goods .right .num {
 	height: 34px;
 	line-height: 34px;
 	font-size: 12px;
 	color: #787878;
 }
 /*num*/
-.goodsDetail .goods .right .num div{
+.goodsDetail .goods .right .num div {
 	float: left;
 	margin-right: 15px;
 }
-.goodsDetail .goods .right .num div.shuliang{
+
+.goodsDetail .goods .right .num div.shuliang {
 	line-height: 28px;
 	font-size: 12px;
 	color: #787878;
 	width: 38px;
 }
-.goodsDetail .goods .right .num span{
+
+.goodsDetail .goods .right .num span {
 	color: #cc3334;
 }
-.goodsDetail .goods .right .num .numchange .reduce{
+
+.goodsDetail .goods .right .num .numchange .reduce {
 	color: #ccc;
 }
-.goodsDetail .goods .right .num .numchange button{
+
+.goodsDetail .goods .right .num .numchange button {
 	height: 28px;
 	width: 24px;
 	border: 1px solid #ebebf0;
@@ -106,31 +210,34 @@
 	outline: none;
 	background: #f2f2f2;
 }
-.goodsDetail .goods .right .num .numchange input{
+
+.goodsDetail .goods .right .num .numchange input {
 	width: 24px;
-    height: 26px;
-    border: none;
-    outline: none;
-    background: #fff;
-    padding: 0;
-    border-top: 1px solid #ebebf0;
-    border-bottom: 1px solid #ebebf0;
-    float: left;
-    text-align: center;
-    border-radius: 0px;
+	height: 26px;
+	border: none;
+	outline: none;
+	background: #fff;
+	padding: 0;
+	border-top: 1px solid #ebebf0;
+	border-bottom: 1px solid #ebebf0;
+	float: left;
+	text-align: center;
+	border-radius: 0px;
 }
 /*btn*/
-.goodsDetail .goods .right .btn{
+.goodsDetail .goods .right .btn {
 	margin-top: 10px;
 	margin-left: 42px;
 }
-.goodsDetail .goods .right .btn div{
+
+.goodsDetail .goods .right .btn div {
 	width: 196px;
 	margin-right: 20px;
 	height: 43px;
 	float: left;
 }
-.goodsDetail .goods .right .btn div.shopcar{
+
+.goodsDetail .goods .right .btn div.shopcar {
 	border: 1px solid #CC2C27;
 	border-radius: 4px;
 	text-align: center;
@@ -140,7 +247,8 @@
 	font-weight: 800;
 	background: #FFF1F1;
 }
-.goodsDetail .goods .right .btn div.pay{
+
+.goodsDetail .goods .right .btn div.pay {
 	border: 1px solid #CC2C27;
 	border-radius: 4px;
 	text-align: center;
@@ -150,23 +258,26 @@
 	font-weight: 800;
 	background: #CC2C27;
 }
-.goodsDetail .goods .right .buluofen{
+
+.goodsDetail .goods .right .buluofen {
 	color: #787878;
 	font-size: 14px;
 	margin: 10px 0px 50px 42px;
 }
-.goodsDetail .goods .right .buluofen b{
+
+.goodsDetail .goods .right .buluofen b {
 	color: #CC2C27;
 	font-size: 14px;
 }
 /*title*/
-.goodsDetail .title{
+.goodsDetail .title {
 	width: 1000px;
 	margin: 0 auto;
 	border-bottom: 1px solid #bcbcbc;
 	height: 40px;
 }
-.goodsDetail .title .titlecon{
+
+.goodsDetail .title .titlecon {
 	position: relative;
 	border-bottom: 3px solid #dbdadb;
 	height: 37px;
@@ -177,10 +288,12 @@
 	font-size: 20px;
 	color: #CC2C27;
 }
-.goodsDetail .title .titlecon b{
+
+.goodsDetail .title .titlecon b {
 	font-weight: 800;
 }
-.goodsDetail .title .titlecon img{
+
+.goodsDetail .title .titlecon img {
 	position: absolute;
 	display: block;
 	top: 10px;
@@ -188,18 +301,20 @@
 	width: 20px;
 }
 /*detailList*/
-.goodsDetail .detailList{
+.goodsDetail .detailList {
 	padding-top: 22px;
 	padding-bottom: 50px;
 }
-.goodsDetail .detailList .li{
+
+.goodsDetail .detailList .li {
 	height: 38px;
 	border-top: 1px solid #f5f5f5;
 	width: 499px;
 	float: left;
 	line-height: 38px;
 }
-.goodsDetail .detailList .li .tit{
+
+.goodsDetail .detailList .li .tit {
 	width: 99px;
 	font-size: 14px;
 	color: #666;
@@ -208,7 +323,8 @@
 	text-align: right;
 	float: left;
 }
-.goodsDetail .detailList .li .con{
+
+.goodsDetail .detailList .li .con {
 	width: 370px;
 	display: block;
 	height: 38px;
@@ -217,28 +333,17 @@
 	float: left;
 	padding: 0 15px;
 	overflow: hidden;
-	text-overflow:ellipsis;
+	text-overflow: ellipsis;
 	white-space: nowrap;
 }
 /*introduce*/
-.goodsDetail .introduce{
+.goodsDetail .introduce {
 	padding-top: 20px;
 	padding-bottom: 90px;
 }
-.goodsDetail .introduce img{
+
+.goodsDetail .introduce img {
 	width: 780px;
 	display: block;
 	margin: 0 auto;
 }
-
-
-
-
-
-
-
-
-
-
-
-

@@ -1,59 +1,70 @@
-.p-index-main{
+.p-index-main {
 	height: 100%;
 	width: 100%;
 }
-.clear{
+
+.clear {
 	clear: both;
 }
-.hide{
+
+.hide {
 	display: none;
 }
 
 /*banner*/
-.banner{
+.banner {
 	width: 100%;
 }
-.banner .list{
+
+.banner .list {
 	width: 1200px;
 	margin: 0 auto;
 }
-.carousel-inner{
+
+.carousel-inner {
 	width: 1200px;
 	/*height: 400px;*/
 }
-.carousel01{
+
+.carousel01 {
 	position: relative;
 }
-a.carousel-control,a.carousel-control01{
+
+a.carousel-control, a.carousel-control01 {
 	font-size: 32px;
 	color: #fff;
 	font-weight: 800;
 	line-height: 400px;
 }
-.item img,.item01 img{
+
+.item img, .item01 img {
 	display: block;
 	width: 100%;
 }
 /*hydlb*/
-.hydlb{
+.hydlb {
 	width: 1000px;
 	margin: 0 auto;
 }
-.hydlb .tit{
+
+.hydlb .tit {
 	width: 100%;
 	padding-top: 30px;
 }
-.tit b{
+
+.tit b {
 	display: block;
 	width: 30px;
 	height: 3px;
 	background: #c92c25;
 	margin: 0 auto;
 }
-.hydlb .tit span{
+
+.hydlb .tit span {
 	float: left;
 }
-.hydlb .tit .titCon{
+
+.hydlb .tit .titCon {
 	width: 200px;
 	text-align: center;
 	font-size: 32px;
@@ -61,7 +72,8 @@ a.carousel-control,a.carousel-control01{
 	line-height: 50px;
 	font-weight: 800;
 }
-.hydlb .tit .smalltit{
+
+.hydlb .tit .smalltit {
 	width: 200px;
 	text-align: center;
 	font-size: 14px;
@@ -69,310 +81,364 @@ a.carousel-control,a.carousel-control01{
 	line-height: 20px;
 	font-weight: 100;
 }
-.hydlb .tit .line{
+
+.hydlb .tit .line {
 	height: 1px;
 	width: 400px;
 	background: #dadada;
 	margin-top: 28px;
 }
-.hydlb .list{
+
+.hydlb .list {
 	width: 100%;
 	padding-top: 20px;
 	padding-bottom: 70px;
 }
-.hydlb .list .li{
+
+.hydlb .list .li {
 	float: left;
 	width: 230px;
 	margin-right: 26px;
 }
-.hydlb .list .marR{
+
+.hydlb .list .marR {
 	margin-right: 0px;
 }
-.hydlb .list .li .img{
+
+.hydlb .list .li .img {
 	width: 100%;
 }
-.hydlb .list .li .img img{
+
+.hydlb .list .li .img img {
 	width: 100%;
 	display: block;
 }
-.hydlb .list .li .con{
+
+.hydlb .list .li .con {
 	width: 96%;
 	padding: 0 2%;
 }
-.hydlb .list .li .con .money{
-	float: left;
-	width: 26%;
-	display: block;
-	color: #333;
-	font-size: 14px;
-	line-height: 32px;
+
+.hydlb .list .li .con .money {
+	float:  left;
+	width:  35%;
+	display:  block;
+	color:   #333;
+	font-size:  14px;
+	line-height:  32px;
+	overflow:  hidden;
+	text-overflow:  ellipsis;
+	white-space:  nowrap;
 }
-.hydlb .list .li .con .money b{
+
+.hydlb .list .li .con .money b {
 	color: #cc2c27;
 	font-size: 24px;
 }
-.hydlb .list .li .con .name{
-	float: right;
-	width: 70%;
-	display: block;
-	overflow: hidden;
-	text-overflow:ellipsis;
-	white-space: nowrap;
-	color: #333;
-	font-size: 14px;
-	margin-top: 8px;
-	line-height: 22px;
+
+.hydlb .list .li .con .name {
+	float:  right;
+	width:  56%;
+	display:  block;
+	overflow:  hidden;
+	text-overflow:  ellipsis;
+	white-space:  nowrap;
+	color:   #333;
+	font-size:  14px;
+	margin-top:  8px;
+	line-height:  22px;
 }
 /*tyzx*/
-.tyzx{
+.tyzx {
 	width: 1000px;
 	margin: 0 auto;
 }
-.tyzx .tit{
+
+.tyzx .tit {
 	width: 100%;
 	height: 44px;
-	border-bottom: 1px solid #666;	
+	border-bottom: 1px solid #666;
 }
-.tyzx .tit .con{
+
+.tyzx .tit .con {
 	float: left;
 	border-bottom: 2px solid #333;
 }
-.tyzx .tit .con .titCon{
+
+.tyzx .tit .con .titCon {
 	font-size: 32px;
 	font-weight: 800;
 	color: #333;
 	line-height: 44px;
 	margin-right: 10px;
 }
-.tyzx .tit .con .smalltit{
+
+.tyzx .tit .con .smalltit {
 	font-size: 14px;
 	font-weight: 100;
 	color: #666;
 }
-.tyzx .tit .all{
+
+.tyzx .tit .all {
 	float: right;
 	line-height: 44px;
 	font-size: 14px;
 	color: #666;
 	cursor: pointer;
 }
-.tyzx .tit .all img{
+
+.tyzx .tit .all img {
 	display: inline-block;
 	margin-left: 4px;
 	width: 16px;
 	height: 16px;
 }
-.tyzx .list{
+
+.tyzx .list {
 	width: 100%;
 	padding-top: 20px;
 }
-.tyzx .list .li{
+
+.tyzx .list .li {
 	float: left;
 	width: 230px;
 	height: 120px;
 	margin-right: 26px;
 	margin-bottom: 33px;
 }
-.tyzx .list .marR{
+
+.tyzx .list .marR {
 	margin-right: 0px;
 }
-.tyzx .list .li img{
+
+.tyzx .list .li img {
 	display: block;
 	width: 100%;
 	height: 100%;
 }
 /*banner01*/
-.banner01{
+.banner01 {
 	width: 1000px;
 	margin: 0 auto;
 	height: 400px;
 	margin-bottom: 40px;
 }
-.banner01 img{
+
+.banner01 img {
 	display: block;
 	height: 100%;
 	width: 100%;
 }
 /*pzsh*/
-.pzsh{
+.pzsh {
 	width: 1000px;
 	margin: 0 auto;
 }
-.pzsh .tit{
+
+.pzsh .tit {
 	width: 100%;
 	height: 44px;
-	border-bottom: 1px solid #666;	
+	border-bottom: 1px solid #666;
 }
-.pzsh .tit .con{
+
+.pzsh .tit .con {
 	float: left;
 	border-bottom: 2px solid #333;
 }
-.pzsh .tit .con .titCon{
+
+.pzsh .tit .con .titCon {
 	font-size: 32px;
 	font-weight: 800;
 	line-height: 44px;
 	color: #333;
 	margin-right: 10px;
 }
-.pzsh .tit .con .smalltit{
+
+.pzsh .tit .con .smalltit {
 	font-size: 14px;
 	font-weight: 100;
 	color: #666;
 }
-.pzsh .tit .all{
+
+.pzsh .tit .all {
 	float: right;
 	line-height: 44px;
 	font-size: 14px;
 	color: #666;
 	cursor: pointer;
 }
-.pzsh .tit .all img{
+
+.pzsh .tit .all img {
 	display: inline-block;
 	margin-left: 4px;
 	width: 16px;
 	height: 16px;
 }
-.pzsh .list{
+
+.pzsh .list {
 	width: 100%;
 	padding-top: 20px;
 	padding-bottom: 40px;
 }
-.pzsh .list .li{
+
+.pzsh .list .li {
 	float: left;
 	width: 230px;
 	margin-right: 26px;
 	margin-bottom: 20px;
 }
-.pzsh .list .marR{
+
+.pzsh .list .marR {
 	margin-right: 0px;
 }
-.pzsh .list .li .img{
+
+.pzsh .list .li .img {
 	width: 100%;
 }
-.pzsh .list .li .img img{
+
+.pzsh .list .li .img img {
 	width: 100%;
 	display: block;
 }
-.pzsh .list .li .con{
+
+.pzsh .list .li .con {
 	width: 96%;
 	padding: 0 2%;
 }
-.pzsh .list .li .con .money{
-	float: left;
-	width: 26%;
-	display: block;
-	color: #333;
-	font-size: 14px;
-	line-height: 32px;
+
+.pzsh .list .li .con .money {
+	float:  left;
+	width:  35%;
+	display:  block;
+	color:   #333;
+	font-size:  14px;
+	line-height:  32px;
+	overflow:  hidden;
+	text-overflow:  ellipsis;
+	white-space:  nowrap;
 }
-.pzsh .list .li .con .money b{
+
+.pzsh .list .li .con .money b {
 	color: #cc2c27;
 	font-size: 24px;
 }
-.pzsh .list .li .con .name{
-	float: right;
-	width: 70%;
-	display: block;
-	overflow: hidden;
-	text-overflow:ellipsis;
-	white-space: nowrap;
-	color: #333;
-	font-size: 14px;
-	margin-top: 8px;
-	line-height: 22px;
+
+.pzsh .list .li .con .name {
+	float:  right;
+	width:  56%;
+	display:  block;
+	overflow:  hidden;
+	text-overflow:  ellipsis;
+	white-space:  nowrap;
+	color:   #333;
+	font-size:  14px;
+	margin-top:  8px;
+	line-height:  22px;
 }
 /*yssp*/
-.yssp{
+.yssp {
 	width: 1000px;
 	margin: 0 auto;
 }
-.yssp .tit{
+
+.yssp .tit {
 	width: 100%;
 	height: 44px;
-	border-bottom: 1px solid #666;	
+	border-bottom: 1px solid #666;
 }
-.yssp .tit .con{
+
+.yssp .tit .con {
 	float: left;
 	border-bottom: 2px solid #333;
 }
-.yssp .tit .con .titCon{
+
+.yssp .tit .con .titCon {
 	font-size: 32px;
 	font-weight: 800;
 	line-height: 44px;
 	color: #333;
 	margin-right: 10px;
 }
-.yssp .tit .con .smalltit{
+
+.yssp .tit .con .smalltit {
 	font-size: 14px;
 	font-weight: 100;
 	color: #666;
 }
-.yssp .tit .all{
+
+.yssp .tit .all {
 	float: right;
 	line-height: 44px;
 	font-size: 14px;
 	color: #666;
 	cursor: pointer;
 }
-.yssp .tit .all img{
+
+.yssp .tit .all img {
 	display: inline-block;
 	margin-left: 4px;
 	width: 16px;
 	height: 16px;
 }
-.yssp .list{
+
+.yssp .list {
 	width: 100%;
 	padding-top: 20px;
 	padding-bottom: 40px;
 }
-.yssp .list .li{
+
+.yssp .list .li {
 	float: left;
 	width: 230px;
 	margin-right: 26px;
 	margin-bottom: 20px;
 }
-.yssp .list .marR{
+
+.yssp .list .marR {
 	margin-right: 0px;
 }
-.yssp .list .li .img{
+
+.yssp .list .li .img {
 	width: 100%;
 }
-.yssp .list .li .img img{
+
+.yssp .list .li .img img {
 	width: 100%;
 	display: block;
 }
-.yssp .list .li .con{
+
+.yssp .list .li .con {
 	width: 96%;
 	padding: 0 2%;
 }
-.yssp .list .li .con .money{
-	float: left;
-	width: 26%;
+
+.yssp .list .li .con .money  {
+	float:  left;
+	width:  43%;
+	display:  block;
+	color:   #333;
+	font-size:  14px;
+	line-height:  32px;
 	display: block;
-	color: #333;
-	font-size: 14px;
-	line-height: 32px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
-.yssp .list .li .con .money b{
+
+.yssp .list .li .con .money b {
 	color: #cc2c27;
 	font-size: 24px;
 }
-.yssp .list .li .con .name{
-	float: right;
-	width: 70%;
-	display: block;
-	overflow: hidden;
-	text-overflow:ellipsis;
-	white-space: nowrap;
-	color: #333;
-	font-size: 14px;
-	margin-top: 8px;
-	line-height: 22px;
+
+.yssp .list .li .con .name {
+	float:  right;
+	width:  52%;
+	display:  block;
+	overflow:  hidden;
+	text-overflow:  ellipsis;
+	white-space:  nowrap;
+	color:   #333;
+	font-size:  14px;
+	margin-top:  8px;
+	line-height:  22px;
 }
-
-
-
-
-
-
-

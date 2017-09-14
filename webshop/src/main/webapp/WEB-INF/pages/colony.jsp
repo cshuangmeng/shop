@@ -36,6 +36,11 @@
 					<img class="brandItroduction_logo_center" src="${pageContext.servletContext.contextPath }/resources/img/brandItroduction_logo-5.jpg"/>
 					<img src="${pageContext.servletContext.contextPath }/resources/img/brandItroduction_logo-6.jpg"/>
 				</li>
+				<li>
+					<img src="${pageContext.servletContext.contextPath }/resources/img/123_01.png"/>
+					<img class="brandItroduction_logo_center" src="${pageContext.servletContext.contextPath }/resources/img/123_02.png"/>
+					<img src="${pageContext.servletContext.contextPath }/resources/img/123_03.png"/>
+				</li>
 			</ul>
 			<div class="jiuli_tribe">
 				<div class="jiuli_tribe_bg"></div>

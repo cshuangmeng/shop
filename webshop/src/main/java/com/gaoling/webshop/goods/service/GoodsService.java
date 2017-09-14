@@ -53,7 +53,8 @@ public class GoodsService extends CommonService{
 		goods.getExtras().put("freight", getInteger("freight"));
 		goods.getExtras().put("sellAmount", sellAmount);
 		goods.getExtras().put("goodsArea", shop.getAreaName());
-		goods.getExtras().put("backPoint", goods.getPrice()*getInteger("cash_to_point_rate"));
+		goods.getExtras().put("backPoint", goods.getCoinEnable()>0||goods.getPointEnable()>0
+				?Math.round(goods.getPrice()*getInteger("cash_to_point_rate")):0);
 		goods.getExtras().put("buyEnable", 1);
 		if(DataUtil.isJSONObject(goods.getDetails())){
 			goods.getExtras().put("detailsJson", JSONArray.fromObject(goods.getDetails()));
