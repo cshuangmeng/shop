@@ -20,7 +20,8 @@
 			</div>
 			<div class="search">
 				<input type="text" placeholder="搜索商品" />
-				<img src="${pageContext.servletContext.contextPath }/resources/img/search.png"/>
+				<img class="searchimg" src="${pageContext.servletContext.contextPath }/resources/img/search.png"/>
+				<img class="closeimg" src="${pageContext.servletContext.contextPath }/resources/img/search.png"/>
 			</div>
 		</div>
 	</div>

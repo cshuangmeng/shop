@@ -27,7 +27,7 @@
 	<div class="header">
 		<div class="headerCon">
 			<div class="logo">
-				<img src="${pageContext.servletContext.contextPath }/resources/img/logo.png"/>
+				<a href="${pageContext.servletContext.contextPath }/index"><img src="${pageContext.servletContext.contextPath }/resources/img/logo.png"/></a>
 			</div>
 			<div class="icon">
 				<div>

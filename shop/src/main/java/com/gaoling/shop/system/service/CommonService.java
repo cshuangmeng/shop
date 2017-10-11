@@ -1,5 +1,6 @@
 package com.gaoling.shop.system.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -19,72 +20,93 @@ public class CommonService {
 	private DictInfoDao dictInfoDao;
 	@Autowired
 	private ResponseInfoDao responseInfoDao;
-	
-	//查询字典数值
-	public String getString(String name){
+
+	// 查询字典数值
+	public String getString(String name) {
 		return dictInfoDao.queryDictValue(name);
 	}
-	
-	//查询字典数值
-	public int getInteger(String name){
+
+	// 查询字典数值
+	public int getInteger(String name) {
 		return Integer.parseInt(dictInfoDao.queryDictValue(name));
 	}
-	
-	//查询字典数值
-	public List<Map<String,Object>> getSonDicts(String name){
-		return dictInfoDao.queryDicts(DataUtil.mapOf("parentName",name));
+
+	// 查询字典数值
+	public List<Map<String, Object>> getSonDicts(String parentName) {
+		return dictInfoDao.queryDicts(DataUtil.mapOf("parentName", parentName));
 	}
 	
-	//查询字典数值
-	public String getString(String name,String def){
-		String value=dictInfoDao.queryDictValue(name);
-		return StringUtils.isNotEmpty(value)?value:def;
+	// 查询字典数值
+	public List<Map<String, Object>> getDicts(String name) {
+		return dictInfoDao.queryDicts(DataUtil.mapOf("name", name));
 	}
-	
-	//查询字典数值
-	public int getInteger(String name,int def){
-		String value=dictInfoDao.queryDictValue(name);
-		return StringUtils.isNotEmpty(value)?Integer.parseInt(value):def;
+
+	// 查询字典数值
+	public String getString(String name, String def) {
+		String value = dictInfoDao.queryDictValue(name);
+		return StringUtils.isNotEmpty(value) ? value : def;
 	}
-	
-	//设置返回结果
-	public Result putResult(int code,Object data,String msg){
-		Result result=new Result();
+
+	// 查询字典数值
+	public int getInteger(String name, int def) {
+		String value = dictInfoDao.queryDictValue(name);
+		return StringUtils.isNotEmpty(value) ? Integer.parseInt(value) : def;
+	}
+
+	// 设置返回结果
+	public Result putResult(int code, Object data, String msg) {
+		Result result = new Result();
 		result.setCode(code);
 		result.setData(data);
 		result.setMsg(msg);
 		return result;
 	}
-	
-	//设置返回结果
-	public Result putResult(int code,Object... params){
-		Result result=new Result();
+
+	// 设置返回结果
+	public Result putResult(int code, Object... params) {
+		Result result = new Result();
 		result.setCode(code);
-		result.setMsg(String.format(responseInfoDao.queryResponseTextCn(CommonService.class.getSimpleName(), code), params));
+		result.setMsg(
+				String.format(responseInfoDao.queryResponseTextCn(CommonService.class.getSimpleName(), code), params));
 		return result;
 	}
-	
-	//设置返回结果
-	public Result putResult(int code){
-		Result result=new Result();
+
+	// 设置返回结果
+	public Result putResult(int code) {
+		Result result = new Result();
 		result.setCode(code);
 		result.setMsg(responseInfoDao.queryResponseTextCn(CommonService.class.getSimpleName(), result.getCode()));
 		return result;
 	}
-	
-	//设置返回结果
-	public Result putResult(Object data){
-		Result result=new Result();
+
+	// 设置返回结果
+	public Result putResult(Object data) {
+		Result result = new Result();
 		result.setData(data);
 		result.setMsg(responseInfoDao.queryResponseTextCn(CommonService.class.getSimpleName(), result.getCode()));
 		return result;
 	}
-	
-	//设置返回结果
-	public Result putResult(){
-		Result result=new Result();
+
+	// 设置返回结果
+	public Result putResult() {
+		Result result = new Result();
 		result.setMsg(responseInfoDao.queryResponseTextCn(CommonService.class.getSimpleName(), result.getCode()));
 		return result;
 	}
+
+	// 更新字典数值
+	public int updateDictValue(String name, Integer state, Integer parentId) {
+		return dictInfoDao.updateDictValue(name, state, parentId);
+	}
 	
+	// 删除字典数值
+	public int deleteDict(String name, Integer parentId) {
+		return dictInfoDao.deleteDict(name, parentId);
+	}
+
+	// 保存字典数值
+	public int insertDictValue(String name, String value, Integer parentId, Date createTime, Integer state, String remark, Integer orderIndex) {
+		return dictInfoDao.insertDictValue(name, value, parentId, createTime, state, remark, orderIndex);
+	}
+
 }

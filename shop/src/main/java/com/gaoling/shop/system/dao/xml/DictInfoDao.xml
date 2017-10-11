@@ -10,7 +10,7 @@
 	
 	<!-- 加载字典 -->
 	<select id="queryDicts" resultType="java.util.Map">
-		select `name`,`value` from dict_info where state=1
+		select id,`name`,`value` from dict_info where state=1
 		<if test="param.name!=null">
 			and `name`=#{param.name}
 		</if>
@@ -22,5 +22,36 @@
 		</if>
 		order by order_index
 	</select>
+	
+	<!-- 删除字典数据 -->
+	<delete id="deleteDict">
+		delete from dict_info where 
+		<choose>
+		<when test="null!=name">
+			name=#{name}
+		</when>
+		<when test="null!=parentId">
+			parent_id=#{parentId}
+		</when>
+		</choose>
+	</delete>
+	
+	<!-- 更新字典数值 -->
+	<update id="updateDictValue">
+		update dict_info set state=#{state} where
+		<choose>
+		<when test="null!=name">
+			name=#{name}
+		</when>
+		<when test="null!=parentId">
+			parent_id=#{parentId}
+		</when>
+		</choose>
+	</update>
+	
+	<!-- 保存字典数值 -->
+	<insert id="insertDictValue">
+		insert dict_info(name,value,parent_id,create_time,state,remark,order_index)values(#{name},#{value},#{parentId},#{createTime},#{state},#{remark},#{orderIndex})
+	</insert>
 
 </mapper>  

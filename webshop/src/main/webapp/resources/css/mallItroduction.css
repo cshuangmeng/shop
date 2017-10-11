@@ -124,15 +124,26 @@
 
 .goodness_title{
 	height: 78px;
-	padding-top: 30px;
 	background: #f8f7f7;
 	font-size: 26px;
 	line-height: 78px;
 	text-align: center;
 	margin-top: 56px;
 }
-
-
+.brandItroduction_logo li{
+	width: 780px;
+	height:107px;
+	margin: 0 auto;
+}
+.brandItroduction_logo li a{
+	display:block;
+	width: 257px;
+	float:left;
+}
+.brandItroduction_logo li a img{
+	display:block;
+	width: 257px;
+}
 
 
 

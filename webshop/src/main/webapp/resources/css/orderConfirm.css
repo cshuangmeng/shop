@@ -75,7 +75,7 @@
 }
 .address_txt1{
 	padding-top: 40px;
-	height: 50px;
+	height: 65px;
 	font-size: 20px;
 	color: #333;
 }
@@ -407,10 +407,20 @@
 .bottomBlank{
 	height: 150px;
 }
-
-
-
-
+.address_con li{
+	margin-right:30px;
+}
+.priceAll{
+	background:#fbfbfb;
+}
+.MiddleConGoods{
+	margin-bottom:0px;
+}
+.fare{
+	background:#fbfbfb;
+	padding-top:10px;
+	height:37px;
+}
 
 
 

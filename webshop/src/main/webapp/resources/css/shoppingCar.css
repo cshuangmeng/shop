@@ -39,6 +39,7 @@
 	border-bottom: 1px solid #e9e9e9;
 }*/
 .MiddleConGoods li{
+	background: #f9f9f9;
 	padding-top: 14px;
 	height:95px ;
 	border-bottom: 1px solid #e9e9e9;
@@ -166,16 +167,30 @@
 	background: #cb2c28;
 	float: left;
 	cursor: pointer;
+	text-align: center;
 }
 .payAllRight span{
 	color: #fff;
 	font-size: 14px;
+	margin-left:0px;
 }
 .bottomBlank{
 	height: 150px;
 }
-
-
+.goods_price{
+	width:50px;
+	display:block;
+	white-space:nowrap; 
+	overflow:hidden; 
+	text-overflow:ellipsis;
+}
+.goods_price_end{
+	width:28px;
+	display:block;
+	white-space:nowrap; 
+	overflow:hidden; 
+	text-overflow:ellipsis;
+}
 
 
 

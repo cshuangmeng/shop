@@ -74,6 +74,14 @@
 		return null;
 	}
 	
+	//搜索栏目监听回车事件
+	function doSearchByEnter(){
+		var key=$.trim($("div.search").find(":text").val());
+		if(key!=""){
+			location.href=contextPath+"/goods/list?name="+encodeURI(encodeURI(key));
+		}
+	}
+	
 	////////////////////////////////////////
 	//页面加载完毕后调用
 	////////////////////////////////////////
@@ -103,6 +111,11 @@
 			$moreList.css("display","none");
 		});
 	    if($("div.personImg").length>0&&$("div.personImg").attr("headImg")!=""){
-	    	$("div.personImg").css("background",'url('+$("div.personImg").attr("headImg")+')');
+	    		$("div.personImg").css("background",'url('+$("div.personImg").attr("headImg")+')');
 	    }
+	    $(".navigationCon :text").keydown(function(event){
+		    	if(event.keyCode==13){
+		    		doSearchByEnter();
+		    	}
+	    	}); 
 	});

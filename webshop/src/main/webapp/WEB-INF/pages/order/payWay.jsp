@@ -48,7 +48,7 @@
 				</li>
 				<img src="${pageContext.servletContext.contextPath }/resources/img/pay_border.png" />
 				<li class="message_cue_con2_xia">
-					<div class="message_cue_con2_title4">订单信息：</div>
+					<div class="message_cue_con2_title4">优惠方式：</div>
 					<p>商品运费：${(not empty result.data.freight&&result.data.freight==0)?"包邮":"¥"+result.data.freight }</p>
 					<p>部落币抵扣：¥${result.data.coin/result.data.coinRate }</p>
 					<p>部落分抵扣：¥${result.data.point/result.data.pointRate }</p>

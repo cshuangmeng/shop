@@ -123,17 +123,27 @@
 	border-radius: 4px;
 	margin-top: 5px;
 	width: 300px;
+	color: #ddd;
 }
 input::-webkit-input-placeholder{
 	color: #fff;
 }
-.navigationCon .search img{
+.navigationCon .search img.searchimg{
 	display: block;
     position: absolute;
     height: 19px;
     width: 19px;
     top: 16px;
     right: 15px;
+    cursor: pointer;
+}
+.navigationCon .search img.closeimg{
+	display: block;
+    position: absolute;
+    height: 19px;
+    width: 19px;
+    top: 16px;
+    right: 38px;
     cursor: pointer;
 }
 

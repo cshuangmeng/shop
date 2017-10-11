@@ -33,7 +33,7 @@
 							</span>
 							<span class="shop">
 								<img src="${result.data.shop.fullHeadImg }"/>
-								<a href="${pageContext.servletContext.contextPath }/shop/info?id=${result.data.shop.id}"/>${result.data.shop.name }</a>
+								<a href="${pageContext.servletContext.contextPath }/shop/info?id=${result.data.shop.id}">${result.data.shop.name }</a>
 							</span>
 						</p>
 						

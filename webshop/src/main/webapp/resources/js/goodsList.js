@@ -1,6 +1,5 @@
 $(function(){
 	var $more = $('#js-more'),$moreList = $('#js-moreList');
-	
 	//显示隐藏更多
 	$more.mouseenter(function(){
 		$moreList.css("display","block");
@@ -44,17 +43,7 @@ $(function(){
     	tool.text(page+"/"+tool.text().split("/")[1]);
     	loadPageData(page);
     });
-	//商品列表定位
-	position();
-	function position(){
-		$('.goodslist .goodslistCon .li').each(function(){
-			var _this = $(this);
-			var index = _this.index()+1;
-			if(index % 4 == 0){
-				_this.css('margin-right','0px');
-			}
-		});
-	}
+	
 	//选定门店
 	$("span[shopId]").click(function(){
 		$("span[shopId]").removeClass("all");

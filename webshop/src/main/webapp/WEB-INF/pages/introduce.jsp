@@ -131,14 +131,26 @@
 			<p class="goodness_title">合作品牌</p>
 			<ul style="margin-bottom: 126px;" class="brandItroduction_logo">
 				<li>
-					<img src="${pageContext.servletContext.contextPath }/resources/img/brandItroduction_logo-1.jpg"/>
-					<img class="brandItroduction_logo_center" src="${pageContext.servletContext.contextPath }/resources/img/brandItroduction_logo-2.jpg"/>
-					<img src="${pageContext.servletContext.contextPath }/resources/img/brandItroduction_logo-3.jpg"/>
+					<a href="${pageContext.servletContext.contextPath }/shop/info?id=96735">
+						<img src="${pageContext.servletContext.contextPath }/resources/img/brandItroduction_logo-1.jpg"/>
+					</a>
+					<a href="${pageContext.servletContext.contextPath }/shop/info?id=96734">
+						<img class="brandItroduction_logo_center" src="${pageContext.servletContext.contextPath }/resources/img/brandItroduction_logo-2.jpg"/>
+					</a>
+					<a href="${pageContext.servletContext.contextPath }/shop/info?id=96733">
+						<img src="${pageContext.servletContext.contextPath }/resources/img/brandItroduction_logo-3.jpg"/>
+					</a>
 				</li>
 				<li>
-					<img src="${pageContext.servletContext.contextPath }/resources/img/brandItroduction_logo-4.jpg"/>
-					<img class="brandItroduction_logo_center" src="${pageContext.servletContext.contextPath }/resources/img/brandItroduction_logo-5.jpg"/>
-					<img src="${pageContext.servletContext.contextPath }/resources/img/brandItroduction_logo-6.jpg"/>
+					<a href="${pageContext.servletContext.contextPath }/shop/info?id=96736">
+						<img src="${pageContext.servletContext.contextPath }/resources/img/brandItroduction_logo-4.jpg"/>
+					</a>
+					<a href="${pageContext.servletContext.contextPath }/shop/info?id=96738">
+						<img class="brandItroduction_logo_center" src="${pageContext.servletContext.contextPath }/resources/img/brandItroduction_logo-5.jpg"/>
+					</a>
+					<a href="${pageContext.servletContext.contextPath }/shop/info?id=96732">
+						<img src="${pageContext.servletContext.contextPath }/resources/img/brandItroduction_logo-6.jpg"/>
+					</a>
 				</li>
 			</ul>
 			</div>

@@ -192,7 +192,7 @@ public class OrderService extends CommonService{
 		Map<String,Object> payInfo=null;
 		if(param.getPrice()>0){
 			PayParam pay=new PayParam();
-			pay.setAmount(Math.round(param.getPrice()));
+			pay.setAmount(param.getPrice());
 			pay.setBody(body);
 			pay.setIp(ip);
 			pay.setNonceStr(DataUtil.createLetters(32));

@@ -47,7 +47,7 @@
 					<c:forEach items="${shop.goods }" var="goods">
 					<li goodsId=${goods.goodsId }>
 						<a href="${pageContext.servletContext.contextPath }/goods/info?id=${goods.goodsId}"><img style="margin-left: 30px;" class="goodsImage" src="${goods.headImg }" /></a>
-						<p class="goods_introduce">${goods.goodsName }</p>
+						<a href="${pageContext.servletContext.contextPath }/goods/info?id=${goods.goodsId}"><p class="goods_introduce">${goods.goodsName }</p></a>
 						<p class="goods_price">¥${goods.price }</p>
 						<div class="count">
 							<span class="add">+</span>
@@ -83,7 +83,7 @@
 				<div class="payAll">
 					<p class="payAllLeft"><!-- 请在倒计时结束前结算 --></p>
 					<p class="payAllRight">
-						<span style="margin-left: 50px;">立即结算</span>
+						<span>立即结算</span>
 						<!-- <span style="margin-left: 10px;">19:21</span> -->
 					</p>
 				</div>

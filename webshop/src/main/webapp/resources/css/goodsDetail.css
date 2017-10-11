@@ -36,7 +36,7 @@
 	text-align: center;
 	background: #ff7700;
 	color: #fff;
-	width: 40px;
+	width: 50px;
 	font-size: 12px;
 	float: left;
 }
@@ -110,6 +110,7 @@
 .goodsDetail .goods .right .tit {
 	padding-top: 16px;
 	line-height: 40px;
+	height:40px;
 	display: block;
 	width: 550px;
 }
@@ -322,6 +323,10 @@
 	display: block;
 	text-align: right;
 	float: left;
+	display:block;
+	white-space:nowrap; 
+	overflow:hidden; 
+	text-overflow:ellipsis;
 }
 
 .goodsDetail .detailList .li .con {

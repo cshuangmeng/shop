@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.gaoling.shop.common.AppConstant;
 import com.gaoling.shop.goods.service.BannerService;
@@ -19,10 +20,25 @@ public class BannerController extends CommonService{
 	
 	//加载商品列表
 	@RequestMapping("/wk")
-	public Result banners(@RequestParam Integer index){
+	public Result banners(@RequestParam Integer index,@RequestParam(required=false)String system){
 		Result result=null;
 		try {
-			result=bannerService.loadWKBanners(index);
+			result=bannerService.loadWKBanners(index,system);
+		} catch (Exception e) {
+			result=bannerService.putResult(AppConstant.SYSTEM_ERROR_CODE);
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	//加载商品列表
+	@RequestMapping("/upload")
+	public Result uploadBanners(@RequestParam(required=false) MultipartFile[] launch
+			,@RequestParam(required=false) MultipartFile[] top
+			,@RequestParam(required=false) MultipartFile[] bottom){
+		Result result=null;
+		try {
+			result=bannerService.uploadBanner(launch, top, bottom);
 		} catch (Exception e) {
 			result=bannerService.putResult(AppConstant.SYSTEM_ERROR_CODE);
 			e.printStackTrace();

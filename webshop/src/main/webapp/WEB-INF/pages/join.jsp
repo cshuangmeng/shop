@@ -28,9 +28,9 @@
 					<p>163邮箱 ： zhiyuan@163.com</p>
 					<p>传真：0755-8389-6336</p>
 				</div>
-				<div class="contactUs_map"></div>
+				<a href="http://j.map.baidu.com/0eWX9" target="blank"><div class="contactUs_map"></div></a>
 				<p class="contactUs_title_bg_bottom"></p>
-				<p class="contactUs_button">现在就去</p>
+				<p class="contactUs_button"><a href="http://j.map.baidu.com/0eWX9" target="blank">现在就去</a></p>
 			</div>
 			<div class="joinUs">
 				<p class="joinUs_title">申请加入</p>

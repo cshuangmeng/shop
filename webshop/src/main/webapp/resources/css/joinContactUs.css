@@ -27,7 +27,6 @@
 
 .contactUs_con {
 	height: 142px;
-	padding-top: 28px;
 }
 
 .contactUs_con p {
@@ -85,7 +84,7 @@
 	font-size: 15px;
 	padding-left: 14px;
 	line-height: 26px;
-	border: 1px solid #232323;
+	border: 1px solid #ddd;
 	border-radius: 5px;
 	margin-top: 14px;
 	background: #fff;
