@@ -20,8 +20,8 @@ import net.sf.json.JSONObject;
 public class BannerService extends CommonService {
 	
 	//加载Banner
-	public Result loadWKBanners(Integer index,String system) {
-		List<JSONObject> result = getSonDicts("wk" + index + "_top_banner").stream().map(r -> {
+	public Result loadWKBanners(Integer index,String system,String appType) {
+		List<JSONObject> result = getSonDicts("wk" + index + "_top_banner"+(StringUtils.isNotEmpty(appType)?"_"+appType:"")).stream().map(r -> {
 			JSONObject json = JSONObject.fromObject(r.get("value"));
 			if(StringUtils.isNotEmpty(system)&&system.toLowerCase().trim().contains("ios")){
 				json.put("target", 3);
@@ -33,8 +33,10 @@ public class BannerService extends CommonService {
 	}
 	
 	//上传Banner
-	public Result uploadBanner(MultipartFile[] launch,MultipartFile[] top,MultipartFile[] bottom)throws Exception{
+	public Result uploadBanner(String appType,MultipartFile[] launch,MultipartFile[] top,MultipartFile[] bottom
+			,String[] target,String[] url)throws Exception{
 		//上传启动页图片
+		int seq=0;
 		if(null!=launch&&launch.length>0){
 			int index=1;
 			String parent="wk3_top_banner";
