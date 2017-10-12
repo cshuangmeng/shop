@@ -22,6 +22,7 @@ public class BannerController extends CommonService{
 	
 	//加载商品列表
 	@RequestMapping("/wk")
+	@CrossOrigin(origins="*",methods=RequestMethod.POST)
 	public Result banners(@RequestParam Integer index,@RequestParam(required=false)String system
 			,@RequestParam(required=false) String appType){
 		Result result=null;
@@ -39,10 +40,11 @@ public class BannerController extends CommonService{
 	@CrossOrigin(origins="*",methods=RequestMethod.POST)
 	public Result uploadBanners(@RequestParam(required=false) MultipartFile[] launch
 			,@RequestParam(required=false) MultipartFile[] top,@RequestParam(required=false) MultipartFile[] bottom,
-			@RequestParam String[] target,@RequestParam String[] url,@RequestParam String appType){
+			@RequestParam String[] target,@RequestParam String[] url,@RequestParam String appType
+			,@RequestParam String[] key){
 		Result result=null;
 		try {
-			result=bannerService.uploadBanner(appType,launch, top, bottom, target, url);
+			result=bannerService.uploadBanner(appType,launch, top, bottom, target, url, key);
 		} catch (Exception e) {
 			result=bannerService.putResult(AppConstant.SYSTEM_ERROR_CODE);
 			e.printStackTrace();

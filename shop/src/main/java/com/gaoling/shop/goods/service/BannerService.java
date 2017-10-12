@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.gaoling.shop.common.AppConstant;
@@ -33,66 +34,71 @@ public class BannerService extends CommonService {
 	}
 	
 	//上传Banner
+	@Transactional
 	public Result uploadBanner(String appType,MultipartFile[] launch,MultipartFile[] top,MultipartFile[] bottom
-			,String[] target,String[] url)throws Exception{
+			,String[] target,String[] url,String[] key)throws Exception{
 		//上传启动页图片
 		int seq=0;
 		if(null!=launch&&launch.length>0){
 			int index=1;
-			String parent="wk3_top_banner";
+			String parent=key[0];
 			Integer parentId=Integer.parseInt(getDicts(parent).get(0).get("id").toString());
 			deleteDict(null, parentId);
 			for(MultipartFile i:launch){
 				if(!i.isEmpty()){
 					String fileName="goods/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS"+DataUtil.createNums(6));
 					fileName+=i.getOriginalFilename().substring(i.getOriginalFilename().lastIndexOf("."));
-					OSSUtil.uploadFileToOSS(i.getInputStream(), fileName);
-					String key=parent+index;
-					insertDictValue(key, "{\"url\":\"\",\"target\":\"2\",\"img\":\""+fileName+"\"}"
-						, parentId, DateUtil.nowDate(), 1,"其他banner配置", index);
+					//OSSUtil.uploadFileToOSS(i.getInputStream(), fileName);
+					String name=parent+index;
+					insertDictValue(name, "{\"url\":\""+url[seq]+"\",\"target\":\""+target[seq]+"\",\"img\":\""+fileName+"\"}"
+						, parentId, DateUtil.nowDate(), 1,"启动页banner配置", index);
 					index++;
 				}
+				seq++;
 			}
 		}
 		//上传顶部图片
 		if(null!=top&&top.length>0){
 			int index=1;
-			String parent="wk1_top_banner";
+			String parent=key[1];
 			Integer parentId=Integer.parseInt(getDicts(parent).get(0).get("id").toString());
 			deleteDict(null, parentId);
 			for(MultipartFile i:top){
 				if(!i.isEmpty()){
 					String fileName="goods/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS"+DataUtil.createNums(6));
 					fileName+=i.getOriginalFilename().substring(i.getOriginalFilename().lastIndexOf("."));
-					OSSUtil.uploadFileToOSS(i.getInputStream(), fileName);
+					//OSSUtil.uploadFileToOSS(i.getInputStream(), fileName);
 					//检查banner是否已存在
-					String key=parent+index;
-					insertDictValue(key, "{\"url\":\"\",\"target\":\"2\",\"img\":\""+fileName+"\"}"
-							, parentId, DateUtil.nowDate(), 1,"其他banner配置", index);
+					String name=parent+index;
+					insertDictValue(name, "{\"url\":\""+url[seq]+"\",\"target\":\""+target[seq]+"\",\"img\":\""+fileName+"\"}"
+							, parentId, DateUtil.nowDate(), 1,"顶部banner配置", index);
 					index++;
 				}
+				seq++;
 			}
 		}
 		//上传底部图片
 		if(null!=bottom&&bottom.length>0){
 			int index=1;
-			String parent="wk2_top_banner";
+			String parent=key[2];
 			Integer parentId=Integer.parseInt(getDicts(parent).get(0).get("id").toString());
 			deleteDict(null, parentId);
 			for(MultipartFile i:bottom){
 				if(!i.isEmpty()){
 					String fileName="goods/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS"+DataUtil.createNums(6));
 					fileName+=i.getOriginalFilename().substring(i.getOriginalFilename().lastIndexOf("."));
-					OSSUtil.uploadFileToOSS(i.getInputStream(), fileName);
+					//OSSUtil.uploadFileToOSS(i.getInputStream(), fileName);
 					//检查banner是否已存在
-					String key=parent+index;
+					String name=parent+index;
 					deleteDict(null, parentId);
-					insertDictValue(key, "{\"url\":\"\",\"target\":\"2\",\"img\":\""+fileName+"\"}"
-							, parentId, DateUtil.nowDate(), 1,"其他banner配置", index);
+					insertDictValue(name, "{\"url\":\""+url[seq]+"\",\"target\":\""+target[seq]+"\",\"img\":\""+fileName+"\"}"
+							, parentId, DateUtil.nowDate(), 1,"底部banner配置", index);
 					index++;
 				}
+				seq++;
 			}
 		}
+		System.out.println("".split(",")[1]);
 		return putResult();
 	}
 
