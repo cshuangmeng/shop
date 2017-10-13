@@ -1,5 +1,6 @@
 package com.gaoling.shop.goods.service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,9 +25,6 @@ public class BannerService extends CommonService {
 	public Result loadWKBanners(Integer index,String system,String appType) {
 		List<JSONObject> result = getSonDicts("wk" + index + "_top_banner"+(StringUtils.isNotEmpty(appType)?"_"+appType:"")).stream().map(r -> {
 			JSONObject json = JSONObject.fromObject(r.get("value"));
-			if(StringUtils.isNotEmpty(system)&&system.toLowerCase().trim().contains("ios")){
-				json.put("target", 3);
-			}
 			json.put("img", AppConstant.OSS_CDN_SERVER + json.get("img"));
 			return json;
 		}).collect(Collectors.toList());
@@ -41,14 +39,16 @@ public class BannerService extends CommonService {
 		int seq=0;
 		if(null!=launch&&launch.length>0){
 			int index=1;
-			String parent=key[0];
+			String parent=key[0]+"_"+appType;
 			Integer parentId=Integer.parseInt(getDicts(parent).get(0).get("id").toString());
-			deleteDict(null, parentId);
+			if(Arrays.asList(launch).stream().filter(f->!f.isEmpty()).findFirst().isPresent()){
+				deleteDict(null, parentId);
+			}
 			for(MultipartFile i:launch){
 				if(!i.isEmpty()){
-					String fileName="goods/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS"+DataUtil.createNums(6));
+					String fileName="other/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS"+DataUtil.createNums(6));
 					fileName+=i.getOriginalFilename().substring(i.getOriginalFilename().lastIndexOf("."));
-					//OSSUtil.uploadFileToOSS(i.getInputStream(), fileName);
+					OSSUtil.uploadFileToOSS(i.getInputStream(), fileName);
 					String name=parent+index;
 					insertDictValue(name, "{\"url\":\""+url[seq]+"\",\"target\":\""+target[seq]+"\",\"img\":\""+fileName+"\"}"
 						, parentId, DateUtil.nowDate(), 1,"启动页banner配置", index);
@@ -60,14 +60,16 @@ public class BannerService extends CommonService {
 		//上传顶部图片
 		if(null!=top&&top.length>0){
 			int index=1;
-			String parent=key[1];
+			String parent=key[1]+"_"+appType;
 			Integer parentId=Integer.parseInt(getDicts(parent).get(0).get("id").toString());
-			deleteDict(null, parentId);
+			if(Arrays.asList(top).stream().filter(f->!f.isEmpty()).findFirst().isPresent()){
+				deleteDict(null, parentId);
+			}
 			for(MultipartFile i:top){
 				if(!i.isEmpty()){
-					String fileName="goods/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS"+DataUtil.createNums(6));
+					String fileName="other/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS"+DataUtil.createNums(6));
 					fileName+=i.getOriginalFilename().substring(i.getOriginalFilename().lastIndexOf("."));
-					//OSSUtil.uploadFileToOSS(i.getInputStream(), fileName);
+					OSSUtil.uploadFileToOSS(i.getInputStream(), fileName);
 					//检查banner是否已存在
 					String name=parent+index;
 					insertDictValue(name, "{\"url\":\""+url[seq]+"\",\"target\":\""+target[seq]+"\",\"img\":\""+fileName+"\"}"
@@ -80,14 +82,16 @@ public class BannerService extends CommonService {
 		//上传底部图片
 		if(null!=bottom&&bottom.length>0){
 			int index=1;
-			String parent=key[2];
+			String parent=key[2]+"_"+appType;
 			Integer parentId=Integer.parseInt(getDicts(parent).get(0).get("id").toString());
-			deleteDict(null, parentId);
+			if(Arrays.asList(bottom).stream().filter(f->!f.isEmpty()).findFirst().isPresent()){
+				deleteDict(null, parentId);
+			}
 			for(MultipartFile i:bottom){
 				if(!i.isEmpty()){
-					String fileName="goods/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS"+DataUtil.createNums(6));
+					String fileName="other/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS"+DataUtil.createNums(6));
 					fileName+=i.getOriginalFilename().substring(i.getOriginalFilename().lastIndexOf("."));
-					//OSSUtil.uploadFileToOSS(i.getInputStream(), fileName);
+					OSSUtil.uploadFileToOSS(i.getInputStream(), fileName);
 					//检查banner是否已存在
 					String name=parent+index;
 					deleteDict(null, parentId);
@@ -98,7 +102,6 @@ public class BannerService extends CommonService {
 				seq++;
 			}
 		}
-		System.out.println("".split(",")[1]);
 		return putResult();
 	}
 
