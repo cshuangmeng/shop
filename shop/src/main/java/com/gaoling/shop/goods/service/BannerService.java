@@ -25,6 +25,13 @@ public class BannerService extends CommonService {
 	public Result loadWKBanners(Integer index,String system,String appType) {
 		List<JSONObject> result = getSonDicts("wk" + index + "_top_banner"+(StringUtils.isNotEmpty(appType)?"_"+appType:"")).stream().map(r -> {
 			JSONObject json = JSONObject.fromObject(r.get("value"));
+			if(system.toLowerCase().contains("ios")){
+				json.put("url", json.get("ios"));
+			}else if(system.toLowerCase().contains("android")){
+				json.put("url", json.get("android"));
+			}
+			json.remove("android");
+			json.remove("ios");
 			json.put("img", AppConstant.OSS_CDN_SERVER + json.get("img"));
 			return json;
 		}).collect(Collectors.toList());
@@ -34,7 +41,7 @@ public class BannerService extends CommonService {
 	//上传Banner
 	@Transactional
 	public Result uploadBanner(String appType,MultipartFile[] launch,MultipartFile[] top,MultipartFile[] bottom
-			,String[] target,String[] url,String[] key)throws Exception{
+			,String[] target,String[] android,String[] ios,String[] key)throws Exception{
 		//上传启动页图片
 		int seq=0;
 		if(null!=launch&&launch.length>0){
@@ -50,8 +57,8 @@ public class BannerService extends CommonService {
 					fileName+=i.getOriginalFilename().substring(i.getOriginalFilename().lastIndexOf("."));
 					OSSUtil.uploadFileToOSS(i.getInputStream(), fileName);
 					String name=parent+index;
-					insertDictValue(name, "{\"url\":\""+url[seq]+"\",\"target\":\""+target[seq]+"\",\"img\":\""+fileName+"\"}"
-						, parentId, DateUtil.nowDate(), 1,"启动页banner配置", index);
+					insertDictValue(name, "{\"android\":\""+android[seq]+"\",\"ios\":\""+ios[seq]+"\",\"target\":\""
+							+target[seq]+"\",\"img\":\""+fileName+"\"}", parentId, DateUtil.nowDate(), 1,"启动页banner配置", index);
 					index++;
 				}
 				seq++;
@@ -72,8 +79,8 @@ public class BannerService extends CommonService {
 					OSSUtil.uploadFileToOSS(i.getInputStream(), fileName);
 					//检查banner是否已存在
 					String name=parent+index;
-					insertDictValue(name, "{\"url\":\""+url[seq]+"\",\"target\":\""+target[seq]+"\",\"img\":\""+fileName+"\"}"
-							, parentId, DateUtil.nowDate(), 1,"顶部banner配置", index);
+					insertDictValue(name, "{\"android\":\""+android[seq]+"\",\"ios\":\""+ios[seq]+"\",\"target\":\""
+							+target[seq]+"\",\"img\":\""+fileName+"\"}", parentId, DateUtil.nowDate(), 1,"顶部banner配置", index);
 					index++;
 				}
 				seq++;
@@ -95,8 +102,8 @@ public class BannerService extends CommonService {
 					//检查banner是否已存在
 					String name=parent+index;
 					deleteDict(null, parentId);
-					insertDictValue(name, "{\"url\":\""+url[seq]+"\",\"target\":\""+target[seq]+"\",\"img\":\""+fileName+"\"}"
-							, parentId, DateUtil.nowDate(), 1,"底部banner配置", index);
+					insertDictValue(name, "{\"android\":\""+android[seq]+"\",\"ios\":\""+ios[seq]+"\",\"target\":\""
+							+target[seq]+"\",\"img\":\""+fileName+"\"}", parentId, DateUtil.nowDate(), 1,"底部banner配置", index);
 					index++;
 				}
 				seq++;
