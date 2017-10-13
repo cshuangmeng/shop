@@ -13,16 +13,16 @@ import com.gaoling.admin.system.service.SysMenuService;
 import com.gaoling.admin.util.AppConstant;
 
 @Controller
-@RequestMapping("/menu")
+@RequestMapping("/auth/menu")
 public class SysMenuController {
 	
 	@Autowired
 	private SysMenuService sysMenuService;
 
 	// 进入菜单管理首页
-	@RequestMapping("/index")
+	@RequestMapping("")
 	public String index() {
-		return "/menu/index";
+		return "/auth/menu";
 	}
 	
 	//加载所有菜单

@@ -13,16 +13,16 @@ import com.gaoling.admin.system.service.SysRoleService;
 import com.gaoling.admin.util.AppConstant;
 
 @Controller
-@RequestMapping("/role")
+@RequestMapping("/auth/role")
 public class SysRoleController {
 	
 	@Autowired
 	private SysRoleService sysRoleService;
 
 	// 进入角色界面
-	@RequestMapping("/index")
+	@RequestMapping({"","/"})
 	public String index() {
-		return "/role/index";
+		return "/auth/role";
 	}
 	
 	// 删除角色信息
@@ -70,7 +70,7 @@ public class SysRoleController {
 	
 	// 为角色分配菜单
 	@ResponseBody
-	@RequestMapping("/auth/role/menus")
+	@RequestMapping("/menus")
 	public Result addMenuForRole(@RequestParam int rid,@RequestParam String mids) {
 		Result result;
 		try {
@@ -84,7 +84,7 @@ public class SysRoleController {
 	}
 
 	// 进入编辑角色页面
-	@RequestMapping("/auth/role/update")
+	@RequestMapping("/update")
 	@ResponseBody
 	public Result updateRole(@ModelAttribute SysRole role) {
 		Result result;

@@ -13,15 +13,15 @@ import com.gaoling.admin.system.service.SysUserService;
 import com.gaoling.admin.util.AppConstant;
 
 @Controller
-@RequestMapping("/user")
+@RequestMapping("/auth/user")
 public class SysUserController {
 	@Autowired
 	private SysUserService sysUserService;
 	
 	// 进入用户管理页面
-	@RequestMapping("/index")
+	@RequestMapping("")
 	public String index() {
-		return "/user/index";
+		return "/auth/user";
 	}
 
 	//删除用户
