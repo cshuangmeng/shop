@@ -25,13 +25,14 @@ public class BannerService extends CommonService {
 	public Result loadWKBanners(Integer index,String system,String appType) {
 		List<JSONObject> result = getSonDicts("wk" + index + "_top_banner"+(StringUtils.isNotEmpty(appType)?"_"+appType:"")).stream().map(r -> {
 			JSONObject json = JSONObject.fromObject(r.get("value"));
-			if(system.toLowerCase().contains("ios")){
+			if(StringUtils.isNotEmpty(system)&&system.toLowerCase().contains("ios")){
 				json.put("url", json.get("ios"));
-			}else if(system.toLowerCase().contains("android")){
+			}else{
 				json.put("url", json.get("android"));
 			}
-			json.remove("android");
-			json.remove("ios");
+			if(StringUtils.isEmpty(system)||!system.toLowerCase().contains("ios")){
+				json.put("target", json.getInt("target")==1?2:json.getInt("target")==2?1:json.get("target"));
+			}
 			json.put("img", AppConstant.OSS_CDN_SERVER + json.get("img"));
 			return json;
 		}).collect(Collectors.toList());
