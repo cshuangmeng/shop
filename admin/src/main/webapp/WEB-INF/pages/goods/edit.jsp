@@ -86,19 +86,20 @@
 					</div>
 					<div class="mws-panel-body">
 						<form id="update-form" action="submit" enctype="multipart/form-data" method="post" class="mws-form">
-							<input type="hidden" name="id" value="${empty goodsInfo.id?0:goodsInfo.id }" /> 
-							<input type="hidden" name="state" value="${empty goodsInfo.state?0:goodsInfo.state }" />
+							<input type="hidden" name="id" value="${empty goods.id?0:goods.id }" /> 
+							<input type="hidden" name="state" value="${empty goods.state?0:goods.state }" />
+							<input type="hidden" name="params" value="${goods.extras.params }" />
 							<div class="mws-form-inline">
 								<div class="mws-form-row">
 									<label>商品名称</label>
 									<div class="mws-form-item small">
-										<input type="text" name="goodsName" value="${goodsInfo.goodsName }" class="mws-textinput"/>
+										<input type="text" name="name" value="${goods.name }" class="mws-textinput"/>
 									</div>
 								</div>
 								<div class="mws-form-row">
 									<label>商品头像</label>
 									<div class="mws-form-item small">
-										<input type="file" name="logoFile" class="edit-div-file" />
+										<input type="file" name="logoImg" class="edit-div-file" />
 									</div>
 								</div>
 								<div class="mws-form-row">
@@ -125,13 +126,13 @@
 								<div class="mws-form-row">
 									<label>价格</label>
 									<div class="mws-form-item small">
-										<input type="text" name="price" value="${goodsInfo.price }" class="mws-textinput"/>
+										<input type="text" name="price" value="${goods.price }" class="mws-textinput"/>
 									</div>
 								</div>
 								<div class="mws-form-row">
 									<label>最低现金折扣</label>
 									<div class="mws-form-item small">
-										<input type="text" name="cashDiscount" value="${goodsInfo.cashDiscount }" class="mws-textinput"/>
+										<input type="text" name="cashDiscount" value="${goods.cashDiscount }" class="mws-textinput"/>
 									</div>
 								</div>
 								<div class="mws-form-row">
@@ -143,21 +144,27 @@
 								<div class="mws-form-row">
 									<label>是否可以使用部落币</label>
 									<div class="mws-form-item small">
-										<input type="radio" name="coinEnable" />是
-										<input type="radio" name="coinEnable" />否
+										<input type="radio" name="coinEnable" val="${goods.coinEnable }" value="1" />是
+										<input type="radio" name="coinEnable" value="0"/>否
 									</div>
 								</div>
 								<div class="mws-form-row">
 									<label>是否可以使用部落分</label>
 									<div class="mws-form-item small">
-										<input type="radio" name="pointEnable" />是 
-										<input type="radio" name="pointEnable" />否
+										<input type="radio" name="pointEnable" val="${goods.pointEnable }" value="1" />是 
+										<input type="radio" name="pointEnable" value="0" />否
+									</div>
+								</div>
+								<div class="mws-form-row">
+									<label>商品简介</label>
+									<div class="mws-form-item small">
+										<input type="file" name="infoImg" multiple="multiple" class="edit-div-file" />
 									</div>
 								</div>
 								<div class="mws-form-row">
 									<label>商品详情</label>
 									<div class="mws-form-item small">
-										<input type="file" name="logoFile" multiple="multiple" class="edit-div-file" />
+										<input type="file" name="detailImg" multiple="multiple" class="edit-div-file" />
 									</div>
 								</div>
 							</div>
@@ -171,12 +178,7 @@
 			    <div id="edit_goods_param_div">
 			    	<form class="mws-form" action="" method="post">
 		    		<div class="mws-form-inline">
-		    			<div class="mws-form-row">
-		    				<label>参数</label>
-		    				<div class="mws-form-item small">
-		    					<input type="text" class="mws-textinput" />&nbsp;&nbsp;&nbsp;<a href="">删除</a>
-		    				</div>
-		    			</div>
+						
 		    		</div>
 		    		</form>
 			    </div>
@@ -195,11 +197,5 @@
 	</div>
 	<!-- End Main Wrapper -->
 	
-	<!-- Web Uploader -->
-    <script type="text/javascript">
-        // 添加全局站点信息
-        var BASE_URL = '${pageContext.servletContext.contextPath }/resources/plugins/webuploader';
-    </script>
-
 </body>
 </html>

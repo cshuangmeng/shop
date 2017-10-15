@@ -1,3 +1,6 @@
+//全局变量
+var addNumsAtOnce=5;
+
 //加载城市列表
 function loadGoodsTypeList(){
 	$.post(contextPath + "/gtype/list",function(data){
@@ -7,7 +10,70 @@ function loadGoodsTypeList(){
     });
 }
 
+//加载店铺列表
+function loadShopList(){
+	$.post(contextPath + "/shop/list",function(data){
+	    	$.each(data.data, function (index, val) {
+	    		$("select[name='shopId']").append("<option value='"+val.shopId+"'>"+val.shopName+"</option>")
+		});
+    });
+}
 
+//动态添加商品参数
+function addGoodsParam(data){
+	var html="<div class=\"mws-form-row\">"+
+				"<div name='param'>"+
+					"参数名：<input name='label' type=\"text\" class=\"mws-textinput\" value='"+(undefined!=data?data.split("=")[0]:"")+"'/>"+
+					"参数值：<input name='value' type=\"text\" class=\"mws-textinput\" value='"+(undefined!=data?data.split("=")[1]:"")+"'/>"+
+					"&nbsp;&nbsp;&nbsp;<a href=\"javascript:void(0)\">删除</a>"+
+				"</div>"+
+			 "</div>";
+	$("#edit_goods_param_div div.mws-form-inline").append(html);
+}
+
+//回填商品信息
+function initGoodsOtherInfo(){
+	var val=$(":radio[name='coinEnable'][val]").attr("val");
+	$(":radio[name='coinEnable'][value='"+val+"']").attr("checked","checked");
+	val=$(":radio[name='pointEnable'][val]").attr("val");
+	$(":radio[name='pointEnable'][value='"+val+"']").attr("checked","checked");
+}
+
+//一次添加多个参数
+function addMoreParam(){
+	for(var i=0;i<addNumsAtOnce;i++){
+		addGoodsParam();
+	}
+}
+
+//提交参数
+function submitNewParams(){
+	var params="";
+	$("div[name='param']").each(function(i,v){
+		var label=$(v).find("input[name='label']").val();
+		var value=$(v).find("input[name='value']").val();
+		if(label!=""&&value!=""){
+			params+=params!=""?","+label+"="+value:label+"="+value;
+		}
+	});
+	$(":hidden[name='params']").val(params);
+	$("#edit_goods_param_div").dialog("close");
+}
+
+//初始化参数
+function initGoodsParams(){
+	var params=$(":hidden[name='params']").val();
+	if(undefined!=params&&params!=""){
+		for(var i=0;i<params.split(",").length;i++){
+			addGoodsParam(params.split(",")[i]);
+		}
+	}
+}
+
+//删除参数
+function delGoodsParam(){
+	$(this).parent().parent().remove();
+}
 
 //加载符合条件的广告组信息
 var params;
@@ -35,7 +101,7 @@ function queryOrderList(){
 					+"<td><a href='"+contextPath+"/goods/detail?goodsId="+v.goodsId+"'>" 
 					+ (v.goodsName!=undefined&&v.goodsName!=''?v.goodsName:'N/A') + "</a></td>"
 					+"<td>" + (v.typeName!=undefined&&v.typeName!=''?v.typeName:'N/A') + "</td>"
-					+"<td>" + (v.state!=undefined&&v.state!=''?v.state:'N/A') + "</td>"
+					+"<td state="+v.state+">" + (v.stateName!=undefined&&v.stateName!=''?v.stateName:'N/A') + "</td>"
 					+"<td>" + (v.shopName!=undefined&&v.shopName!=''?v.shopName:'N/A') + "</td>"
 					+"<td>" + v.createTime + "</td></tr>"
 			$(".mws-datatable").find("tbody").append(html);
@@ -74,7 +140,7 @@ function editAddGroupInfo(){
 	var gid = $(":checkbox[name='goodsId']:checked").val();
 	if($(":checkbox[name='goodsId']:checked").length==1){
 		var storeId=$(":checkbox[name='goodsId']:checked").val();
-		location.href=contextPath+"/goods/edit?goodId="+gid;
+		location.href=contextPath+"/goods/edit?goodsId="+gid;
 	}else{
 		$("#mws-jui-dialog").text("请先选择一个商品").dialog("open");
 	}
@@ -90,10 +156,8 @@ function approveAdInfo(status){
 		var storeIds="";
 		$(":checkbox[name='goodsId']").each(function(i,v){
 			if($(v).attr("checked")!=undefined){
-				var currStatus=$.trim($(v).parent().parent().find("td:eq(5)").attr("status"));
-				if(status==2){
-					storeIds=storeIds.length>0?","+$(v).val():$(v).val();
-				}else if(status==4){
+				var currStatus=$.trim($(v).parent().parent().find("td:eq(3)").attr("state"));
+				if(currStatus==0){
 					storeIds=storeIds.length>0?","+$(v).val():$(v).val();
 				}
 			}
@@ -104,12 +168,12 @@ function approveAdInfo(status){
 				text:"确认",
 				click:function(){
 					//发送审核请求
-					$.post(contextPath+"/goods/examine",{"goodId":storeIds,"status":status},function(response){
+					$.post(contextPath+"/goods/examine",{"goodsIds":storeIds,"state":status},function(response){
 						//重置提示框
 						initComTipDialogs();
-						if(response.result==0){
+						if(response.code==0){
 							$("#mws-jui-dialog").text("操作成功").dialog("open");
-							queryAdgroups();
+							queryOrderList();
 						}else{
 							$("#mws-jui-dialog").text("操作失败，请重试").dialog("open");
 						}
@@ -121,26 +185,28 @@ function approveAdInfo(status){
 					$(this).dialog("close");
 				}
 			}]}).dialog("open");
+		}else{
+			$("#mws-jui-dialog").text("请选择待审核商品").dialog("open");
 		}
 	}
 }
 
 //初始化添加商品参数
-function initAddGoodsParams(){
+function initAddGoodsParamDialog(){
 	$("#edit_goods_param_div").dialog({
 		autoOpen: false, 
 		title: "添加商品参数", 
 		modal: true, 
-		width: "500", 
+		width: "550", 
 		buttons: [{
 			text: "再添加五个参数",
 			click: function(){
-				alert("再次添加");
+				addMoreParam();
 			}
 		},{
 			text: "提交", 
 			click: function() {
-				alert("提交");
+				submitNewParams();
 			}
 		}]
 	});
@@ -156,6 +222,8 @@ $(function(){
 	initOptionsOfSelect("state","goods_state");
 	//初始化城市下拉列表
 	loadGoodsTypeList();
+	//初始化店铺列表
+	loadShopList();
 	//进入查询页面默认自动加载数据
 	if($("#store-result-table").length>0){
 		queryOrderList();
@@ -163,10 +231,19 @@ $(function(){
 	//绑定查询按钮事件
 	$(":button[name='submit']").click(queryOrderList);
 	//添加商品参数
-	initAddGoodsParams();
+	initAddGoodsParamDialog();
 	$("#paramInput").click(function(){
+		$("#edit_goods_param_div div.mws-form-inline").empty();
+		initGoodsParams();
 		$("#edit_goods_param_div").dialog("open");
 	});
-	
+	//预设商品参数
+	initGoodsParams();
+	//绑定删除商品参数事件
+	$("#edit_goods_param_div").on("click","a",function(){
+		delGoodsParam();
+	});
+	//回填商品其他信息
+	initGoodsOtherInfo();
 });
 

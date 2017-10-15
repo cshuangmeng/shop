@@ -19,6 +19,7 @@ import com.gaoling.admin.system.service.CommonService;
 import com.gaoling.admin.util.AppConstant;
 
 @Controller
+@RequestMapping("/shop")
 public class ShopController extends CommonService{
 	
 	@Autowired

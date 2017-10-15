@@ -1,5 +1,7 @@
 package com.gaoling.admin.goods.service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -16,6 +18,9 @@ import com.gaoling.admin.util.DataUtil;
 import com.gaoling.admin.util.DateUtil;
 import com.gaoling.admin.util.OSSUtil;
 
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
 @Service
 public class GoodsService extends CommonService{
 
@@ -28,15 +33,20 @@ public class GoodsService extends CommonService{
 	}
 	
 	//审核商品信息
-	public void examineGoods(int goodsId,int state){
-		Goods goods=getGoods(goodsId);
-		goods.setState(state);
-		updateGoods(goods);
+	public void examineGoods(String goodsIds,int state){
+		if(StringUtils.isNotEmpty(goodsIds)){
+			Arrays.asList(goodsIds.split(",")).forEach(g->{
+				Goods goods=getGoods(Integer.parseInt(g));
+				goods.setState(state);
+				updateGoods(goods);
+			});
+		}
 	}
 	
 	//保存或更新商品信息
 	@Transactional
-	public void saveOrUpdateGoods(Goods goods,MultipartFile headImg,MultipartFile[] infoImg,MultipartFile[] detailImg)throws Exception{
+	public void saveOrUpdateGoods(Goods goods,MultipartFile headImg,MultipartFile[] infoImg
+			,MultipartFile[] detailImg,String params)throws Exception{
 		Goods old=goods.getId()>0?getGoods(goods.getId()):null;
 		//上传头像
 		String fileName="";
@@ -50,10 +60,10 @@ public class GoodsService extends CommonService{
 		fileName="";
 		for(MultipartFile ii:infoImg){
 			if(!ii.isEmpty()){
-				fileName="goods/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS")+DataUtil.createNums(6);
+				fileName+=StringUtils.isNotEmpty(fileName)?",":"";
+				fileName+="goods/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS")+DataUtil.createNums(6);
 				fileName+=ii.getOriginalFilename().substring(ii.getOriginalFilename().lastIndexOf("."));
 				OSSUtil.uploadFileToOSS(fileName, ii.getInputStream());
-				fileName+=StringUtils.isNotEmpty(fileName)?","+fileName:fileName;
 			}
 		}
 		goods.setInfoImgs(StringUtils.isNotEmpty(fileName)?fileName:null!=old?old.getInfoImgs():"");
@@ -61,11 +71,20 @@ public class GoodsService extends CommonService{
 		fileName="";
 		for(MultipartFile di:detailImg){
 			if(!di.isEmpty()){
-				fileName="goods/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS")+DataUtil.createNums(6);
+				fileName+=StringUtils.isNotEmpty(fileName)?",":"";
+				fileName+="goods/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS")+DataUtil.createNums(6);
 				fileName+=di.getOriginalFilename().substring(di.getOriginalFilename().lastIndexOf("."));
 				OSSUtil.uploadFileToOSS(fileName, di.getInputStream());
-				fileName+=StringUtils.isNotEmpty(fileName)?","+fileName:fileName;
 			}
+		}
+		//设置商品参数
+		goods.setDetails(null!=old?old.getDetails():"");
+		if(StringUtils.isNotEmpty(params)){
+			List<Map<String,Object>> list=new ArrayList<Map<String,Object>>();
+			for(int i=0;i<params.split(",").length;i++){
+				list.add(DataUtil.mapOf("label",params.split(",")[i].split("=")[0],"value",params.split(",")[i].split("=")[1]));
+			}
+			goods.setDetails(JSONArray.fromObject(list).toString());
 		}
 		goods.setDetailImgs(StringUtils.isNotEmpty(fileName)?fileName:null!=old?old.getDetailImgs():"");
 		goods.setCreateTime(null!=old?old.getCreateTime():DateUtil.nowDate());
@@ -80,6 +99,23 @@ public class GoodsService extends CommonService{
 	public Goods getGoods(int id){
 		List<Goods> goods=queryGoods(DataUtil.mapOf("id",id));
 		return goods.size()>0?goods.get(0):null;
+	}
+	
+	//读取待编辑商品的相关信息
+	@SuppressWarnings("unchecked")
+	public Goods getEditingGoods(int id){
+		Goods goods=getGoods(id);
+		if(null!=goods){
+			//处理商品参数
+			if(StringUtils.isNotEmpty(goods.getDetails())){
+				String details=JSONArray.fromObject(goods.getDetails()).stream().map(j->{
+					JSONObject param=JSONObject.fromObject(j);
+					return param.get("label")+"="+param.get("value");
+				}).reduce((a,b)->a+","+b).get().toString();
+				goods.getExtras().put("params", details);
+			}
+		}
+		return goods;
 	}
 	
 	//加载商品

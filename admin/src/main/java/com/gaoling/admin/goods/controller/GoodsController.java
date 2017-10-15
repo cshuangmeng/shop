@@ -48,10 +48,10 @@ public class GoodsController extends CommonService{
 	//审核商品
 	@ResponseBody
 	@RequestMapping("/examine")
-	public Result examine(@RequestParam int goodsId,@RequestParam int state){
+	public Result examine(@RequestParam String goodsIds,@RequestParam int state){
 		Result result=null;
 		try {
-			goodsService.examineGoods(goodsId, state);
+			goodsService.examineGoods(goodsIds, state);
 			result=putResult();
 		} catch (Exception e) {
 			result=putResult(AppConstant.SYSTEM_ERROR_CODE);
@@ -71,16 +71,17 @@ public class GoodsController extends CommonService{
 	@RequestMapping("/edit")
 	public String edit(@RequestParam(defaultValue="0") int goodsId,Model model){
 		if(goodsId>0){
-			model.addAttribute("goods", goodsService.getGoods(goodsId));
+			model.addAttribute("goods", goodsService.getEditingGoods(goodsId));
 		}
 		return "/goods/edit";
 	}
 	
 	//新增或更新商品
 	@RequestMapping("/submit")
-	public String editSubmit(@ModelAttribute Goods goods,@RequestParam(required=false)MultipartFile headImg
-			,@RequestParam(required=false)MultipartFile[] infoImg,@RequestParam(required=false)MultipartFile[] detailImg)throws Exception{
-		goodsService.saveOrUpdateGoods(goods, headImg, infoImg, detailImg);
+	public String editSubmit(@ModelAttribute Goods goods,@RequestParam(required=false)MultipartFile logoImg
+			,@RequestParam(required=false)MultipartFile[] infoImg,@RequestParam(required=false)MultipartFile[] detailImg
+			,@RequestParam String params)throws Exception{
+		goodsService.saveOrUpdateGoods(goods, logoImg, infoImg, detailImg, params);
 		return "redirect:/goods/index";
 	}
 	

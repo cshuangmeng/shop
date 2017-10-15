@@ -21,6 +21,9 @@
 			<if test="param.name!=null and param.name!=''">
 				and t.name like concat('%',#{param.name},'%')
 			</if>
+			<if test="param.state!=null and param.state!=''">
+				and t.state=#{param.state}
+			</if>
 			<if test="param.shopId!=null and param.shopId!=''">
 				and t.shop_id=#{param.shopId}
 			</if>
@@ -50,23 +53,28 @@
 			<if test="param.shopName!=null and param.shopName!=''">
 				and t1.name like concat('%',#{param.shopName},'%')
 			</if>
-			<if test="param.limit!=null and param.limit!='' and param.limit>0">
-				limit #{param.page}*#{param.limit},#{param.limit}
-			</if>
-		</trim>
+		</trim>	
 	</sql>
 
 	<!-- 查询所有商品 -->
 	<select id="queryGoods" resultType="com.gaoling.admin.goods.pojo.Goods">
 		<include refid="goodsHead"/>
 		<include refid="goodsWhere"/>
+		<if test="param.limit!=null and param.limit!='' and param.limit>0">
+			limit #{param.page}*#{param.limit},#{param.limit}
+		</if>
 	</select>
 	
 	<!-- 查询所有商品 -->
 	<select id="queryGoodsToMap" resultType="java.util.Map">
-		select t.id goodsId,t.name goodsName,t1.name shopName,t2.name typeName,(select `value` from dict_info where `name`=concat('goods_state_',t.state)) state
-		,date_format(t.create_time,'%Y-%m-%d %H:%i:%s') createTime from goods t inner join shop t1 on (t.shop_id=t1.id) inner join goods_type t2 on (t.type_id=t2.id)
+		select t.id goodsId,t.name goodsName,t1.name shopName,t2.name typeName,t.state,(select `value` from dict_info where `name`=concat('goods_state_',t.state)) stateName
+		,date_format(t.create_time,'%Y-%m-%d %H:%i:%s') createTime from goods t inner join shop t1 on (t.shop_id=t1.id)
+		inner join goods_type t2 on (t.type_id=t2.id)
 		<include refid="goodsWhere"/>
+		order by t.create_time desc
+		<if test="param.limit!=null and param.limit!='' and param.limit>0">
+			limit #{param.page}*#{param.limit},#{param.limit}
+		</if>
 	</select>
 	
 	<!-- 保存商品信息 -->
