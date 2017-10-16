@@ -81,63 +81,63 @@
 						<div class="mws-panel-content">
 							<div class="edit-div-row">
 								<div>
-									<span class="info-div-label"><b>商户单号</b></span> <span id="store_name_span">${goods.pointEnable==1?'是':'否' }</span>
+									<span class="info-div-label"><b>商户单号</b></span> <span id="store_name_span">${order.tradeNo }</span>
 								</div>
 							</div>
 						</div>
 						<div class="mws-panel-content">
 							<div class="edit-div-row">
 								<div>
-									<span class="info-div-label"><b>支付单号</b></span> <span id="store_name_span">${goods.coinEnable==1?'是':'否' }</span>
+									<span class="info-div-label"><b>支付单号</b></span> <span id="store_name_span">${order.outTradeNo }</span>
 								</div>
 							</div>
 						</div>
 						<div class="mws-panel-content">
 							<div class="edit-div-row">
 								<div>
-									<span class="info-div-label"><b>商品名称</b></span> <span id="store_name_span">${goods.name }</span>
+									<span class="info-div-label"><b>商品名称</b></span> <span id="store_name_span">${order.goodsName }</span>
 								</div>
 							</div>
 						</div>
 						<div class="mws-panel-content">
 							<div class="edit-div-row">
 								<div>
-									<span class="info-div-label"><b>下单用户</b></span> <span id="store_name_span"><img src="${goods.headImg }" /></span>
+									<span class="info-div-label"><b>下单用户</b></span> <span id="store_name_span">${order.cellphone }</span>
 								</div>
 							</div>
 						</div>
 						<div class="mws-panel-content">
 							<div class="edit-div-row">
 								<div>
-									<span class="info-div-label"><b>支付方式</b></span> <span id="store_name_span">${goods.extras.typeName }</span>
+									<span class="info-div-label"><b>支付方式</b></span> <span id="store_name_span">${order.payWay }</span>
 								</div>
 							</div>
 						</div>
 						<div class="mws-panel-content">
 							<div class="edit-div-row">
 								<div>
-									<span class="info-div-label"><b>订单金额</b></span> <span id="store_name_span">${goods.extras.shopName }</span>
+									<span class="info-div-label"><b>订单金额</b></span> <span id="store_name_span">${order.price }</span>
 								</div>
 							</div>
 						</div>
 						<div class="mws-panel-content">
 							<div class="edit-div-row">
 								<div>
-									<span class="info-div-label"><b>商品数量</b></span> <span id="store_name_span">${goods.price }</span>
+									<span class="info-div-label"><b>商品数量</b></span> <span id="store_name_span">${order.amount }</span>
 								</div>
 							</div>
 						</div>
 						<div class="mws-panel-content">
 							<div class="edit-div-row">
 								<div>
-									<span class="info-div-label"><b>部落币</b></span> <span id="store_name_span">${goods.cashDiscount }</span>
+									<span class="info-div-label"><b>部落币</b></span> <span id="store_name_span">${order.coin }</span>
 								</div>
 							</div>
 						</div>
 						<div class="mws-panel-content">
 							<div class="edit-div-row">
 								<div>
-									<span class="info-div-label"><b>部落分</b></span> <span id="store_name_span">${goods.details }</span>
+									<span class="info-div-label"><b>部落分</b></span> <span id="store_name_span">${order.point }</span>
 								</div>
 							</div>
 						</div>
@@ -146,7 +146,7 @@
 								<div>
 									<span class="info-div-label"><b>收货人</b></span>
 									<span id="store_name_span">
-										
+										${order.consigner }
 									</span>
 								</div>
 							</div>
@@ -156,6 +156,7 @@
 								<div>
 									<span class="info-div-label"><b>收货地址</b></span>
 									<span id="store_name_span">
+										${order.areaName }${order.address }
 									</span>
 								</div>
 							</div>
@@ -165,6 +166,7 @@
 								<div>
 									<span class="info-div-label"><b>收货电话</b></span>
 									<span id="store_name_span">
+										${order.mobile }
 									</span>
 								</div>
 							</div>
@@ -174,6 +176,7 @@
 								<div>
 									<span class="info-div-label"><b>下单时间</b></span>
 									<span id="store_name_span">
+										${order.createTime }
 									</span>
 								</div>
 							</div>

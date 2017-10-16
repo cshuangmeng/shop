@@ -36,7 +36,7 @@ public class OrderController {
 	//订单列表
 	@RequestMapping("/list")
 	@ResponseBody
-	public Result orderList(Map<Object,Object> param){
+	public Result orderList(@RequestParam Map<Object,Object> param){
 		return orderService.putResult(orderService.queryOrderList(param));
 	}
 	

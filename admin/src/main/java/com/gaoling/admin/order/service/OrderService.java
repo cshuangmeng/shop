@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.gaoling.admin.order.dao.OrderDao;
+import com.gaoling.admin.order.pojo.Order;
 import com.gaoling.admin.system.service.CommonService;
 import com.gaoling.admin.util.DataUtil;
 
@@ -18,6 +19,7 @@ public class OrderService extends CommonService{
 	
 	//查询订单列表
 	public List<Map<String,Object>> queryOrderList(Map<Object,Object> param){
+		param.put("states", Order.NORMALORDERSTATES);
 		return orderDao.queryOrderList(param);
 	}
 	

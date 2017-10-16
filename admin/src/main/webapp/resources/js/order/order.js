@@ -1,10 +1,24 @@
+//加载商品类别列表
+function loadGoodsTypeList(){
+	$.post(contextPath + "/gtype/list",function(data){
+	    	$.each(data.data, function (index, val) {
+	    		$("select[name='typeId']").append("<option value='"+val.id+"'>"+val.name+"</option>")
+		});
+    });
+}
+
 //加载符合条件的广告组信息
 var params;
 function queryOrderList(){
+	var cellphone=$(":text[name='cellphone']").val();
 	var shopName=$(":text[name='shopName']").val();
-	var state=$("select[name='state']").val();
+	var goodsName=$(":text[name='goodsName']").val();
+	var typeId=$("select[name='typeId']").val();
+	var startDate=$(":text[name='startDate']").val();
+	var endDate=$(":text[name='endDate']").val();
 	//设置默认值
-	params={"name":shopName,"state":state};
+	params={"goodsName":goodsName,"typeId":typeId,"startDate":startDate,"endDate":endDate
+			,"cellphone":cellphone,"shopName":shopName};
 	//发送请求获取数据更新到表格中
 	$.post(contextPath+"/order/list",params,function(response){
 		$(".mws-datatable").dataTable().fnDestroy();
@@ -112,6 +126,13 @@ function approveAdInfo(status){
 }
 
 $(function(){
+	//设置datepicker的全局变量信息
+	$.datepicker.setDefaults({"dateFormat":"yy-mm-dd"});
+	//将制定的输入框应用datepicker
+	$(".mws-datepicker").datepicker({showOtherMonths:true});
+	
+	//初始化商品类别下拉列表
+	loadGoodsTypeList();
 	//初始化状态下拉列表
 	initOptionsOfSelect("state","goods_state");
 	//进入查询页面默认自动加载数据

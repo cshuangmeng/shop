@@ -68,14 +68,31 @@
 	
 	<!-- 查询订单列表 -->
 	<select id="queryOrderList" resultType="java.util.Map">
-		select t.id orderId,t.goods_id goodsId,t4.consigner,t4.mobile,t4.address,t4.area_name areaName
+		select t.id orderId,t5.cellphone,t.goods_id goodsId,t4.consigner,t4.mobile,t4.address,t4.area_name areaName
 		,replace(coalesce(t2.trade_no,t.trade_no),'goods_','') tradeNo,t.ref_id refId,t1.head_img headImg
 		,t1.name goodsName,t1.price,t.amount,(select `value` from dict_info where `name`=concat('order_state_',t.state)) state
+		,(select `value` from dict_info where `name`=concat('order_payWay_',t.pay_way)) payWay
 		,t.point,t.coin,t3.name typeName,t.list_price listPrice,t.pay_way payWay,date_format(t.create_time,'%Y-%m-%d %H:%i:%s') createTime
 		from `order` t inner join goods t1 on (t.goods_id=t1.id) left join `order` t2 on (t.ref_id=t2.id)
-		inner join goods_type t3 on (t1.type_id=t3.id) inner join address t4 on (t.address_id=t4.id) where t.state!=5
-		<if test="param.userId!=null">
+		left join goods_type t3 on (t1.type_id=t3.id) left join address t4 on (t.address_id=t4.id)
+		inner join `user` t5 on (t.user_id=t5.id) left join shop t6 on (t1.shop_id=t6.id) where t.state!=5
+		<if test="param.userId!=null and param.userId>0">
 			and t.user_id=#{param.userId}
+		</if>
+		<if test="param.id!=null and param.id>0">
+			and t.id=#{param.id}
+		</if>
+		<if test="param.cellphone!=null and param.cellphone!=''">
+			and t5.cellphone=#{param.cellphone}
+		</if>
+		<if test="param.typeId!=null and param.typeId>0">
+			and t1.type_id=#{param.typeId}
+		</if>
+		<if test="param.goodsName!=null and param.goodsName!=''">
+			and t1.name like concat('%',#{param.goodsName},'%')
+		</if>
+		<if test="param.shopName!=null and param.shopName!=''">
+			and t6.name like concat('%',#{param.shopName},'%')
 		</if>
 		<if test="param.states!=null and param.states.size()>0">
 			and t.state in
@@ -89,6 +106,17 @@
 				#{typeId}
 			</foreach>
 		</if>
+		<choose>
+			<when test="param.startDate!=null and param.startDate!='' and param.endDate!=null and param.endDate!=''">
+				and date_format(t.create_time,'%Y-%m-%d') between #{param.startDate} and #{param.endDate}
+			</when>
+			<when test="param.startDate!=null and param.startDate!=''">
+				and date_format(t.create_time,'%Y-%m-%d')&gt;=#{param.startDate}
+			</when>
+			<when test="param.endDate!=null and param.endDate!=''">
+				and date_format(t.create_time,'%Y-%m-%d')&lt;=#{param.endDate}
+			</when>
+		</choose>
 		<if test="param.orderBy!=null">
 			order by ${param.orderBy}
 		</if>

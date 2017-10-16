@@ -81,7 +81,7 @@
                  			<div class="query-div-row">
 	              				<div class="query-div-column-float">
 	                 				<span class="query-div-label">下单手机</span>
-                 					<span><input type="text" class="edit-div-input1 w400" name="phone"/></span>
+                 					<span><input type="text" class="edit-div-input1 w400" name="cellphone"/></span>
 	                 			</div>
 	                 			<div>
 	                 				<span class="query-div-label">商品名称</span>
