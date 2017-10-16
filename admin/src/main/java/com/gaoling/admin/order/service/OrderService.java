@@ -20,6 +20,7 @@ public class OrderService extends CommonService{
 	//查询订单列表
 	public List<Map<String,Object>> queryOrderList(Map<Object,Object> param){
 		param.put("states", Order.NORMALORDERSTATES);
+		param.put("orderBy", "t.create_time desc");
 		return orderDao.queryOrderList(param);
 	}
 	
