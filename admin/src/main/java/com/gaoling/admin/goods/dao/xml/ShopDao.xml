@@ -18,11 +18,14 @@
 			<if test="param.isShow!=null">
 				and t.is_show=#{param.isShow}
 			</if>
-			<if test="param.name!=null">
+			<if test="param.name!=null and param.name!=''">
 				and t.name like concat('%',#{param.name},'%')
 			</if>
 			<if test="param.areaId!=null">
 				and t.area_id=#{param.areaId}
+			</if>
+			<if test="param.state!=null and param.state!=''">
+				and t.state=#{param.state}
 			</if>
 			<if test="param.telephone!=null">
 				and t.telephone=#{param.telephone}
@@ -51,13 +54,21 @@
 	<select id="queryShops" resultType="com.gaoling.admin.goods.pojo.Shop">
 		<include refid="shopHead"/>
 		<include refid="shopWhere"/>
+		order by t.create_time desc
+		<if test="param.limit!=null and param.limit!='' and param.limit>0">
+			limit #{param.page}*#{param.limit},#{param.limit}
+		</if>
 	</select>
 	
 	<!-- 查询所有门店 -->
 	<select id="queryShopsToMap" resultType="java.util.Map">
 		select t.id shopId,t.name shopName,t.area_name areaName,t.telephone
-		,(select `value` from dict_info where `name`=concat('shop_state_',t.state)) state,t.create_time from shop t
+		,(select `value` from dict_info where `name`=concat('shop_state_',t.state)) stateName,t.state,t.create_time createTime from shop t
 		<include refid="shopWhere"/>
+		order by t.create_time desc
+		<if test="param.limit!=null and param.limit!='' and param.limit>0">
+			limit #{param.page}*#{param.limit},#{param.limit}
+		</if>
 	</select>
 	
 	<!-- 保存门店信息 -->

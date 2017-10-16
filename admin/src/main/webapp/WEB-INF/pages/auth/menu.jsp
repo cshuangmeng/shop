@@ -113,19 +113,19 @@
     			<div class="mws-form-row">
     				<label>菜单名</label>
     				<div class="mws-form-item small">
-    					<input type="text" class="mws-textinput" name="menuName" />
+    					<input type="text" class="mws-textinput" name="name" />
     				</div>
     			</div>
     			<div class="mws-form-row">
     				<label>页面地址</label>
     				<div class="mws-form-item small">
-    					<input type="text" class="mws-textinput" name="menuUrl" />
+    					<input type="text" class="mws-textinput" name="url" />
     				</div>
     			</div>
     			 <div class="mws-form-row">
     				<label>排列序号</label>
     				<div class="mws-form-item small">
-   						<input type="text" class="mws-textinput" name="orderIndex" />
+   						<input type="text" class="mws-textinput" name="sort" />
     				</div>
     			</div>
     			<div class="mws-form-row">
@@ -137,7 +137,7 @@
     			<div class="mws-form-row">
     				<label>是否可用</label>
     				<div class="mws-form-item small">
-    					<select name="enabled">
+    					<select name="state">
     						<option value="true">可用</option>
     						<option value="false">不可用</option>
     					</select>

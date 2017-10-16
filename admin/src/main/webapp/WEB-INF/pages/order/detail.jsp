@@ -6,7 +6,7 @@
 <%@include file="../common/head.jsp" %>
 <link rel="stylesheet" href="${pageContext.servletContext.contextPath }/resources/css/store.css" />
 <script type="text/javascript" src="${pageContext.servletContext.contextPath }/resources/js/ldpage/groupDetail.js"></script>
-<title>商品详情</title>
+<title>订单详情</title>
 
 </head>
 
@@ -75,80 +75,78 @@
 
 				<div class="mws-panel grid_8 mws-collapsible">
 					<div class="mws-panel-header">
-						<span class="mws-i-24 i-graph">商品信息</span>
+						<span class="mws-i-24 i-graph">订单信息</span>
 					</div>
 					<div class="mws-panel-body">
 						<div class="mws-panel-content">
 							<div class="edit-div-row">
 								<div>
-									<span class="info-div-label"><b>名称</b></span> <span id="store_name_span">${goods.name }</span>
+									<span class="info-div-label"><b>商户单号</b></span> <span id="store_name_span">${goods.pointEnable==1?'是':'否' }</span>
 								</div>
 							</div>
 						</div>
 						<div class="mws-panel-content">
 							<div class="edit-div-row">
 								<div>
-									<span class="info-div-label"><b>logo</b></span> <span id="store_name_span"><img src="${goods.headImg }" /></span>
+									<span class="info-div-label"><b>支付单号</b></span> <span id="store_name_span">${goods.coinEnable==1?'是':'否' }</span>
 								</div>
 							</div>
 						</div>
 						<div class="mws-panel-content">
 							<div class="edit-div-row">
 								<div>
-									<span class="info-div-label"><b>类别</b></span> <span id="store_name_span">${goods.extras.typeName }</span>
+									<span class="info-div-label"><b>商品名称</b></span> <span id="store_name_span">${goods.name }</span>
 								</div>
 							</div>
 						</div>
 						<div class="mws-panel-content">
 							<div class="edit-div-row">
 								<div>
-									<span class="info-div-label"><b>店铺</b></span> <span id="store_name_span">${goods.extras.shopName }</span>
+									<span class="info-div-label"><b>下单用户</b></span> <span id="store_name_span"><img src="${goods.headImg }" /></span>
 								</div>
 							</div>
 						</div>
 						<div class="mws-panel-content">
 							<div class="edit-div-row">
 								<div>
-									<span class="info-div-label"><b>价格</b></span> <span id="store_name_span">${goods.price }</span>
+									<span class="info-div-label"><b>支付方式</b></span> <span id="store_name_span">${goods.extras.typeName }</span>
 								</div>
 							</div>
 						</div>
 						<div class="mws-panel-content">
 							<div class="edit-div-row">
 								<div>
-									<span class="info-div-label"><b>最低实付金额折扣</b></span> <span id="store_name_span">${goods.cashDiscount }</span>
+									<span class="info-div-label"><b>订单金额</b></span> <span id="store_name_span">${goods.extras.shopName }</span>
 								</div>
 							</div>
 						</div>
 						<div class="mws-panel-content">
 							<div class="edit-div-row">
 								<div>
-									<span class="info-div-label"><b>商品参数</b></span> <span id="store_name_span">${goods.details }</span>
+									<span class="info-div-label"><b>商品数量</b></span> <span id="store_name_span">${goods.price }</span>
 								</div>
 							</div>
 						</div>
 						<div class="mws-panel-content">
 							<div class="edit-div-row">
 								<div>
-									<span class="info-div-label"><b>是否可以使用部落币</b></span> <span id="store_name_span">${goods.pointEnable==1?'是':'否' }</span>
+									<span class="info-div-label"><b>部落币</b></span> <span id="store_name_span">${goods.cashDiscount }</span>
 								</div>
 							</div>
 						</div>
 						<div class="mws-panel-content">
 							<div class="edit-div-row">
 								<div>
-									<span class="info-div-label"><b>是否可以使用部落分</b></span> <span id="store_name_span">${goods.coinEnable==1?'是':'否' }</span>
+									<span class="info-div-label"><b>部落分</b></span> <span id="store_name_span">${goods.details }</span>
 								</div>
 							</div>
 						</div>
 						<div class="mws-panel-content">
 							<div class="edit-div-row">
 								<div>
-									<span class="info-div-label"><b>简介图片</b></span>
+									<span class="info-div-label"><b>收货人</b></span>
 									<span id="store_name_span">
-										<c:forEach items="${goods.infoImgs }" var="info">
-											<img src="${info }"/>
-										</c:forEach>
+										
 									</span>
 								</div>
 							</div>
@@ -156,11 +154,26 @@
 						<div class="mws-panel-content">
 							<div class="edit-div-row">
 								<div>
-									<span class="info-div-label"><b>详情图片</b></span>
+									<span class="info-div-label"><b>收货地址</b></span>
 									<span id="store_name_span">
-										<c:forEach items="${goods.detailImgs }" var="detail">
-											<img src="${detail }"/>
-										</c:forEach>
+									</span>
+								</div>
+							</div>
+						</div>
+						<div class="mws-panel-content">
+							<div class="edit-div-row">
+								<div>
+									<span class="info-div-label"><b>收货电话</b></span>
+									<span id="store_name_span">
+									</span>
+								</div>
+							</div>
+						</div>
+						<div class="mws-panel-content">
+							<div class="edit-div-row">
+								<div>
+									<span class="info-div-label"><b>下单时间</b></span>
+									<span id="store_name_span">
 									</span>
 								</div>
 							</div>

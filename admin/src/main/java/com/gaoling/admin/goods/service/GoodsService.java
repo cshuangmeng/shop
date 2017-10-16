@@ -13,6 +13,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.gaoling.admin.goods.dao.GoodsDao;
 import com.gaoling.admin.goods.pojo.Goods;
+import com.gaoling.admin.goods.pojo.GoodsType;
+import com.gaoling.admin.goods.pojo.Shop;
 import com.gaoling.admin.system.service.CommonService;
 import com.gaoling.admin.util.DataUtil;
 import com.gaoling.admin.util.DateUtil;
@@ -26,6 +28,10 @@ public class GoodsService extends CommonService{
 
 	@Autowired
 	private GoodsDao goodsDao;
+	@Autowired
+	private ShopService shopService;
+	@Autowired
+	private GoodsTypeService goodsTypeService;
 	
 	//查询商品信息
 	public List<Map<String,Object>> loadGoods(Map<Object,Object> param){
@@ -60,10 +66,10 @@ public class GoodsService extends CommonService{
 		fileName="";
 		for(MultipartFile ii:infoImg){
 			if(!ii.isEmpty()){
-				fileName+=StringUtils.isNotEmpty(fileName)?",":"";
-				fileName+="goods/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS")+DataUtil.createNums(6);
-				fileName+=ii.getOriginalFilename().substring(ii.getOriginalFilename().lastIndexOf("."));
-				OSSUtil.uploadFileToOSS(fileName, ii.getInputStream());
+				String file="goods/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS")+DataUtil.createNums(6);
+				file+=ii.getOriginalFilename().substring(ii.getOriginalFilename().lastIndexOf("."));
+				fileName+=StringUtils.isNotEmpty(fileName)?","+file:file;
+				OSSUtil.uploadFileToOSS(file, ii.getInputStream());
 			}
 		}
 		goods.setInfoImgs(StringUtils.isNotEmpty(fileName)?fileName:null!=old?old.getInfoImgs():"");
@@ -71,10 +77,10 @@ public class GoodsService extends CommonService{
 		fileName="";
 		for(MultipartFile di:detailImg){
 			if(!di.isEmpty()){
-				fileName+=StringUtils.isNotEmpty(fileName)?",":"";
-				fileName+="goods/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS")+DataUtil.createNums(6);
-				fileName+=di.getOriginalFilename().substring(di.getOriginalFilename().lastIndexOf("."));
-				OSSUtil.uploadFileToOSS(fileName, di.getInputStream());
+				String file="goods/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS")+DataUtil.createNums(6);
+				file+=di.getOriginalFilename().substring(di.getOriginalFilename().lastIndexOf("."));
+				fileName+=StringUtils.isNotEmpty(fileName)?","+file:file;
+				OSSUtil.uploadFileToOSS(file, di.getInputStream());
 			}
 		}
 		//设置商品参数
@@ -99,6 +105,22 @@ public class GoodsService extends CommonService{
 	public Goods getGoods(int id){
 		List<Goods> goods=queryGoods(DataUtil.mapOf("id",id));
 		return goods.size()>0?goods.get(0):null;
+	}
+	
+	//读取商品详细信息
+	public Goods getDetailGoods(int id){
+		Goods goods=getGoods(id);
+		if(null!=goods){
+			//处理商品参数
+			Shop shop=shopService.getShop(goods.getShopId());
+			goods.getExtras().put("shopName", shop.getName());
+			GoodsType type=goodsTypeService.getGoodsType(goods.getTypeId());
+			goods.getExtras().put("typeName", type.getName());
+			goods.setHeadImg(goods.getFullHeadImg());
+			goods.setInfoImgs(goods.getFullInfoImgs());
+			goods.setDetailImgs(goods.getFullDetailImgs());
+		}
+		return goods;
 	}
 	
 	//读取待编辑商品的相关信息

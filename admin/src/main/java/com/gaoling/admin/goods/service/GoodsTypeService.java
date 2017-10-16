@@ -22,4 +22,10 @@ public class GoodsTypeService {
 		return goodsTypeDao.queryGoodsTypes(DataUtil.mapOf("states",Arrays.asList(AppConstant.ACCOUNT_STATE_TYPE.ENABLED.getValue())));
 	}
 	
+	//获取商品类型
+	public GoodsType getGoodsType(int id){
+		List<GoodsType> goods=goodsTypeDao.queryGoodsTypes(DataUtil.mapOf("id",id));
+		return goods.size()>0?goods.get(0):null;
+	}
+	
 }

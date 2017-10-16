@@ -28,7 +28,7 @@ public class ShopController extends CommonService{
 	//进入商铺相关页面
 	@RequestMapping("/{page}")
 	public String index(@PathVariable String page){
-		return "/goods/"+page;
+		return "/shop/"+page;
 	}
 	
 	//商铺列表
@@ -63,15 +63,24 @@ public class ShopController extends CommonService{
 	//商铺详情
 	@RequestMapping("/detail")
 	public String detail(@RequestParam int shopId,Model model){
-		model.addAttribute("shop", shopService.getShop(shopId));
+		model.addAttribute("shop", shopService.getDetailShop(shopId));
 		return "/shop/detail";
 	}
 	
-	//新增或更新商品
+	//商铺详情
 	@RequestMapping("/edit")
-	public String edit(@ModelAttribute Shop shop,@RequestParam(required=false)MultipartFile headImg
+	public String edit(@RequestParam(defaultValue="0") int shopId,Model model){
+		if(shopId>0){
+			model.addAttribute("shop", shopService.getShop(shopId));
+		}
+		return "/shop/edit";
+	}
+	
+	//新增或更新商品
+	@RequestMapping("/submit")
+	public String edit(@ModelAttribute Shop shop,@RequestParam(required=false)MultipartFile logoImg
 			,@RequestParam(required=false)MultipartFile[] infoImg)throws Exception{
-		shopService.saveOrUpdateShop(shop, headImg, infoImg);
+		shopService.saveOrUpdateShop(shop, logoImg, infoImg);
 		return "redirect:/shop/index";
 	}
 	

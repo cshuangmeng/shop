@@ -72,13 +72,19 @@ public class ShopService extends CommonService{
 		shop.setInfoImgs("");
 		for(MultipartFile ii:infoImgFile){
 			if(!ii.isEmpty()){
-				fileName="shop/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS")+DataUtil.createNums(6);
-				fileName+=ii.getOriginalFilename().substring(ii.getOriginalFilename().lastIndexOf("."));
-				OSSUtil.uploadFileToOSS(fileName, ii.getInputStream());
-				fileName+=StringUtils.isNotEmpty(fileName)?","+fileName:fileName;
+				String file="shop/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS")+DataUtil.createNums(6);
+				file+=ii.getOriginalFilename().substring(ii.getOriginalFilename().lastIndexOf("."));
+				OSSUtil.uploadFileToOSS(file, ii.getInputStream());
+				fileName+=StringUtils.isNotEmpty(fileName)?","+file:file;
 			}
 		}
 		shop.setInfoImgs(StringUtils.isNotEmpty(fileName)?fileName:null!=old?old.getInfoImgs():"");
+		shop.setIsShow(null!=old?old.getIsShow():0);
+		shop.setAreaId(null!=old?old.getAreaId():0);
+		shop.setFlowers(null!=old?old.getFlowers():0);
+		shop.setFollowers(null!=old?old.getFollowers():0);
+		shop.setAreaName(null!=old?old.getAreaName():"");
+		shop.setState(null!=old?old.getState():0);
 		shop.setCreateTime(null!=old?old.getCreateTime():DateUtil.nowDate());
 		if(shop.getId()>0){
 			updateShop(shop);
@@ -86,6 +92,16 @@ public class ShopService extends CommonService{
 			addShop(shop);
 		}
 		return putResult(shop);
+	}
+	
+	//读取商铺详细信息
+	public Shop getDetailShop(int id){
+		Shop shop=getShop(id);
+		if(null!=shop){
+			shop.setHeadImg(shop.getFullHeadImg());
+			shop.setInfoImgs(shop.getFullInfoImgs());
+		}
+		return shop;
 	}
 	
 }

@@ -6,7 +6,7 @@
 <%@include file="../common/head.jsp" %>
 <link rel="stylesheet" href="${pageContext.servletContext.contextPath }/resources/css/store.css" />
 <script type="text/javascript" src="${pageContext.servletContext.contextPath }/resources/js/ldpage/groupDetail.js"></script>
-<title>商品详情</title>
+<title>店铺详情</title>
 
 </head>
 
@@ -75,93 +75,48 @@
 
 				<div class="mws-panel grid_8 mws-collapsible">
 					<div class="mws-panel-header">
-						<span class="mws-i-24 i-graph">商品信息</span>
+						<span class="mws-i-24 i-graph">店铺信息</span>
 					</div>
 					<div class="mws-panel-body">
 						<div class="mws-panel-content">
 							<div class="edit-div-row">
 								<div>
-									<span class="info-div-label"><b>名称</b></span> <span id="store_name_span">${goods.name }</span>
+									<span class="info-div-label"><b>名称</b></span> <span id="store_name_span">${shop.name }</span>
 								</div>
 							</div>
 						</div>
 						<div class="mws-panel-content">
 							<div class="edit-div-row">
 								<div>
-									<span class="info-div-label"><b>logo</b></span> <span id="store_name_span"><img src="${goods.headImg }" /></span>
+									<span class="info-div-label"><b>logo</b></span> <span id="store_name_span"><img src="${shop.headImg }" /></span>
 								</div>
 							</div>
 						</div>
 						<div class="mws-panel-content">
 							<div class="edit-div-row">
 								<div>
-									<span class="info-div-label"><b>类别</b></span> <span id="store_name_span">${goods.extras.typeName }</span>
+									<span class="info-div-label"><b>联系人</b></span> <span id="store_name_span">${shop.contact }</span>
 								</div>
 							</div>
 						</div>
 						<div class="mws-panel-content">
 							<div class="edit-div-row">
 								<div>
-									<span class="info-div-label"><b>店铺</b></span> <span id="store_name_span">${goods.extras.shopName }</span>
+									<span class="info-div-label"><b>联系电话</b></span> <span id="store_name_span">${shop.telephone }</span>
 								</div>
 							</div>
 						</div>
 						<div class="mws-panel-content">
 							<div class="edit-div-row">
 								<div>
-									<span class="info-div-label"><b>价格</b></span> <span id="store_name_span">${goods.price }</span>
+									<span class="info-div-label"><b>所在地</b></span> <span id="store_name_span">${shop.address }</span>
 								</div>
 							</div>
 						</div>
 						<div class="mws-panel-content">
 							<div class="edit-div-row">
 								<div>
-									<span class="info-div-label"><b>最低实付金额折扣</b></span> <span id="store_name_span">${goods.cashDiscount }</span>
-								</div>
-							</div>
-						</div>
-						<div class="mws-panel-content">
-							<div class="edit-div-row">
-								<div>
-									<span class="info-div-label"><b>商品参数</b></span> <span id="store_name_span">${goods.details }</span>
-								</div>
-							</div>
-						</div>
-						<div class="mws-panel-content">
-							<div class="edit-div-row">
-								<div>
-									<span class="info-div-label"><b>是否可以使用部落币</b></span> <span id="store_name_span">${goods.pointEnable==1?'是':'否' }</span>
-								</div>
-							</div>
-						</div>
-						<div class="mws-panel-content">
-							<div class="edit-div-row">
-								<div>
-									<span class="info-div-label"><b>是否可以使用部落分</b></span> <span id="store_name_span">${goods.coinEnable==1?'是':'否' }</span>
-								</div>
-							</div>
-						</div>
-						<div class="mws-panel-content">
-							<div class="edit-div-row">
-								<div>
-									<span class="info-div-label"><b>简介图片</b></span>
-									<span id="store_name_span">
-										<c:forEach items="${goods.infoImgs }" var="info">
-											<img src="${info }"/>
-										</c:forEach>
-									</span>
-								</div>
-							</div>
-						</div>
-						<div class="mws-panel-content">
-							<div class="edit-div-row">
-								<div>
-									<span class="info-div-label"><b>详情图片</b></span>
-									<span id="store_name_span">
-										<c:forEach items="${goods.detailImgs }" var="detail">
-											<img src="${detail }"/>
-										</c:forEach>
-									</span>
+									<span class="info-div-label"><b>简介</b></span> <span id="store_name_span">${shop.introduction }</span>
 								</div>
 							</div>
 						</div>

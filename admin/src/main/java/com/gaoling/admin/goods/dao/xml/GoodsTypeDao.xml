@@ -13,6 +13,9 @@
 					#{state}
 				</foreach>
 			</if>
+			<if test="param.id!=null and param.id>0">
+				and t.id=#{param.id}
+			</if>
 		</trim>
 	</select>
 	

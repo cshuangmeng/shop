@@ -63,7 +63,7 @@ public class GoodsController extends CommonService{
 	//商品详情
 	@RequestMapping("/detail")
 	public String detail(@RequestParam int goodsId,Model model){
-		model.addAttribute("goods", goodsService.getGoods(goodsId));
+		model.addAttribute("goods", goodsService.getDetailGoods(goodsId));
 		return "/goods/detail";
 	}
 	
