@@ -81,7 +81,9 @@ public class UserService extends CommonService{
 			user.setCellphone(cellphone);
 			user.setCreateTime(DateUtil.nowDate());
 			user.setHeadImg("user/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS")+DataUtil.createNums(6)+".jpg");
-			OSSUtil.uploadFileToOSS(new URL(json.getString("headimgurl")).openStream(), user.getHeadImg());
+			if(StringUtils.isNotEmpty(json.getString("headimgurl"))){
+				OSSUtil.uploadFileToOSS(new URL(json.getString("headimgurl")).openStream(), user.getHeadImg());
+			}
 			user.setLoginTime(user.getCreateTime());
 			user.setNickname(json.getString("nickname"));
 			user.setOpenId(openId);

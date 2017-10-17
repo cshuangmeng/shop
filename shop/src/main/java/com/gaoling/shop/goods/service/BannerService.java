@@ -27,13 +27,16 @@ public class BannerService extends CommonService {
 			JSONObject json = JSONObject.fromObject(r.get("value"));
 			if(StringUtils.isNotEmpty(system)&&system.toLowerCase().contains("ios")){
 				json.put("url", json.get("ios"));
+				json.put("img", AppConstant.OSS_CDN_SERVER + json.get("iosImg"));
 			}else{
 				json.put("url", json.get("android"));
+				json.put("img", AppConstant.OSS_CDN_SERVER + json.get("androidImg"));
 			}
 			if(StringUtils.isEmpty(system)||!system.toLowerCase().contains("ios")){
 				json.put("target", json.getInt("target")==1?2:json.getInt("target")==2?1:json.get("target"));
 			}
-			json.put("img", AppConstant.OSS_CDN_SERVER + json.get("img"));
+			json.put("androidImg", AppConstant.OSS_CDN_SERVER + json.get("androidImg"));
+			json.put("iosImg", AppConstant.OSS_CDN_SERVER + json.get("iosImg"));
 			return json;
 		}).collect(Collectors.toList());
 		return putResult(result);
@@ -52,16 +55,30 @@ public class BannerService extends CommonService {
 			if(Arrays.asList(launch).stream().filter(f->!f.isEmpty()).findFirst().isPresent()){
 				deleteDict(null, parentId);
 			}
-			for(MultipartFile i:launch){
+			for(int n=0;n<launch.length;n++){
+				MultipartFile i=launch[n];
+				String androidImg="";
 				if(!i.isEmpty()){
-					String fileName="other/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS"+DataUtil.createNums(6));
-					fileName+=i.getOriginalFilename().substring(i.getOriginalFilename().lastIndexOf("."));
-					OSSUtil.uploadFileToOSS(i.getInputStream(), fileName);
-					String name=parent+index;
-					insertDictValue(name, "{\"android\":\""+android[seq]+"\",\"ios\":\""+ios[seq]+"\",\"target\":\""
-							+target[seq]+"\",\"img\":\""+fileName+"\"}", parentId, DateUtil.nowDate(), 1,"启动页banner配置", index);
-					index++;
+					//android图片
+					androidImg="other/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS"+DataUtil.createNums(6));
+					androidImg+=i.getOriginalFilename().substring(i.getOriginalFilename().lastIndexOf("."));
+					//OSSUtil.uploadFileToOSS(i.getInputStream(), androidImg);
 				}
+				//ios图片
+				i=launch[++n];
+				String iosImg="";
+				if(!i.isEmpty()){
+					iosImg="other/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS"+DataUtil.createNums(6));
+					iosImg+=i.getOriginalFilename().substring(i.getOriginalFilename().lastIndexOf("."));
+					//OSSUtil.uploadFileToOSS(i.getInputStream(), iosImg);
+				}
+				//保存信息
+				String name=parent+index;
+				if(StringUtils.isNotEmpty(androidImg)||StringUtils.isNotEmpty(iosImg)){
+					insertDictValue(name, "{\"android\":\""+android[seq]+"\",\"ios\":\""+ios[seq]+"\",\"target\":\""
+							+target[seq]+"\",\"androidImg\":\""+androidImg+"\",\"iosImg\":\""+iosImg+"\"}", parentId, DateUtil.nowDate(), 1,"启动页banner配置", index);
+				}
+				index++;
 				seq++;
 			}
 		}
@@ -73,17 +90,30 @@ public class BannerService extends CommonService {
 			if(Arrays.asList(top).stream().filter(f->!f.isEmpty()).findFirst().isPresent()){
 				deleteDict(null, parentId);
 			}
-			for(MultipartFile i:top){
+			for(int n=0;n<top.length;n++){
+				MultipartFile i=top[n];
+				//android图片
+				String androidImg="";
 				if(!i.isEmpty()){
-					String fileName="other/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS"+DataUtil.createNums(6));
-					fileName+=i.getOriginalFilename().substring(i.getOriginalFilename().lastIndexOf("."));
-					OSSUtil.uploadFileToOSS(i.getInputStream(), fileName);
-					//检查banner是否已存在
-					String name=parent+index;
-					insertDictValue(name, "{\"android\":\""+android[seq]+"\",\"ios\":\""+ios[seq]+"\",\"target\":\""
-							+target[seq]+"\",\"img\":\""+fileName+"\"}", parentId, DateUtil.nowDate(), 1,"顶部banner配置", index);
-					index++;
+					androidImg="other/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS"+DataUtil.createNums(6));
+					androidImg+=i.getOriginalFilename().substring(i.getOriginalFilename().lastIndexOf("."));
+					//OSSUtil.uploadFileToOSS(i.getInputStream(), androidImg);
 				}
+				//ios图片
+				i=top[++n];
+				String iosImg="";
+				if(!i.isEmpty()){
+					iosImg="other/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS"+DataUtil.createNums(6));
+					iosImg+=i.getOriginalFilename().substring(i.getOriginalFilename().lastIndexOf("."));
+					//OSSUtil.uploadFileToOSS(i.getInputStream(), iosImg);
+				}
+				//保存信息
+				String name=parent+index;
+				if(StringUtils.isNotEmpty(androidImg)||StringUtils.isNotEmpty(iosImg)){
+					insertDictValue(name, "{\"android\":\""+android[seq]+"\",\"ios\":\""+ios[seq]+"\",\"target\":\""
+							+target[seq]+"\",\"androidImg\":\""+androidImg+"\",\"iosImg\":\""+iosImg+"\"}", parentId, DateUtil.nowDate(), 1,"顶部banner配置", index);
+				}
+				index++;
 				seq++;
 			}
 		}
@@ -95,21 +125,35 @@ public class BannerService extends CommonService {
 			if(Arrays.asList(bottom).stream().filter(f->!f.isEmpty()).findFirst().isPresent()){
 				deleteDict(null, parentId);
 			}
-			for(MultipartFile i:bottom){
+			for(int n=0;n<bottom.length;n++){
+				MultipartFile i=bottom[n];
+				//android图片
+				String androidImg="";
 				if(!i.isEmpty()){
-					String fileName="other/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS"+DataUtil.createNums(6));
-					fileName+=i.getOriginalFilename().substring(i.getOriginalFilename().lastIndexOf("."));
-					OSSUtil.uploadFileToOSS(i.getInputStream(), fileName);
-					//检查banner是否已存在
-					String name=parent+index;
-					deleteDict(null, parentId);
-					insertDictValue(name, "{\"android\":\""+android[seq]+"\",\"ios\":\""+ios[seq]+"\",\"target\":\""
-							+target[seq]+"\",\"img\":\""+fileName+"\"}", parentId, DateUtil.nowDate(), 1,"底部banner配置", index);
-					index++;
+					androidImg="other/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS"+DataUtil.createNums(6));
+					androidImg+=i.getOriginalFilename().substring(i.getOriginalFilename().lastIndexOf("."));
+					//OSSUtil.uploadFileToOSS(i.getInputStream(), androidImg);
 				}
+				//ios图片
+				i=bottom[++n];
+				String iosImg="";
+				if(!i.isEmpty()){
+					iosImg="other/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS"+DataUtil.createNums(6));
+					iosImg+=i.getOriginalFilename().substring(i.getOriginalFilename().lastIndexOf("."));
+					//OSSUtil.uploadFileToOSS(i.getInputStream(), iosImg);
+				}
+				//保存信息
+				String name=parent+index;
+				deleteDict(null, parentId);
+				if(StringUtils.isNotEmpty(androidImg)||StringUtils.isNotEmpty(iosImg)){
+					insertDictValue(name, "{\"android\":\""+android[seq]+"\",\"ios\":\""+ios[seq]+"\",\"target\":\""
+							+target[seq]+"\",\"androidImg\":\""+androidImg+"\",\"iosImg\":\""+iosImg+"\"}", parentId, DateUtil.nowDate(), 1,"底部banner配置", index);
+				}
+				index++;
 				seq++;
 			}
 		}
+		//System.out.println("".split(",")[2]);
 		return putResult();
 	}
 

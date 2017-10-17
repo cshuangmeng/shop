@@ -125,7 +125,9 @@ public class WeiXinService extends CommonService{
 					//保存用户头像
 					String fileName=StringUtils.isNotEmpty(user.getHeadImg())&&!user.getHeadImg().startsWith("http")
 							?user.getHeadImg():"user/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS"+DataUtil.createNums(6))+".jpg";
-					OSSUtil.uploadFileToOSS(new URL(json.getString("headimgurl")).openStream(), fileName);
+					if(StringUtils.isNotEmpty(json.getString("headimgurl"))){
+						OSSUtil.uploadFileToOSS(new URL(json.getString("headimgurl")).openStream(), fileName);
+					}
 					user.setHeadImg(fileName);
 					userService.updateUser(user);
 				}

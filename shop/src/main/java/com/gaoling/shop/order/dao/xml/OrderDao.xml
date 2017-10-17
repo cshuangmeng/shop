@@ -30,6 +30,13 @@
 					#{state}
 				</foreach>
 			</if>
+			<if test="param.typeIds!=null and param.typeIds.size()>0">
+				and exists(select '' from goods where id=t.goods_id and type_id in
+				<foreach collection="param.typeIds" item="typeId" open="(" separator="," close=")">
+					#{typeId}
+				</foreach>
+				)
+			</if>
 			<if test="param.tradeNo!=null">
 				and t.trade_no=#{param.tradeNo}
 			</if>
