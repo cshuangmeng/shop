@@ -62,7 +62,7 @@ public class BannerService extends CommonService {
 					//android图片
 					androidImg="other/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS"+DataUtil.createNums(6));
 					androidImg+=i.getOriginalFilename().substring(i.getOriginalFilename().lastIndexOf("."));
-					//OSSUtil.uploadFileToOSS(i.getInputStream(), androidImg);
+					OSSUtil.uploadFileToOSS(i.getInputStream(), androidImg);
 				}
 				//ios图片
 				i=launch[++n];
@@ -70,7 +70,7 @@ public class BannerService extends CommonService {
 				if(!i.isEmpty()){
 					iosImg="other/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS"+DataUtil.createNums(6));
 					iosImg+=i.getOriginalFilename().substring(i.getOriginalFilename().lastIndexOf("."));
-					//OSSUtil.uploadFileToOSS(i.getInputStream(), iosImg);
+					OSSUtil.uploadFileToOSS(i.getInputStream(), iosImg);
 				}
 				//保存信息
 				String name=parent+index;
@@ -97,7 +97,7 @@ public class BannerService extends CommonService {
 				if(!i.isEmpty()){
 					androidImg="other/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS"+DataUtil.createNums(6));
 					androidImg+=i.getOriginalFilename().substring(i.getOriginalFilename().lastIndexOf("."));
-					//OSSUtil.uploadFileToOSS(i.getInputStream(), androidImg);
+					OSSUtil.uploadFileToOSS(i.getInputStream(), androidImg);
 				}
 				//ios图片
 				i=top[++n];
@@ -105,7 +105,7 @@ public class BannerService extends CommonService {
 				if(!i.isEmpty()){
 					iosImg="other/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS"+DataUtil.createNums(6));
 					iosImg+=i.getOriginalFilename().substring(i.getOriginalFilename().lastIndexOf("."));
-					//OSSUtil.uploadFileToOSS(i.getInputStream(), iosImg);
+					OSSUtil.uploadFileToOSS(i.getInputStream(), iosImg);
 				}
 				//保存信息
 				String name=parent+index;
@@ -132,7 +132,7 @@ public class BannerService extends CommonService {
 				if(!i.isEmpty()){
 					androidImg="other/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS"+DataUtil.createNums(6));
 					androidImg+=i.getOriginalFilename().substring(i.getOriginalFilename().lastIndexOf("."));
-					//OSSUtil.uploadFileToOSS(i.getInputStream(), androidImg);
+					OSSUtil.uploadFileToOSS(i.getInputStream(), androidImg);
 				}
 				//ios图片
 				i=bottom[++n];
@@ -140,7 +140,7 @@ public class BannerService extends CommonService {
 				if(!i.isEmpty()){
 					iosImg="other/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS"+DataUtil.createNums(6));
 					iosImg+=i.getOriginalFilename().substring(i.getOriginalFilename().lastIndexOf("."));
-					//OSSUtil.uploadFileToOSS(i.getInputStream(), iosImg);
+					OSSUtil.uploadFileToOSS(i.getInputStream(), iosImg);
 				}
 				//保存信息
 				String name=parent+index;
@@ -153,7 +153,6 @@ public class BannerService extends CommonService {
 				seq++;
 			}
 		}
-		//System.out.println("".split(",")[2]);
 		return putResult();
 	}
 
