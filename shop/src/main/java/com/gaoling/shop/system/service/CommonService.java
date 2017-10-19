@@ -35,10 +35,15 @@ public class CommonService {
 	public List<Map<String, Object>> getSonDicts(String parentName) {
 		return dictInfoDao.queryDicts(DataUtil.mapOf("parentName", parentName));
 	}
-	
+
 	// 查询字典数值
 	public List<Map<String, Object>> getDicts(String name) {
 		return dictInfoDao.queryDicts(DataUtil.mapOf("name", name));
+	}
+
+	// 查询字典数值
+	public List<Map<String, Object>> queryDicts(Map<String, Object> param) {
+		return dictInfoDao.queryDicts(param);
 	}
 
 	// 查询字典数值
@@ -66,8 +71,7 @@ public class CommonService {
 	public Result putResult(int code, Object... params) {
 		Result result = new Result();
 		result.setCode(code);
-		result.setMsg(
-				String.format(responseInfoDao.queryResponseTextCn(CommonService.class.getSimpleName(), code), params));
+		result.setMsg(String.format(responseInfoDao.queryResponseTextCn(CommonService.class.getSimpleName(), code), params));
 		return result;
 	}
 
@@ -95,17 +99,27 @@ public class CommonService {
 	}
 
 	// 更新字典数值
-	public int updateDictValue(String name, Integer state, Integer parentId) {
-		return dictInfoDao.updateDictValue(name, state, parentId);
+	public int updateDictValue(Integer id,String name,String value,String remark) {
+		Map<String,Object> set=DataUtil.mapOf("name",name,"value",value,"remark",remark);
+		Map<String,Object> param=DataUtil.mapOf("id",id);
+		return dictInfoDao.updateDictValue(set,param);
 	}
 	
+	// 更新字典数值
+	public int updateDictValue(Integer id,Integer state) {
+		Map<String,Object> set=DataUtil.mapOf("state",state);
+		Map<String,Object> param=DataUtil.mapOf("id",id);
+		return dictInfoDao.updateDictValue(set,param);
+	}
+
 	// 删除字典数值
 	public int deleteDict(String name, Integer parentId) {
 		return dictInfoDao.deleteDict(name, parentId);
 	}
 
 	// 保存字典数值
-	public int insertDictValue(String name, String value, Integer parentId, Date createTime, Integer state, String remark, Integer orderIndex) {
+	public int insertDictValue(String name, String value, Integer parentId, Date createTime, Integer state,
+			String remark, Integer orderIndex) {
 		return dictInfoDao.insertDictValue(name, value, parentId, createTime, state, remark, orderIndex);
 	}
 

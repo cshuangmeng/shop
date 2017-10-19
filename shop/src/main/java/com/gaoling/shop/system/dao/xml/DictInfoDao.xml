@@ -14,6 +14,9 @@
 		<if test="param.name!=null">
 			and `name`=#{param.name}
 		</if>
+		<if test="param.key!=null">
+			and `name` like concat('%',#{param.name},'%')
+		</if>
 		<if test="param.parentId!=null">
 			and parent_id=#{param.parentId}
 		</if>
@@ -38,13 +41,31 @@
 	
 	<!-- 更新字典数值 -->
 	<update id="updateDictValue">
-		update dict_info set state=#{state} where
+		update dict_info set
+		<set>
+			<if test="param.state!=null">
+				state=#{set.state},
+			</if>
+			<if test="param.name!=null">
+				`name`=#{set.name},
+			</if>
+			<if test="param.value!=null">
+				`value`=#{set.value},
+			</if>
+			<if test="param.remark!=null">
+				`remark`=#{set.remark},
+			</if>
+		</set>
+		 where
 		<choose>
-		<when test="null!=name">
-			name=#{name}
+		<when test="null!=param.name">
+			`name`=#{param.name}
 		</when>
-		<when test="null!=parentId">
-			parent_id=#{parentId}
+		<when test="null!=param.id">
+			id=#{param.name}
+		</when>
+		<when test="null!=param.parentId">
+			parent_id=#{param.parentId}
 		</when>
 		</choose>
 	</update>
