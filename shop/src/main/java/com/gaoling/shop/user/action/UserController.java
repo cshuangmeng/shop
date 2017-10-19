@@ -56,8 +56,7 @@ public class UserController extends CommonService{
 	
 	//用户登录
 	@RequestMapping("/login")
-	public Result login(@RequestParam(required=false) String unionId,@RequestParam(required=false) String cellphone
-			,@RequestParam(required=false) String password,@RequestParam(defaultValue="0") int platform){
+	public Result login(@RequestParam(required=false) String unionId){
 		Result result=null;
 		try {
 			result=userService.login(unionId);

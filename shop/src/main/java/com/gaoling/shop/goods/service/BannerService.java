@@ -32,9 +32,6 @@ public class BannerService extends CommonService {
 				json.put("url", json.get("android"));
 				json.put("img", AppConstant.OSS_CDN_SERVER + json.get("androidImg"));
 			}
-			if(StringUtils.isEmpty(system)||!system.toLowerCase().contains("ios")){
-				json.put("target", json.getInt("target")==1?2:json.getInt("target")==2?1:json.get("target"));
-			}
 			json.put("androidImg", AppConstant.OSS_CDN_SERVER + json.get("androidImg"));
 			json.put("iosImg", AppConstant.OSS_CDN_SERVER + json.get("iosImg"));
 			return json;
