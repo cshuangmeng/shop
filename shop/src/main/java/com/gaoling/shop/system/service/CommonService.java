@@ -111,6 +111,11 @@ public class CommonService {
 		Map<String,Object> param=DataUtil.mapOf("id",id);
 		return dictInfoDao.updateDictValue(set,param);
 	}
+	
+	// 更新字典数值
+	public int updateDictValue(Map<String,Object> set,Map<String,Object> param) {
+		return dictInfoDao.updateDictValue(set, param);
+	}
 
 	// 删除字典数值
 	public int deleteDict(String name, Integer parentId) {

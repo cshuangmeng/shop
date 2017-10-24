@@ -10,19 +10,27 @@
 	
 	<!-- 加载字典 -->
 	<select id="queryDicts" resultType="java.util.Map">
-		select id,`name`,`value` from dict_info where state=1
-		<if test="param.name!=null">
-			and `name`=#{param.name}
-		</if>
-		<if test="param.key!=null">
-			and `name` like concat('%',#{param.name},'%')
-		</if>
-		<if test="param.parentId!=null">
-			and parent_id=#{param.parentId}
-		</if>
-		<if test="param.parentName!=null">
-			and parent_id=(select id from dict_info where `name`=#{param.parentName})
-		</if>
+		select id,`name`,`value`,state,parent_id parentId,remark,date_format(create_time,'%Y-%m-%d %H:%i:%s') createTime from dict_info
+		<trim prefix="where" prefixOverrides="and">
+			<if test="param.states!=null and param.states.size()>0">
+				and state in
+				<foreach collection="param.states" item="state" open="(" separator="," close=")">
+					${state}
+				</foreach>
+			</if>
+			<if test="param.name!=null">
+				and `name`=#{param.name}
+			</if>
+			<if test="param.key!=null">
+				and `name` like concat('%',#{param.name},'%')
+			</if>
+			<if test="param.parentId!=null">
+				and parent_id=#{param.parentId}
+			</if>
+			<if test="param.parentName!=null">
+				and parent_id=(select id from dict_info where `name`=#{param.parentName})
+			</if>
+		</trim>
 		order by order_index
 	</select>
 	
@@ -41,19 +49,22 @@
 	
 	<!-- 更新字典数值 -->
 	<update id="updateDictValue">
-		update dict_info set
+		update dict_info
 		<set>
-			<if test="param.state!=null">
+			<if test="set.state!=null">
 				state=#{set.state},
 			</if>
-			<if test="param.name!=null">
+			<if test="set.name!=null">
 				`name`=#{set.name},
 			</if>
-			<if test="param.value!=null">
+			<if test="set.value!=null">
 				`value`=#{set.value},
 			</if>
-			<if test="param.remark!=null">
+			<if test="set.remark!=null">
 				`remark`=#{set.remark},
+			</if>
+			<if test="set.parentId!=null">
+				`parent_id`=#{set.parentId},
 			</if>
 		</set>
 		 where
@@ -62,7 +73,7 @@
 			`name`=#{param.name}
 		</when>
 		<when test="null!=param.id">
-			id=#{param.name}
+			id=#{param.id}
 		</when>
 		<when test="null!=param.parentId">
 			parent_id=#{param.parentId}

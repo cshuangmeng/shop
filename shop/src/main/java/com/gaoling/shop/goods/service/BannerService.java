@@ -24,7 +24,8 @@ public class BannerService extends CommonService {
 	
 	//加载Banner
 	public Result loadWKBanners(Integer index,String system,String appType) {
-		List<JSONObject> result = getSonDicts("wk" + index + "_top_banner"+(StringUtils.isNotEmpty(appType)?"_"+appType:"")).stream().map(r -> {
+		String name="wk" + index + "_top_banner"+(StringUtils.isNotEmpty(appType)?"_"+appType:"");
+		List<JSONObject> result = getSonDicts(name).stream().filter(d->Integer.parseInt(d.get("state").toString())==1).map(r -> {
 			JSONObject json = JSONObject.fromObject(r.get("value"));
 			if(StringUtils.isNotEmpty(system)&&system.toLowerCase().contains("ios")){
 				json.put("url", json.get("iosUrl"));
@@ -45,9 +46,10 @@ public class BannerService extends CommonService {
 	//加载Banner
 	public Result getBannerList(){
 		//加载APP
-		String key=getString("banner_config_prefix");
-		List<Map<String,Object>> apps=queryDicts(DataUtil.mapOf("key",key,"parentId",0));
+		String key="banner";
+		List<Map<String,Object>> apps=queryDicts(DataUtil.mapOf("parentName",key));
 		apps.stream().forEach(a->{
+			a.put("host", AppConstant.OSS_CDN_SERVER);
 			a.put("banners",queryDicts(DataUtil.mapOf("parentId",Integer.parseInt(a.get("id").toString()))));
 		});
 		return putResult(apps);
@@ -56,15 +58,17 @@ public class BannerService extends CommonService {
 	//加载AppType
 	public Result getAppList(){
 		//加载APP
-		String key=getString("banner_config_prefix");
-		List<Map<String,Object>> apps=queryDicts(DataUtil.mapOf("key",key,"parentId",0));
+		String key="banner";
+		List<Map<String,Object>> apps=queryDicts(DataUtil.mapOf("parentName",key));
 		return putResult(apps);
 	}
 	
 	//编辑AppType
-	public Result editApp(int id,String name,String value,String remark){
+	public Result editApp(int id,String name,String value,Integer state,String remark){
 		if(id>0){
-			updateDictValue(id, name, value, remark);
+			Map<String,Object> set=DataUtil.mapOf("name",name,"value",value.toString(),"state",state,"remark",remark);
+			Map<String,Object> param=DataUtil.mapOf("id",id);
+			updateDictValue(set,param);
 		}else{
 			String key="banner";
 			List<Map<String,Object>> apps=queryDicts(DataUtil.mapOf("name",key));
@@ -77,7 +81,46 @@ public class BannerService extends CommonService {
 	}
 	
 	//编辑Banner
-	public Result editBanner(int id,MultipartFile[] file,String appType,String platform,String target,String url,String remark,int state){
+	public Result editBanner(int id,MultipartFile[] file,String appType,int index,int parentId
+			,String platform,String target,String url,String remark,int state){
+		try {
+			if(id>0){
+				List<Map<String,Object>> dicts=queryDicts(DataUtil.mapOf("id",id));
+				if(dicts.size()>0){
+					Map<String,Object> dict=dicts.get(0);
+					String i=dict.get("name").toString().split("_")[dict.get("name").toString().split("_").length-1];
+					String name="banner_"+appType+"_"+platform+"_"+index+"_"+i;
+					String img="";
+					JSONObject value=JSONObject.fromObject(dict.get("value").toString());
+					if(!file[0].isEmpty()){
+						img="other/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS"+DataUtil.createNums(6));
+						img+=file[0].getOriginalFilename().substring(file[0].getOriginalFilename().lastIndexOf("."));
+						OSSUtil.uploadFileToOSS(file[0].getInputStream(), img);
+						value.put("img", img);
+					}
+					value.put("target", target);
+					value.put("url", url);
+					Map<String,Object> set=DataUtil.mapOf("name",name,"value",value.toString(),"state",state,"remark",remark,"parentId",parentId);
+					Map<String,Object> param=DataUtil.mapOf("id",id);
+					updateDictValue(set, param);
+				}
+			}else{
+				for(int i=0;i<file.length;i++){
+					MultipartFile f=file[i];
+					String name="banner_"+appType+"_"+platform+"_"+index+"_"+(i+1);
+					String img="";
+					if(!f.isEmpty()){
+						img="other/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS"+DataUtil.createNums(6));
+						img+=f.getOriginalFilename().substring(f.getOriginalFilename().lastIndexOf("."));
+						OSSUtil.uploadFileToOSS(f.getInputStream(), img);
+					}
+					Map<String,Object> obj=DataUtil.mapOf("img",img,"target",target,"url",url);
+					insertDictValue(name, JSONObject.fromObject(obj).toString(), parentId, DateUtil.nowDate(), state, remark, i+1);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return putResult();
 	}
 	
@@ -87,6 +130,14 @@ public class BannerService extends CommonService {
 			updateDictValue(id, state);
 			//同步更新子项状态
 			queryDicts(DataUtil.mapOf("parentId",id)).stream().forEach(s->updateDictValue(Integer.parseInt(s.get("id").toString()), state));
+		}
+		return putResult();
+	}
+	
+	//操作Banner状态
+	public Result editBannerState(int id,int state){
+		if(id>0){
+			updateDictValue(id, state);
 		}
 		return putResult();
 	}
