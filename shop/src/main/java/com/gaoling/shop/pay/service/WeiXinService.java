@@ -49,7 +49,7 @@ public class WeiXinService extends CommonService{
 	
 
 	// 获取ticket,且每隔一小时刷新一次
-	//@Scheduled(fixedDelay = 3600 * 1000)
+	@Scheduled(fixedDelay = 3600 * 1000)
 	public void getTicketSchedule() {
 		// 获取用户端access_token
 		AppConstant.USERMP_ACCESS_TOKEN=getAccessToken(AppConstant.USERMP_APP_ID, AppConstant.USERMP_SECRET_KEY);
@@ -125,8 +125,11 @@ public class WeiXinService extends CommonService{
 					//保存用户头像
 					String fileName=StringUtils.isNotEmpty(user.getHeadImg())&&!user.getHeadImg().startsWith("http")
 							?user.getHeadImg():"user/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS"+DataUtil.createNums(6))+".jpg";
-					if(StringUtils.isNotEmpty(json.getString("headimgurl"))){
+					if(!DataUtil.isEmpty(json.get("headimgurl"))){
 						OSSUtil.uploadFileToOSS(new URL(json.getString("headimgurl")).openStream(), fileName);
+					}
+					if(!DataUtil.isEmpty(json.get("nickname"))){
+						user.setNickname(json.getString("nickname"));
 					}
 					user.setHeadImg(fileName);
 					userService.updateUser(user);

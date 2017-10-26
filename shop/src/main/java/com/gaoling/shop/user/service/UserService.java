@@ -80,12 +80,16 @@ public class UserService extends CommonService{
 			user.setUuid(DataUtil.buildUUID());
 			user.setCellphone(cellphone);
 			user.setCreateTime(DateUtil.nowDate());
-			user.setHeadImg("user/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS")+DataUtil.createNums(6)+".jpg");
-			if(StringUtils.isNotEmpty(json.getString("headimgurl"))){
+			user.setHeadImg("");
+			if(!DataUtil.isEmpty(json.get("headimgurl"))){
+				user.setHeadImg("user/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS")+DataUtil.createNums(6)+".jpg");
 				OSSUtil.uploadFileToOSS(new URL(json.getString("headimgurl")).openStream(), user.getHeadImg());
 			}
 			user.setLoginTime(user.getCreateTime());
-			user.setNickname(json.getString("nickname"));
+			user.setNickname("");
+			if(!DataUtil.isEmpty(json.get("nickname"))){
+				user.setNickname(json.getString("nickname"));
+			}
 			user.setOpenId(openId);
 			user.setWebId("");
 			user.setUnionId(json.getString("unionid"));
@@ -96,8 +100,12 @@ public class UserService extends CommonService{
 			String fileName=StringUtils.isNotEmpty(user.getHeadImg())&&!user.getHeadImg().startsWith("http")
 					?user.getHeadImg():"user/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS"+DataUtil.createNums(6))+".jpg";
 			user.setHeadImg(fileName);
-			OSSUtil.uploadFileToOSS(new URL(json.getString("headimgurl")).openStream(), user.getHeadImg());
-			user.setNickname(json.getString("nickname"));
+			if(!DataUtil.isEmpty(json.get("headimgurl"))){
+				OSSUtil.uploadFileToOSS(new URL(json.getString("headimgurl")).openStream(), user.getHeadImg());
+			}
+			if(!DataUtil.isEmpty(json.get("nickname"))){
+				user.setNickname(json.getString("nickname"));
+			}
 			user.setOpenId(openId);
 			user.setUnionId(json.getString("unionid"));
 			updateUser(user);
