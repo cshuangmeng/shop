@@ -50,7 +50,7 @@ public class BannerService extends CommonService {
 		List<Map<String,Object>> apps=queryDicts(DataUtil.mapOf("parentName",key));
 		apps.stream().forEach(a->{
 			a.put("host", AppConstant.OSS_CDN_SERVER);
-			a.put("banners",queryDicts(DataUtil.mapOf("parentId",Integer.parseInt(a.get("id").toString()))));
+			a.put("banners",queryDicts(DataUtil.mapOf("parentId",Integer.parseInt(a.get("id").toString()),"states",Arrays.asList(0,1))));
 		});
 		return putResult(apps);
 	}

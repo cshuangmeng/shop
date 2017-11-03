@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gaoling.admin.system.dao.CooperationDao">
+
+	<!-- 表头 -->
+	<sql id="shopCooperation">
+		select company,website,product,advantage,contact,telephone,create_time createTime
+		,date_format(create_time,'%Y-%m-%d %H:%i:%s') as formatTime from cooperation t
+	</sql>
+
+	<!-- 查询所有订单 -->
+	<select id="queryCooperations" resultType="java.util.Map">
+		<include refid="shopCooperation"/>
+		<trim prefix="where" prefixOverrides="and">
+			<if test="param.id!=null">
+				and t.id=#{param.id}
+			</if>
+			<if test="param.company!=null">
+				and t.company like concat('%',#{param.company},'%')
+			</if>
+			<if test="param.contact!=null">
+				and t.contact like concat('%',#{param.contact},'%')
+			</if>
+		</trim>
+		order by create_time desc
+	</select>
+
+	<!-- 发送合作请求 -->
+	<insert id="addCooperation" keyProperty="id" useGeneratedKeys="true" parameterType="com.gaoling.admin.system.pojo.Cooperation">
+		insert into cooperation(company,website,product,advantage,contact,telephone,create_time)
+		values(#{company},#{website},#{product},#{advantage},#{contact},#{telephone},#{createTime})
+	</insert>
+	
+</mapper>  

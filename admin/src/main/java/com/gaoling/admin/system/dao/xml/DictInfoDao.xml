@@ -22,5 +22,39 @@
 		</if>
 		order by order_index
 	</select>
+	
+	<!-- 更新字典数值 -->
+	<update id="updateDictValue">
+		update dict_info
+		<set>
+			<if test="set.state!=null">
+				state=#{set.state},
+			</if>
+			<if test="set.name!=null">
+				`name`=#{set.name},
+			</if>
+			<if test="set.value!=null">
+				`value`=#{set.value},
+			</if>
+			<if test="set.remark!=null">
+				`remark`=#{set.remark},
+			</if>
+			<if test="set.parentId!=null">
+				`parent_id`=#{set.parentId},
+			</if>
+		</set>
+		 where
+		<choose>
+		<when test="null!=param.name">
+			`name`=#{param.name}
+		</when>
+		<when test="null!=param.id">
+			id=#{param.id}
+		</when>
+		<when test="null!=param.parentId">
+			parent_id=#{param.parentId}
+		</when>
+		</choose>
+	</update>
 
 </mapper>  

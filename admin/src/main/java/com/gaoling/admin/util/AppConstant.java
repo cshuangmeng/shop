@@ -39,6 +39,7 @@ public class AppConstant {
 	public static final int TRIBE_NOT_EXISTS = 113;
 	public static final int ORDER_STATE_INCORRECT = 114;
 	public static final int OUT_OF_BOUNDS = 115;
+	public static final int USER_ALREADY_EXISTS = 116;
 
 	static {
 		SESSION_DATA_NAME = PropertiesUtil.getProperty("session_data_name");

@@ -56,6 +56,11 @@ public class CommonService {
 		return result;
 	}
 	
+	// 更新字典数值
+	public int updateDictValue(Map<String,Object> set,Map<String,Object> param) {
+		return dictInfoDao.updateDictValue(set, param);
+	}
+	
 	//设置返回结果
 	public Result putResult(int code,Object data,String msg){
 		Result result=new Result();

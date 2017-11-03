@@ -1,4 +1,4 @@
-package com.gaoling.admin.goods.pojo;
+package com.gaoling.admin.system.pojo;
 
 import java.util.Date;
 

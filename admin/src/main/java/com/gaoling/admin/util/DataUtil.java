@@ -11,9 +11,12 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.util.ByteSource;
 
+import net.sf.json.util.JSONTokener;
+import net.sf.json.util.JSONUtils;
 import net.sourceforge.pinyin4j.PinyinHelper;
 import net.sourceforge.pinyin4j.format.HanyuPinyinCaseType;
 import net.sourceforge.pinyin4j.format.HanyuPinyinOutputFormat;
@@ -203,6 +206,21 @@ public class DataUtil {
 			e1.printStackTrace();
 		}
 		return t4;
+	}
+	
+	// JSONObject校验
+	public static boolean isJSONObject(Object str) {
+		return null != str ? JSONUtils.mayBeJSON(str.toString()) : false;
+	}
+
+	// JSONArray校验
+	public static boolean isJSONArray(String str) {
+		return JSONUtils.isArray(new JSONTokener(str).nextValue());
+	}
+	
+	// 字符串是否未空
+	public static boolean isEmpty(Object str) {
+		return null == str || StringUtils.isEmpty(str.toString());
 	}
 
 	// 返回中文的首字母
