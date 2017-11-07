@@ -179,7 +179,7 @@ public class Goods {
 
 	// 商品状态
 	public static enum STATE_TYPE_ENUM {
-		SUBMITTED(0), PASSED(1), REFUSED(2);
+		SUBMITTED(0), PASSED(1), REFUSED(2), DELETED(3);
 		private int state;
 
 		private STATE_TYPE_ENUM(int state) {

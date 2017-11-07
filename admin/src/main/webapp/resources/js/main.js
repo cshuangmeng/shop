@@ -113,6 +113,7 @@
 			var regs=new RegExp(".*"+$(v).attr("href")+".*");
 			if(regs.test(location)){
 				$(v).parent().parent().parent().find("ul").toggleClass("closed");
+				$(v).parent().parent().parent().toggleClass("active");
 				$(v).parent().toggleClass("active");
 			}
 		});

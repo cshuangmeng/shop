@@ -25,7 +25,8 @@ public class AppConstant {
 	public static String ALIDAYU_APP_KEY;// 阿里大于appKey
 	public static String ALIDAYU_APP_SECRET;// 阿里大于appSecret
 	public static String ALIDAYU_FREE_SIGN;// 阿里大于商户签名
-	public static String ALIDAYU_TEMPLATE_CODE;// 阿里大于短信模板
+	public static String ALIDAYU_TEMPLATE_CODE;// 阿里大于短信验证码模板
+	public static String ALIDAYU_TEMPLATE_ORDER_NOTICE;// 阿里大于订单提醒短信模板
 	public static String CHECKCODE_PREFIX;// 用户验证码存储变量名的前缀
 
 	public static int XINGE_IOSENV;// 信鸽ios开发证书编号
@@ -95,6 +96,7 @@ public class AppConstant {
 		ALIDAYU_APP_SECRET = PropertiesUtil.getProperty("alidayu_app_secret");
 		ALIDAYU_FREE_SIGN = PropertiesUtil.getProperty("alidayu_free_sign");
 		ALIDAYU_TEMPLATE_CODE = PropertiesUtil.getProperty("alidayu_template_code");
+		ALIDAYU_TEMPLATE_ORDER_NOTICE = PropertiesUtil.getProperty("alidayu_template_order_notice");
 		CHECKCODE_PREFIX = PropertiesUtil.getProperty("checkcode_prefix");
 
 		XINGE_IOSENV = PropertiesUtil.getInteger("xinge.iosenv");

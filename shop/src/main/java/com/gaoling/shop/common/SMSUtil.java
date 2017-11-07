@@ -10,7 +10,7 @@ import net.sf.json.JSONObject;
 public class SMSUtil {
 
 	//淘宝大于短信发送
-	public static boolean send(String mobile,String code){
+	public static boolean sendCheckCode(String mobile,String code){
 		try {
 			TaobaoClient client = new DefaultTaobaoClient(AppConstant.ALIDAYU_SMS_URL, AppConstant.ALIDAYU_APP_KEY, AppConstant.ALIDAYU_APP_SECRET);
 			AlibabaAliqinFcSmsNumSendRequest req = new AlibabaAliqinFcSmsNumSendRequest();
@@ -19,6 +19,25 @@ public class SMSUtil {
 			req.setSmsParamString(JSONObject.fromObject(DataUtil.mapOf("code",code)).toString());
 			req.setRecNum(mobile);
 			req.setSmsTemplateCode(AppConstant.ALIDAYU_TEMPLATE_CODE);
+			AlibabaAliqinFcSmsNumSendResponse rsp = client.execute(req);
+			return rsp.isSuccess();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	//淘宝大于新订单提醒短信发送
+	public static boolean sendNewOrderNotice(String mobile,String goods,Integer num,String consigner,String address){
+		try {
+			TaobaoClient client = new DefaultTaobaoClient(AppConstant.ALIDAYU_SMS_URL, AppConstant.ALIDAYU_APP_KEY, AppConstant.ALIDAYU_APP_SECRET);
+			AlibabaAliqinFcSmsNumSendRequest req = new AlibabaAliqinFcSmsNumSendRequest();
+			req.setSmsType("normal");
+			req.setSmsFreeSignName(AppConstant.ALIDAYU_FREE_SIGN);
+			req.setSmsParamString(JSONObject.fromObject(DataUtil.mapOf("goods",goods,"num",String.valueOf(num)
+					,"consigner",consigner,"address",address)).toString());
+			req.setRecNum(mobile);
+			req.setSmsTemplateCode(AppConstant.ALIDAYU_TEMPLATE_ORDER_NOTICE);
 			AlibabaAliqinFcSmsNumSendResponse rsp = client.execute(req);
 			return rsp.isSuccess();
 		} catch (Exception e) {

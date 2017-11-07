@@ -157,7 +157,9 @@ function approveAdInfo(status){
 		$(":checkbox[name='goodsId']").each(function(i,v){
 			if($(v).attr("checked")!=undefined){
 				var currStatus=$.trim($(v).parent().parent().find("td:eq(3)").attr("state"));
-				if(currStatus==0){
+				if((status==1||status==2)&&currStatus==0){
+					storeIds=storeIds.length>0?","+$(v).val():$(v).val();
+				}else if(status==3){
 					storeIds=storeIds.length>0?","+$(v).val():$(v).val();
 				}
 			}
@@ -245,5 +247,5 @@ $(function(){
 	});
 	//回填商品其他信息
 	initGoodsOtherInfo();
-});
+})
 

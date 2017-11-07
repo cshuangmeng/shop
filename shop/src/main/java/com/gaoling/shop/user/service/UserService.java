@@ -46,7 +46,7 @@ public class UserService extends CommonService{
 		}
 		String code=DataUtil.createNums(4);
 		//发送验证码
-		if(SMSUtil.send(mobile, code)){
+		if(SMSUtil.sendCheckCode(mobile, code)){
 			//存储验证码
 			int expireMins=getInteger("sms_code_expire_mins");
 			MemcachedUtil.getInstance().setData(AppConstant.CHECKCODE_PREFIX+mobile, code, expireMins);

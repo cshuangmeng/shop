@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.gaoling.shop.common.AppConstant;
 import com.gaoling.shop.common.DataUtil;
 import com.gaoling.shop.common.DateUtil;
+import com.gaoling.shop.common.SMSUtil;
 import com.gaoling.shop.goods.pojo.Goods;
 import com.gaoling.shop.goods.service.GoodsService;
 import com.gaoling.shop.order.dao.OrderDao;
@@ -39,6 +40,9 @@ import com.gaoling.shop.user.pojo.User;
 import com.gaoling.shop.user.service.AddressService;
 import com.gaoling.shop.user.service.ShoppingCarService;
 import com.gaoling.shop.user.service.UserService;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 @Service
 public class OrderService extends CommonService{
@@ -340,6 +344,7 @@ public class OrderService extends CommonService{
 	}
 	
 	//商品订单支付成功
+	@SuppressWarnings("unchecked")
 	@Transactional
 	public boolean goodsPaySuccess(int orderId,String outTradeNo,float amount)throws Exception{
 		List<Order> orders=queryOrders(DataUtil.mapOf("allOrders",true,"mainOrderId",orderId));
@@ -424,6 +429,22 @@ public class OrderService extends CommonService{
 		//将商品从购物车内清除
 		List<Integer> goodsIds=orders.stream().map(o->o.getGoodsId()).collect(Collectors.toList());
 		shoppingCarService.removeGoodsFromShoppingCar(mainOrder.getUserId(), goodsIds);
+		//下发订单提醒给运营人员
+		String value=getString("new_order_msg_config");
+		if(StringUtils.isNotEmpty(value)){
+			JSONObject json=JSONObject.fromObject(value);
+			if(!DataUtil.isEmpty(json.get("enable"))&&json.getInt("enable")>0){
+				Address address=addressService.getAddress(mainOrder.getAddressId());
+				value=getString("new_order_notice_phones");
+				if(StringUtils.isNotEmpty(value)&&DataUtil.isJSONArray(value)){
+					JSONArray array=JSONArray.fromObject(value);
+					array.stream().forEach(a->{
+						SMSUtil.sendNewOrderNotice(JSONObject.fromObject(a).getString("telephone"), goods.get(0).getName()
+								,goods.size(),address.getConsigner(),address.getAreaName()+address.getAddress());
+					});
+				}
+			}
+		}
 		return true;
 	}
 	

@@ -82,7 +82,7 @@
 
 				<div class="mws-panel grid_8 mws-collapsible">
 					<div class="mws-panel-header">
-						<span class="mws-i-24 i-graph">新增商户</span>
+						<span class="mws-i-24 i-graph">新增商品</span>
 					</div>
 					<div class="mws-panel-body">
 						<form id="update-form" action="submit" enctype="multipart/form-data" method="post" class="mws-form">

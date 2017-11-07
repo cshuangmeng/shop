@@ -125,10 +125,11 @@
                     <div class="mws-panel-body">
                     	<div class="mws-panel-toolbar top clearfix">
                         	<ul>
-                        		<li><a href="${pageContext.servletContext.contextPath }/goods/edit" class="mws-ic-16 ic-arrow-refresh">添加</a></li>
+                        		<li><a href="${pageContext.servletContext.contextPath }/goods/edit" class="mws-ic-16 ic-add">添加</a></li>
                         		<li onclick="editAddGroupInfo()"><a href="javascript:void(0);" class="mws-ic-16 ic-edit">编辑</a></li>
-                        		<li onclick="approveAdInfo('1')"><a href="javascript:void(0);" class="mws-ic-16 ic-arrow-refresh">通过</a></li>
-                            	<li onclick="approveAdInfo('2')"><a href="javascript:void(0);" class="mws-ic-16 ic-arrow-refresh">拒绝</a></li>
+                        		<li onclick="approveAdInfo('1')"><a href="javascript:void(0);" class="mws-ic-16 ic-accept">通过</a></li>
+                            	<li onclick="approveAdInfo('2')"><a href="javascript:void(0);" class="mws-ic-16 ic-arrow-undo">拒绝</a></li>
+                            	<li onclick="approveAdInfo('3')"><a href="javascript:void(0);" class="mws-ic-16 ic-cancel">下架</a></li>
                             </ul>
                         </div>
 						<table id="store-result-table" class="mws-datatable mws-table">

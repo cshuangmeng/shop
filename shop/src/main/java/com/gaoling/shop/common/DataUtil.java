@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 
+import net.sf.json.util.JSONTokener;
 import net.sf.json.util.JSONUtils;
 import net.sourceforge.pinyin4j.PinyinHelper;
 import net.sourceforge.pinyin4j.format.HanyuPinyinCaseType;
@@ -188,12 +189,12 @@ public class DataUtil {
 
 	// JSONObject校验
 	public static boolean isJSONObject(Object str) {
-		return null!=str?JSONUtils.mayBeJSON(str.toString()):false;
+		return null != str ? JSONUtils.mayBeJSON(str.toString()) : false;
 	}
 
 	// JSONArray校验
 	public static boolean isJSONArray(String str) {
-		return JSONUtils.isArray(str);
+		return JSONUtils.isArray(new JSONTokener(str).nextValue());
 	}
 
 	// UUID生成
@@ -272,7 +273,7 @@ public class DataUtil {
 		if (StringUtils.isNotEmpty(ip) && !"unKnown".equalsIgnoreCase(ip)) {
 			return ip;
 		}
-		return request.getRemoteAddr().equals("0:0:0:0:0:0:0:1")?"127.0.0.1":request.getRemoteAddr();
+		return request.getRemoteAddr().equals("0:0:0:0:0:0:0:1") ? "127.0.0.1" : request.getRemoteAddr();
 	}
 
 }
