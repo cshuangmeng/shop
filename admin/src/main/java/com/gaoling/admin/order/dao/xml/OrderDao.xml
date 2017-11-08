@@ -44,6 +44,17 @@
 			<if test="param.allOrders!=null and param.allOrders and param.mainOrderId!=null">
 				and (t.id=#{param.mainOrderId} or t.ref_id=#{param.mainOrderId})
 			</if>
+			<choose>
+				<when test="param.startDate!=null and param.startDate!='' and param.endDate!=null and param.endDate!=''">
+					and date_format(t.create_time,'%Y-%m-%d') between #{param.startDate} and #{param.endDate}
+				</when>
+				<when test="param.startDate!=null and param.startDate!=''">
+					and date_format(t.create_time,'%Y-%m-%d')&gt;=#{param.startDate}
+				</when>
+				<when test="param.endDate!=null and param.endDate!=''">
+					and date_format(t.create_time,'%Y-%m-%d')&lt;=#{param.endDate}
+				</when>
+			</choose>
 		</trim>
 		<if test="param.orderBy!=null">
 			order by $(param.orderBy)
@@ -154,5 +165,30 @@
 		</if>
 		where id=#{id}
 	</update>
+
+	<!-- 统计店铺订单 -->
+	<select id="stateShopStat" resultType="java.util.Map">
+		select date_format(create_time,'%Y-%m-%d') as df,count(1) as amount from `order` t
+		<trim prefix="where" prefixOverrides="and">
+			<if test="param.states!=null and param.states.size()>0">
+				and t.state in
+				<foreach collection="param.states" item="state" open="(" separator="," close=")">
+					#{state}
+				</foreach>
+			</if>
+			<choose>
+				<when test="param.startDate!=null and param.startDate!='' and param.endDate!=null and param.endDate!=''">
+					and date_format(t.create_time,'%Y-%m-%d') between #{param.startDate} and #{param.endDate}
+				</when>
+				<when test="param.startDate!=null and param.startDate!=''">
+					and date_format(t.create_time,'%Y-%m-%d')&gt;=#{param.startDate}
+				</when>
+				<when test="param.endDate!=null and param.endDate!=''">
+					and date_format(t.create_time,'%Y-%m-%d')&lt;=#{param.endDate}
+				</when>
+			</choose>
+		</trim>
+		group by df order by df
+	</select>
 
 </mapper>  

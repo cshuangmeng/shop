@@ -1,7 +1,11 @@
 package com.gaoling.admin.util;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.commons.lang3.time.DateUtils;
 
 public class DateUtil {
 
@@ -26,6 +30,21 @@ public class DateUtil {
 	public static String getFormatTime(Date date){
 		SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		return format.format(date);
+	}
+	
+	//格式化时间
+	public static String dateToDay(Date date){
+		return DateFormatUtils.format(date, "yyyy-MM-dd");
+	}
+	
+	//格式化时间
+	public static Date dayToDate(String day){
+		try {
+			return DateUtils.parseDate(day, "yyyy-MM-dd");
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	//计算两个时间之间的分钟数

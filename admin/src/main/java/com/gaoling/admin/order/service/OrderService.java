@@ -24,6 +24,11 @@ public class OrderService extends CommonService{
 		return orderDao.queryOrderList(param);
 	}
 	
+	//统计订单数据
+	public List<Map<String,Object>> stateShopStat(Map<Object,Object> param){
+		return orderDao.stateShopStat(param);
+	}
+	
 	//查询订单详情
 	public Map<String,Object> queryOrderDetail(int id){
 		List<Map<String,Object>> orders=orderDao.queryOrderList(DataUtil.mapOf("id",id));

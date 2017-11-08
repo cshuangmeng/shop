@@ -15,6 +15,7 @@ public interface OrderDao {
 	List<Order> queryOrders(@Param("param")Map<Object,Object> param);
 	int queryOrderCount(@Param("param")Map<Object,Object> param);
 	List<Map<String,Object>> queryOrderList(@Param("param")Map<Object,Object> param);
+	List<Map<String,Object>> stateShopStat(@Param("param")Map<Object,Object> param);
 	void addOrder(Order order);
 	void updateOrder(Order order);
 	

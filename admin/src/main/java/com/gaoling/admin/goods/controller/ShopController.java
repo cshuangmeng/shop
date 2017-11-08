@@ -67,6 +67,20 @@ public class ShopController extends CommonService{
 		return "/shop/detail";
 	}
 	
+	//商铺汇总
+	@RequestMapping("/summary")
+	@ResponseBody
+	public Result summary(){
+		Result result=null;
+		try {
+			result=shopService.statShopSummary();
+		} catch (Exception e) {
+			result=putResult(AppConstant.SYSTEM_ERROR_CODE);
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
 	//商铺详情
 	@RequestMapping("/edit")
 	public String edit(@RequestParam(defaultValue="0") int shopId,Model model){
