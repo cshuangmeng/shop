@@ -80,7 +80,7 @@ public class GoodsController extends CommonService{
 	@RequestMapping("/submit")
 	public String editSubmit(@ModelAttribute Goods goods,@RequestParam(required=false)MultipartFile logoImg
 			,@RequestParam(required=false)MultipartFile[] infoImg,@RequestParam(required=false)MultipartFile[] detailImg
-			,@RequestParam String params)throws Exception{
+			,@RequestParam String params){
 		goodsService.saveOrUpdateGoods(goods, logoImg, infoImg, detailImg, params);
 		return "redirect:/goods/index";
 	}

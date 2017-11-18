@@ -107,9 +107,9 @@
 			initParentMenus(response.data.parentId);
 			//设置权限信息
 			$("#edit_menu_info_div").find(":hidden[name='id']").val(response.data.id);
-			$("#edit_menu_info_div").find(":text[name='menuName']").val(response.data.menuName);
-			$("#edit_menu_info_div").find(":text[name='menuUrl']").val(response.data.menuUrl);
-			$("#edit_menu_info_div").find("select[name='enabled']").val(""+response.data.enabled);
+			$("#edit_menu_info_div").find(":text[name='name']").val(response.data.name);
+			$("#edit_menu_info_div").find(":text[name='url']").val(response.data.url);
+			$("#edit_menu_info_div").find("select[name='state']").val(""+response.data.state);
 			$("#edit_menu_info_div").find(":text[name='orderIndex']").val(response.data.orderIndex);
 			$("#edit_menu_info_div").find(":text[name='icon']").val(response.data.icon);
 			$("#edit_menu_info_div").dialog("open");

@@ -1,5 +1,7 @@
 package com.gaoling.shop.goods.action;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -7,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.gaoling.shop.common.AppConstant;
 import com.gaoling.shop.goods.service.BannerService;
@@ -112,12 +115,15 @@ public class BannerController extends CommonService{
 	//编辑Banner
 	@RequestMapping("/editBanner")
 	@CrossOrigin(origins="*",methods=RequestMethod.POST)
-	public Result editBanner(@RequestParam Integer id,@RequestParam MultipartFile[] file,@RequestParam String appType
-			,@RequestParam Integer index,@RequestParam String platform,@RequestParam String target
-			,@RequestParam String url,@RequestParam String remark,@RequestParam Integer state,@RequestParam Integer parentId){
+	public Result editBanner(@RequestParam(required=false) Integer bannerId,@RequestParam(required=false) String appType
+			,@RequestParam(required=false) Integer index,@RequestParam(required=false) String platform
+			,@RequestParam(required=false) String target,@RequestParam(required=false) String url
+			,@RequestParam(required=false) String remark,@RequestParam(required=false) Integer state
+			,HttpServletRequest request){
 		Result result=null;
 		try {
-			result=bannerService.editBanner(id, file, appType, index, parentId, platform, target, url, remark, state);
+			MultipartFile files=((MultipartHttpServletRequest)request).getFile("file");
+			result=bannerService.editBanner(bannerId, files, appType, index, platform, target, url, remark, state);
 		} catch (Exception e) {
 			result=bannerService.putResult(AppConstant.SYSTEM_ERROR_CODE);
 			e.printStackTrace();

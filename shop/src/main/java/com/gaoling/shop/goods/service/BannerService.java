@@ -81,7 +81,7 @@ public class BannerService extends CommonService {
 	}
 	
 	//编辑Banner
-	public Result editBanner(int id,MultipartFile[] file,String appType,int index,int parentId
+	public Result editBanner(int id,MultipartFile file,String appType,int index
 			,String platform,String target,String url,String remark,int state){
 		try {
 			if(id>0){
@@ -92,31 +92,35 @@ public class BannerService extends CommonService {
 					String name="banner_"+appType+"_"+platform+"_"+index+"_"+i;
 					String img="";
 					JSONObject value=JSONObject.fromObject(dict.get("value").toString());
-					if(!file[0].isEmpty()){
+					if(!file.isEmpty()){
 						img="other/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS"+DataUtil.createNums(6));
-						img+=file[0].getOriginalFilename().substring(file[0].getOriginalFilename().lastIndexOf("."));
-						OSSUtil.uploadFileToOSS(file[0].getInputStream(), img);
+						img+=file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
+						OSSUtil.uploadFileToOSS(file.getInputStream(), img);
 						value.put("img", img);
 					}
 					value.put("target", target);
 					value.put("url", url);
-					Map<String,Object> set=DataUtil.mapOf("name",name,"value",value.toString(),"state",state,"remark",remark,"parentId",parentId);
+					Map<String,Object> set=DataUtil.mapOf("name",name,"value",value.toString(),"state",state,"remark",remark);
 					Map<String,Object> param=DataUtil.mapOf("id",id);
 					updateDictValue(set, param);
 				}
 			}else{
-				for(int i=0;i<file.length;i++){
-					MultipartFile f=file[i];
-					String name="banner_"+appType+"_"+platform+"_"+index+"_"+(i+1);
-					String img="";
-					if(!f.isEmpty()){
-						img="other/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS"+DataUtil.createNums(6));
-						img+=f.getOriginalFilename().substring(f.getOriginalFilename().lastIndexOf("."));
-						OSSUtil.uploadFileToOSS(f.getInputStream(), img);
-					}
-					Map<String,Object> obj=DataUtil.mapOf("img",img,"target",target,"url",url);
-					insertDictValue(name, JSONObject.fromObject(obj).toString(), parentId, DateUtil.nowDate(), state, remark, i+1);
+				List<Map<String,Object>> map=queryDicts(DataUtil.mapOf("name","banner_"+appType));
+				int parentId=Integer.valueOf(map.get(0).get("id").toString());
+				map=queryDicts(DataUtil.mapOf("parentId",parentId));
+				int lastIndex=map.stream().map(a->{
+					String[] array=a.get("name").toString().split("_");
+					return Integer.valueOf(array[array.length-1]);
+				}).max((a,b)->a-b).get();
+				String name="banner_"+appType+"_"+platform+"_"+index+"_"+(lastIndex+1);
+				String img="";
+				if(!file.isEmpty()){
+					img="other/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS"+DataUtil.createNums(6));
+					img+=file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
+					OSSUtil.uploadFileToOSS(file.getInputStream(), img);
 				}
+				Map<String,Object> obj=DataUtil.mapOf("img",img,"target",target,"url",url);
+				insertDictValue(name, JSONObject.fromObject(obj).toString(), parentId, DateUtil.nowDate(), state, remark, parentId);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

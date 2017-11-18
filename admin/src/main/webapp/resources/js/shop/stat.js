@@ -22,7 +22,10 @@
 					text : '订单变化趋势',
 				},
 				xAxis : {
-					categories : response.data.line1.categories
+					categories : response.data.line1.categories,
+					labels: {    
+				        rotation: -45
+				    }
 				},
 				yAxis : {
 					title : {
@@ -35,7 +38,7 @@
 					} ]
 				},
 				series : [ {
-					name : '日期',
+					name : '订单数',
 					data : response.data.line1.series1
 				} ]
 			});

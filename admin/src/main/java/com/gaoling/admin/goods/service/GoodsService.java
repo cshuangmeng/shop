@@ -52,52 +52,56 @@ public class GoodsService extends CommonService{
 	//保存或更新商品信息
 	@Transactional
 	public void saveOrUpdateGoods(Goods goods,MultipartFile headImg,MultipartFile[] infoImg
-			,MultipartFile[] detailImg,String params)throws Exception{
+			,MultipartFile[] detailImg,String params){
 		Goods old=goods.getId()>0?getGoods(goods.getId()):null;
 		//上传头像
-		String fileName="";
-		if(!headImg.isEmpty()){
-			fileName="goods/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS")+DataUtil.createNums(6);
-			fileName+=headImg.getOriginalFilename().substring(headImg.getOriginalFilename().lastIndexOf("."));
-			OSSUtil.uploadFileToOSS(fileName, headImg.getInputStream());
-		}
-		goods.setHeadImg(StringUtils.isNotEmpty(fileName)?fileName:null!=old?old.getHeadImg():"");
-		//上传描述
-		fileName="";
-		for(MultipartFile ii:infoImg){
-			if(!ii.isEmpty()){
-				String file="goods/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS")+DataUtil.createNums(6);
-				file+=ii.getOriginalFilename().substring(ii.getOriginalFilename().lastIndexOf("."));
-				fileName+=StringUtils.isNotEmpty(fileName)?","+file:file;
-				OSSUtil.uploadFileToOSS(file, ii.getInputStream());
+		try {
+			String fileName="";
+			if(!headImg.isEmpty()){
+				fileName="goods/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS")+DataUtil.createNums(6);
+				fileName+=headImg.getOriginalFilename().substring(headImg.getOriginalFilename().lastIndexOf("."));
+				OSSUtil.uploadFileToOSS(fileName, headImg.getInputStream());
 			}
-		}
-		goods.setInfoImgs(StringUtils.isNotEmpty(fileName)?fileName:null!=old?old.getInfoImgs():"");
-		//上传详情
-		fileName="";
-		for(MultipartFile di:detailImg){
-			if(!di.isEmpty()){
-				String file="goods/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS")+DataUtil.createNums(6);
-				file+=di.getOriginalFilename().substring(di.getOriginalFilename().lastIndexOf("."));
-				fileName+=StringUtils.isNotEmpty(fileName)?","+file:file;
-				OSSUtil.uploadFileToOSS(file, di.getInputStream());
+			goods.setHeadImg(StringUtils.isNotEmpty(fileName)?fileName:null!=old?old.getHeadImg():"");
+			//上传描述
+			fileName="";
+			for(MultipartFile ii:infoImg){
+				if(!ii.isEmpty()){
+					String file="goods/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS")+DataUtil.createNums(6);
+					file+=ii.getOriginalFilename().substring(ii.getOriginalFilename().lastIndexOf("."));
+					fileName+=StringUtils.isNotEmpty(fileName)?","+file:file;
+					OSSUtil.uploadFileToOSS(file, ii.getInputStream());
+				}
 			}
-		}
-		//设置商品参数
-		goods.setDetails(null!=old?old.getDetails():"");
-		if(StringUtils.isNotEmpty(params)){
-			List<Map<String,Object>> list=new ArrayList<Map<String,Object>>();
-			for(int i=0;i<params.split(",").length;i++){
-				list.add(DataUtil.mapOf("label",params.split(",")[i].split("=")[0],"value",params.split(",")[i].split("=")[1]));
+			goods.setInfoImgs(StringUtils.isNotEmpty(fileName)?fileName:null!=old?old.getInfoImgs():"");
+			//上传详情
+			fileName="";
+			for(MultipartFile di:detailImg){
+				if(!di.isEmpty()){
+					String file="goods/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS")+DataUtil.createNums(6);
+					file+=di.getOriginalFilename().substring(di.getOriginalFilename().lastIndexOf("."));
+					fileName+=StringUtils.isNotEmpty(fileName)?","+file:file;
+					OSSUtil.uploadFileToOSS(file, di.getInputStream());
+				}
 			}
-			goods.setDetails(JSONArray.fromObject(list).toString());
-		}
-		goods.setDetailImgs(StringUtils.isNotEmpty(fileName)?fileName:null!=old?old.getDetailImgs():"");
-		goods.setCreateTime(null!=old?old.getCreateTime():DateUtil.nowDate());
-		if(null!=old){
-			updateGoods(goods);
-		}else{
-			addGoods(goods);
+			//设置商品参数
+			goods.setDetails(null!=old?old.getDetails():"");
+			if(StringUtils.isNotEmpty(params)){
+				List<Map<String,Object>> list=new ArrayList<Map<String,Object>>();
+				for(int i=0;i<params.split(",").length;i++){
+					list.add(DataUtil.mapOf("label",params.split(",")[i].split("=")[0],"value",params.split(",")[i].split("=")[1]));
+				}
+				goods.setDetails(JSONArray.fromObject(list).toString());
+			}
+			goods.setDetailImgs(StringUtils.isNotEmpty(fileName)?fileName:null!=old?old.getDetailImgs():"");
+			goods.setCreateTime(null!=old?old.getCreateTime():DateUtil.nowDate());
+			if(null!=old){
+				updateGoods(goods);
+			}else{
+				addGoods(goods);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 	
