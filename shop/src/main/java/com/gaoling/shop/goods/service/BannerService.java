@@ -5,17 +5,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+
 import com.gaoling.shop.common.AppConstant;
 import com.gaoling.shop.common.DataUtil;
 import com.gaoling.shop.common.DateUtil;
 import com.gaoling.shop.common.OSSUtil;
 import com.gaoling.shop.system.pojo.Result;
 import com.gaoling.shop.system.service.CommonService;
+
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
@@ -254,70 +256,4 @@ public class BannerService extends CommonService {
 		return putResult();
 	}
 	
-	//上传Banner
-	@Transactional
-	public Result uploadBanner(String appType,MultipartFile[] launch,MultipartFile[] top,MultipartFile[] bottom
-			,String[] target,String[] url,String[] key)throws Exception{
-		int seq=0;
-		//上传启动页图片
-		uploadBannerImg(appType, launch, target, url, key[0], seq);
-		seq+=launch.length;
-		//上传顶部图片
-		uploadBannerImg(appType, top, target, url, key[1], seq);
-		seq+=top.length;
-		//上传底部图片
-		uploadBannerImg(appType, bottom, target, url, key[2], seq);
-		return putResult();
-	}
-	
-	//上传Banner
-	@Transactional
-	public void uploadBannerImg(String appType,MultipartFile[] file,String[] target
-			,String[] url,String key,int seq)throws Exception{
-		//上传启动页图片
-		if(null!=file&&file.length>0){
-			int index=1;
-			String parent=key+"_"+appType;
-			Integer parentId=Integer.parseInt(getDicts(parent).get(0).get("id").toString());
-			if(Arrays.asList(file).stream().filter(f->!f.isEmpty()).findFirst().isPresent()){
-				deleteDict(null, null, parentId);
-			}
-			for(int n=0;n<file.length;n++){
-				MultipartFile i=file[n];
-				String androidImg="";
-				String androidTarget="";
-				String androidUrl="";
-				if(!i.isEmpty()){
-					//android图片
-					androidImg="other/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS"+DataUtil.createNums(6));
-					androidImg+=i.getOriginalFilename().substring(i.getOriginalFilename().lastIndexOf("."));
-					OSSUtil.uploadFileToOSS(i.getInputStream(), androidImg);
-					androidTarget=target[seq];
-					androidUrl=url[seq];
-				}
-				//ios图片
-				i=file[++n];
-				seq++;
-				String iosImg="";
-				String iosTarget="";
-				String iosUrl="";
-				if(!i.isEmpty()){
-					iosImg="other/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS"+DataUtil.createNums(6));
-					iosImg+=i.getOriginalFilename().substring(i.getOriginalFilename().lastIndexOf("."));
-					OSSUtil.uploadFileToOSS(i.getInputStream(), iosImg);
-					iosTarget=target[seq];
-					iosUrl=url[seq];
-				}
-				//保存信息
-				String name=parent+index;
-				if(StringUtils.isNotEmpty(androidImg)||StringUtils.isNotEmpty(iosImg)){
-					insertDictValue(name, "{\"androidUrl\":\""+androidUrl+"\",\"iosUrl\":\""+iosUrl+"\",\"androidTarget\":\""
-							+androidTarget+"\",\"iosTarget\":\""+iosTarget+"\",\"androidImg\":\""+androidImg+"\",\"iosImg\":\""
-							+iosImg+"\"}", parentId, DateUtil.nowDate(), 1,"banner配置", index++);
-				}
-				seq++;
-			}
-		}
-	}
-
 }
