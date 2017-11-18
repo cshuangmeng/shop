@@ -118,8 +118,8 @@ public class CommonService {
 	}
 
 	// 删除字典数值
-	public int deleteDict(String name, Integer parentId) {
-		return dictInfoDao.deleteDict(name, parentId);
+	public int deleteDict(Integer id,String name, Integer parentId) {
+		return dictInfoDao.deleteDict(id, name, parentId);
 	}
 
 	// 保存字典数值
