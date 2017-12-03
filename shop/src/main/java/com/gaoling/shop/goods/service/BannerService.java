@@ -3,11 +3,12 @@ package com.gaoling.shop.goods.service;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.gaoling.shop.common.AppConstant;
@@ -17,37 +18,90 @@ import com.gaoling.shop.common.OSSUtil;
 import com.gaoling.shop.system.pojo.Result;
 import com.gaoling.shop.system.service.CommonService;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 @Service
 public class BannerService extends CommonService {
 	
-	//加载Banner
-	public Result loadWKBanners(Integer index,String system,String appType) {
-		String name="wk" + index + "_top_banner"+(StringUtils.isNotEmpty(appType)?"_"+appType:"");
-		List<JSONObject> result = getSonDicts(name).stream().filter(d->Integer.parseInt(d.get("state").toString())==1).map(r -> {
-			JSONObject json = JSONObject.fromObject(r.get("value"));
-			if(StringUtils.isNotEmpty(system)&&system.toLowerCase().contains("ios")){
-				json.put("url", json.get("iosUrl"));
-				json.put("target", json.get("iosTarget"));
-				json.put("img", AppConstant.OSS_CDN_SERVER + json.get("iosImg"));
-			}else{
-				json.put("url", json.get("androidUrl"));
-				json.put("target", json.get("androidTarget"));
-				json.put("img", AppConstant.OSS_CDN_SERVER + json.get("androidImg"));
-			}
-			json.put("androidImg", AppConstant.OSS_CDN_SERVER + json.get("androidImg"));
-			json.put("iosImg", AppConstant.OSS_CDN_SERVER + json.get("iosImg"));
-			return json;
-		}).collect(Collectors.toList());
-		return putResult(result);
+	private final static int ROLE_ADMIN=1;
+	
+	//用户登录
+	@SuppressWarnings("unchecked")
+	public Result bannerUserLogin(String username,String password){
+		if(StringUtils.isEmpty(username)||StringUtils.isEmpty(password)){
+			Logger.getLogger("file").info("用户名或密码为空,username="+username+",password="+password);
+			return putResult(AppConstant.PARAM_IS_NULL);
+		}
+		Map<String,Object> dictInfo=queryDicts(DataUtil.mapOf("name","banner_user")).get(0);
+		List<Map<String,Object>> json=JSONArray.fromObject(dictInfo.get("value"));
+		Optional<Map<String,Object>> ip=json.stream().filter(u->{
+			JSONObject o=JSONObject.fromObject(u);
+			return o.getString("username").equals(username)&&o.getString("password").equals(password);
+		}).findFirst();
+		if(!ip.isPresent()){
+			Logger.getLogger("file").info("用户名或密码错误,username="+username+",password="+password);
+			return putResult(AppConstant.USER_NOT_EXISTS);
+		}
+		Map<String,Object> obj=ip.get();
+		obj.put("token", DataUtil.buildUUID());
+		obj.put("timestamp", DateUtil.nowDate().getTime());
+		Map<String,Object> set=DataUtil.mapOf("value",JSONArray.fromObject(json).toString());
+		Map<String,Object> param=DataUtil.mapOf("id",Integer.valueOf(dictInfo.get("id").toString()));
+		updateDictValue(set, param);
+		return putResult(DataUtil.mapOf("token",obj.get("token"),"role",obj.get("role")));
+	}
+	
+	//校验登录token是否正确
+	@SuppressWarnings("unchecked")
+	public Result isTokenCollect(String token){
+		if(StringUtils.isEmpty(token)){
+			Logger.getLogger("file").info("token为空,token="+token);
+			return putResult(AppConstant.CHECK_CODE_INCORRECT);
+		}
+		Map<String,Object> dictInfo=queryDicts(DataUtil.mapOf("name","banner_user")).get(0);
+		JSONArray json=JSONArray.fromObject(dictInfo.get("value"));
+		Optional<JSONObject> ip=json.stream().filter(u->{
+			JSONObject o=JSONObject.fromObject(u);
+			return !DataUtil.isEmpty(o.get("token"))&&o.getString("token").equals(token);
+		}).findFirst();
+		if(!ip.isPresent()){
+			Logger.getLogger("file").info("用户未登录或token不正确,token="+token);
+			return putResult(AppConstant.CHECK_CODE_INCORRECT);
+		}
+		JSONObject obj=ip.get();
+		if(obj.getLong("timestamp")+obj.getInt("expire")*60*1000<=DateUtil.nowDate().getTime()){
+			Logger.getLogger("file").info("token已过期,token="+token+",timestamp="+obj.get("timestamp")+",expire="+obj.get("expire"));
+			return putResult(AppConstant.CHECK_CODE_INCORRECT);
+		}
+		return putResult(obj);
 	}
 	
 	//加载Banner
-	public Result getBannerList(){
+	public Result loadWKBanners(Integer index,String system,String appType) {
+		List<Map<String,Object>> result=getSonDicts("banner_"+appType).stream().filter(d->{
+			String name="banner_"+appType+"_"+system+"_"+index+"_";
+			return Integer.parseInt(d.get("state").toString())==1&&d.get("name").toString().startsWith(name);
+		}).sorted((a,b)->Integer.parseInt(a.get("orderIndex").toString())-Integer.parseInt(b.get("orderIndex").toString())).collect(Collectors.toList());
+		List<JSONObject> banners=result.stream().map(r->{
+			JSONObject json = JSONObject.fromObject(r.get("value"));
+			json.put("img", AppConstant.OSS_CDN_SERVER + json.get("img"));
+			return json;
+		}).collect(Collectors.toList());
+		return putResult(banners);
+	}
+	
+	//加载Banner
+	public Result getBannerList(String token){
 		//加载APP
+		Result result=isTokenCollect(token);
+		if(null==result.getData()){
+			return result;
+		}
+		JSONObject obj=JSONObject.fromObject(result.getData());
 		String key="banner";
-		List<Map<String,Object>> apps=queryDicts(DataUtil.mapOf("parentName",key));
+		List<Map<String,Object>> apps=queryDicts(DataUtil.mapOf("parentName",key)).stream().filter(a->obj.getInt("role")==ROLE_ADMIN
+				||a.get("name").toString().equals(obj.getString("banner"))).collect(Collectors.toList());
 		apps.stream().forEach(a->{
 			a.put("host", AppConstant.OSS_CDN_SERVER);
 			a.put("banners",queryDicts(DataUtil.mapOf("parentId",Integer.parseInt(a.get("id").toString()),"states",Arrays.asList(0,1))));
@@ -56,20 +110,38 @@ public class BannerService extends CommonService {
 	}
 	
 	//加载AppType
-	public Result getAppList(){
+	public Result getAppList(String token){
 		//加载APP
+		Result result=isTokenCollect(token);
+		if(null==result.getData()){
+			return result;
+		}
+		JSONObject obj=JSONObject.fromObject(result.getData());
 		String key="banner";
-		List<Map<String,Object>> apps=queryDicts(DataUtil.mapOf("parentName",key));
+		List<Map<String,Object>> apps=queryDicts(DataUtil.mapOf("parentName",key,"states",Arrays.asList(0,1))).stream().filter(s->{
+			return obj.getInt("role")==ROLE_ADMIN||obj.getString("banner").equals(s.get("name").toString());
+		}).collect(Collectors.toList());
 		return putResult(apps);
 	}
 	
 	//编辑AppType
-	public Result editApp(int id,String name,String value,Integer state,String remark){
-		if(id>0){
+	public Result editApp(String token,Integer id,String name,String value,Integer state,String remark){
+		Result result=isTokenCollect(token);
+		if(null==result.getData()){
+			return result;
+		}
+		JSONObject obj=JSONObject.fromObject(result.getData());
+		if(null!=id&&id>0){
+			if(obj.getInt("role")!=ROLE_ADMIN&&!obj.getString("banner").equals(name)){
+				return putResult(AppConstant.CHECK_CODE_INCORRECT);
+			}
 			Map<String,Object> set=DataUtil.mapOf("name",name,"value",value.toString(),"state",state,"remark",remark);
 			Map<String,Object> param=DataUtil.mapOf("id",id);
 			updateDictValue(set,param);
 		}else{
+			if(obj.getInt("role")!=ROLE_ADMIN){
+				return putResult(AppConstant.CHECK_CODE_INCORRECT);
+			}
 			String key="banner";
 			List<Map<String,Object>> apps=queryDicts(DataUtil.mapOf("name",key));
 			if(apps.size()>0){
@@ -81,18 +153,26 @@ public class BannerService extends CommonService {
 	}
 	
 	//编辑Banner
-	public Result editBanner(int id,MultipartFile file,String appType,int index
-			,String platform,String target,String url,String remark,int state){
+	public Result editBanner(String token,Integer id,MultipartFile file,String appType,Integer index
+			,String platform,String target,String url,String remark,Integer state){
 		try {
-			if(id>0){
+			Result result=isTokenCollect(token);
+			if(null==result.getData()){
+				return result;
+			}
+			JSONObject obj=JSONObject.fromObject(result.getData());
+			if(null!=id&&id>0){
 				List<Map<String,Object>> dicts=queryDicts(DataUtil.mapOf("id",id));
 				if(dicts.size()>0){
 					Map<String,Object> dict=dicts.get(0);
+					if(obj.getInt("role")!=ROLE_ADMIN&&!obj.getString("banner").equals(appType)){
+						return putResult(AppConstant.CHECK_CODE_INCORRECT);
+					}
 					String i=dict.get("name").toString().split("_")[dict.get("name").toString().split("_").length-1];
-					String name="banner_"+appType+"_"+platform+"_"+index+"_"+i;
+					String name=appType+"_"+platform+"_"+index+"_"+i;
 					String img="";
 					JSONObject value=JSONObject.fromObject(dict.get("value").toString());
-					if(!file.isEmpty()){
+					if(null!=file&&!file.isEmpty()){
 						img="other/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS"+DataUtil.createNums(6));
 						img+=file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
 						OSSUtil.uploadFileToOSS(file.getInputStream(), img);
@@ -105,22 +185,28 @@ public class BannerService extends CommonService {
 					updateDictValue(set, param);
 				}
 			}else{
-				List<Map<String,Object>> map=queryDicts(DataUtil.mapOf("name","banner_"+appType));
+				List<Map<String,Object>> map=queryDicts(DataUtil.mapOf("name",appType));
 				int parentId=Integer.valueOf(map.get(0).get("id").toString());
-				map=queryDicts(DataUtil.mapOf("parentId",parentId));
-				int lastIndex=map.stream().map(a->{
+				if(obj.getInt("role")!=ROLE_ADMIN&&!obj.getString("banner").equals(appType)){
+					return putResult(AppConstant.CHECK_CODE_INCORRECT);
+				}
+				map=queryDicts(DataUtil.mapOf("parentId",parentId)).stream().filter(a->{
+					String name=a.get("name").toString();
+					return name.startsWith(appType+"_"+platform+"_"+index+"_");
+				}).collect(Collectors.toList());
+				int lastIndex=map.size()>0?map.stream().map(a->{
 					String[] array=a.get("name").toString().split("_");
 					return Integer.valueOf(array[array.length-1]);
-				}).max((a,b)->a-b).get();
-				String name="banner_"+appType+"_"+platform+"_"+index+"_"+(lastIndex+1);
+				}).max((a,b)->a-b).get():1;
+				String name=appType+"_"+platform+"_"+index+"_"+(lastIndex+1);
 				String img="";
 				if(!file.isEmpty()){
 					img="other/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS"+DataUtil.createNums(6));
 					img+=file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
 					OSSUtil.uploadFileToOSS(file.getInputStream(), img);
 				}
-				Map<String,Object> obj=DataUtil.mapOf("img",img,"target",target,"url",url);
-				insertDictValue(name, JSONObject.fromObject(obj).toString(), parentId, DateUtil.nowDate(), state, remark, parentId);
+				Map<String,Object> value=DataUtil.mapOf("img",img,"target",target,"url",url);
+				insertDictValue(name, JSONObject.fromObject(value).toString(), parentId, DateUtil.nowDate(), state, remark, parentId);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -129,87 +215,45 @@ public class BannerService extends CommonService {
 	}
 	
 	//操作APP状态
-	public Result editAppState(int id,int state){
+	public Result editAppState(String token,int id,int state){
 		if(id>0){
-			updateDictValue(id, state);
-			//同步更新子项状态
-			queryDicts(DataUtil.mapOf("parentId",id)).stream().forEach(s->updateDictValue(Integer.parseInt(s.get("id").toString()), state));
+			Result result=isTokenCollect(token);
+			if(null==result.getData()){
+				return result;
+			}
+			JSONObject obj=JSONObject.fromObject(result.getData());
+			String banner=queryDicts(DataUtil.mapOf("id",id)).get(0).get("name").toString();
+			if(obj.getInt("role")!=ROLE_ADMIN&&!obj.getString("banner").equals(banner)){
+				return putResult(AppConstant.CHECK_CODE_INCORRECT);
+			}
+			if(state==2){//删除
+				deleteDict(null,null, id);
+				deleteDict(id,null, null);
+			}else{
+				updateDictValue(id, state);
+				//同步更新子项状态
+				queryDicts(DataUtil.mapOf("parentId",id)).stream().forEach(s->updateDictValue(Integer.parseInt(s.get("id").toString()), state));
+			}
 		}
 		return putResult();
 	}
 	
 	//操作Banner状态
-	public Result editBannerState(int id,int state){
+	public Result editBannerState(String token,int id,int state){
 		if(id>0){
+			Result result=isTokenCollect(token);
+			if(null==result.getData()){
+				return result;
+			}
+			JSONObject obj=JSONObject.fromObject(result.getData());
+			Integer parentId=Integer.valueOf(queryDicts(DataUtil.mapOf("id",id)).get(0).get("parentId").toString());
+			String banner=queryDicts(DataUtil.mapOf("id",parentId)).get(0).get("name").toString();
+			if(obj.getInt("role")!=ROLE_ADMIN&&!obj.getString("banner").equals(banner)){
+				return putResult(AppConstant.CHECK_CODE_INCORRECT);
+			}
 			updateDictValue(id, state);
 		}
 		return putResult();
 	}
 	
-	//上传Banner
-	@Transactional
-	public Result uploadBanner(String appType,MultipartFile[] launch,MultipartFile[] top,MultipartFile[] bottom
-			,String[] target,String[] url,String[] key)throws Exception{
-		int seq=0;
-		//上传启动页图片
-		uploadBannerImg(appType, launch, target, url, key[0], seq);
-		seq+=launch.length;
-		//上传顶部图片
-		uploadBannerImg(appType, top, target, url, key[1], seq);
-		seq+=top.length;
-		//上传底部图片
-		uploadBannerImg(appType, bottom, target, url, key[2], seq);
-		return putResult();
-	}
-	
-	//上传Banner
-	@Transactional
-	public void uploadBannerImg(String appType,MultipartFile[] file,String[] target
-			,String[] url,String key,int seq)throws Exception{
-		//上传启动页图片
-		if(null!=file&&file.length>0){
-			int index=1;
-			String parent=key+"_"+appType;
-			Integer parentId=Integer.parseInt(getDicts(parent).get(0).get("id").toString());
-			if(Arrays.asList(file).stream().filter(f->!f.isEmpty()).findFirst().isPresent()){
-				deleteDict(null, parentId);
-			}
-			for(int n=0;n<file.length;n++){
-				MultipartFile i=file[n];
-				String androidImg="";
-				String androidTarget="";
-				String androidUrl="";
-				if(!i.isEmpty()){
-					//android图片
-					androidImg="other/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS"+DataUtil.createNums(6));
-					androidImg+=i.getOriginalFilename().substring(i.getOriginalFilename().lastIndexOf("."));
-					OSSUtil.uploadFileToOSS(i.getInputStream(), androidImg);
-					androidTarget=target[seq];
-					androidUrl=url[seq];
-				}
-				//ios图片
-				i=file[++n];
-				seq++;
-				String iosImg="";
-				String iosTarget="";
-				String iosUrl="";
-				if(!i.isEmpty()){
-					iosImg="other/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS"+DataUtil.createNums(6));
-					iosImg+=i.getOriginalFilename().substring(i.getOriginalFilename().lastIndexOf("."));
-					OSSUtil.uploadFileToOSS(i.getInputStream(), iosImg);
-					iosTarget=target[seq];
-					iosUrl=url[seq];
-				}
-				//保存信息
-				String name=parent+index;
-				if(StringUtils.isNotEmpty(androidImg)||StringUtils.isNotEmpty(iosImg)){
-					insertDictValue(name, "{\"androidUrl\":\""+androidUrl+"\",\"iosUrl\":\""+iosUrl+"\",\"androidTarget\":\""
-							+androidTarget+"\",\"iosTarget\":\""+iosTarget+"\",\"androidImg\":\""+androidImg+"\",\"iosImg\":\""
-							+iosImg+"\"}", parentId, DateUtil.nowDate(), 1,"banner配置", index++);
-				}
-				seq++;
-			}
-		}
-	}
-
 }

@@ -38,16 +38,13 @@ public class BannerController extends CommonService{
 		return result;
 	}
 	
-	//加载商品列表
-	@RequestMapping("/upload")
+	//加载App类型
+	@RequestMapping("/login")
 	@CrossOrigin(origins="*",methods=RequestMethod.POST)
-	public Result uploadBanners(@RequestParam(required=false) MultipartFile[] launch
-			,@RequestParam(required=false) MultipartFile[] top,@RequestParam(required=false) MultipartFile[] bottom,
-			@RequestParam String[] target,@RequestParam String[] url
-			,@RequestParam String appType,@RequestParam String[] key){
+	public Result bannerUserLogin(@RequestParam(required=false)String username,@RequestParam(required=false)String password){
 		Result result=null;
 		try {
-			result=bannerService.uploadBanner(appType, launch, top, bottom, target, url, key);
+			result=bannerService.bannerUserLogin(username, password);
 		} catch (Exception e) {
 			result=bannerService.putResult(AppConstant.SYSTEM_ERROR_CODE);
 			e.printStackTrace();
@@ -58,10 +55,10 @@ public class BannerController extends CommonService{
 	//加载App类型
 	@RequestMapping("/apps")
 	@CrossOrigin(origins="*",methods=RequestMethod.POST)
-	public Result getAppList(){
+	public Result getAppList(@RequestParam(required=false)String token){
 		Result result=null;
 		try {
-			result=bannerService.getAppList();
+			result=bannerService.getAppList(token);
 		} catch (Exception e) {
 			result=bannerService.putResult(AppConstant.SYSTEM_ERROR_CODE);
 			e.printStackTrace();
@@ -72,11 +69,11 @@ public class BannerController extends CommonService{
 	//加载App类型
 	@RequestMapping("/editApp")
 	@CrossOrigin(origins="*",methods=RequestMethod.POST)
-	public Result editApp(@RequestParam Integer id,@RequestParam String name,@RequestParam String value
+	public Result editApp(@RequestParam(required=false)String token,@RequestParam Integer id,@RequestParam String name,@RequestParam String value
 			,@RequestParam Integer state,@RequestParam String remark){
 		Result result=null;
 		try {
-			result=bannerService.editApp(id, name, value, state, remark);
+			result=bannerService.editApp(token, id, name, value, state, remark);
 		} catch (Exception e) {
 			result=bannerService.putResult(AppConstant.SYSTEM_ERROR_CODE);
 			e.printStackTrace();
@@ -87,10 +84,10 @@ public class BannerController extends CommonService{
 	//加载App类型
 	@RequestMapping("/editAppState")
 	@CrossOrigin(origins="*",methods=RequestMethod.POST)
-	public Result editAppState(@RequestParam Integer id,@RequestParam Integer state){
+	public Result editAppState(@RequestParam(required=false)String token,@RequestParam Integer id,@RequestParam Integer state){
 		Result result=null;
 		try {
-			result=bannerService.editAppState(id, state);
+			result=bannerService.editAppState(token, id, state);
 		} catch (Exception e) {
 			result=bannerService.putResult(AppConstant.SYSTEM_ERROR_CODE);
 			e.printStackTrace();
@@ -101,10 +98,10 @@ public class BannerController extends CommonService{
 	//加载Banner列表
 	@RequestMapping("/banners")
 	@CrossOrigin(origins="*",methods=RequestMethod.POST)
-	public Result getBannerList(){
+	public Result getBannerList(@RequestParam(required=false)String token){
 		Result result=null;
 		try {
-			result=bannerService.getBannerList();
+			result=bannerService.getBannerList(token);
 		} catch (Exception e) {
 			result=bannerService.putResult(AppConstant.SYSTEM_ERROR_CODE);
 			e.printStackTrace();
@@ -115,15 +112,19 @@ public class BannerController extends CommonService{
 	//编辑Banner
 	@RequestMapping("/editBanner")
 	@CrossOrigin(origins="*",methods=RequestMethod.POST)
-	public Result editBanner(@RequestParam(required=false) Integer bannerId,@RequestParam(required=false) String appType
+	public Result editBanner(@RequestParam(required=false)String token
+			,@RequestParam(required=false) Integer bannerId,@RequestParam(required=false) String appType
 			,@RequestParam(required=false) Integer index,@RequestParam(required=false) String platform
 			,@RequestParam(required=false) String target,@RequestParam(required=false) String url
 			,@RequestParam(required=false) String remark,@RequestParam(required=false) Integer state
 			,HttpServletRequest request){
 		Result result=null;
 		try {
-			MultipartFile files=((MultipartHttpServletRequest)request).getFile("file");
-			result=bannerService.editBanner(bannerId, files, appType, index, platform, target, url, remark, state);
+			MultipartFile file=null;
+			if(request instanceof MultipartHttpServletRequest){
+				file=((MultipartHttpServletRequest)request).getFile("file");
+			}
+			result=bannerService.editBanner(token, bannerId, file, appType, index, platform, target, url, remark, state);
 		} catch (Exception e) {
 			result=bannerService.putResult(AppConstant.SYSTEM_ERROR_CODE);
 			e.printStackTrace();
@@ -134,10 +135,10 @@ public class BannerController extends CommonService{
 	//编辑Banner
 	@RequestMapping("/editBannerState")
 	@CrossOrigin(origins="*",methods=RequestMethod.POST)
-	public Result editBannerState(@RequestParam Integer id,@RequestParam Integer state){
+	public Result editBannerState(@RequestParam(required=false)String token,@RequestParam Integer id,@RequestParam Integer state){
 		Result result=null;
 		try {
-			result=bannerService.editBannerState(id, state);
+			result=bannerService.editBannerState(token, id, state);
 		} catch (Exception e) {
 			result=bannerService.putResult(AppConstant.SYSTEM_ERROR_CODE);
 			e.printStackTrace();

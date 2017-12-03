@@ -13,7 +13,7 @@ public interface DictInfoDao {
 	String queryDictValue(String name);
 	List<Map<String,Object>> queryDicts(@Param("param")Map<String,Object> param);
 	int updateDictValue(@Param("set")Map<String,Object> set,@Param("param")Map<String,Object> param);
-	int deleteDict(@Param("name")String name,@Param("parentId")Integer parentId);
+	int deleteDict(@Param("id")Integer id,@Param("name")String name,@Param("parentId")Integer parentId);
 	int insertDictValue(@Param("name")String name,@Param("value")String value,@Param("parentId")int parentId
 			,@Param("createTime")Date createTime,@Param("state")Integer state,@Param("remark")String remark
 			,@Param("orderIndex")int orderIndex);
