@@ -7,6 +7,33 @@
 <script charset="utf-8" src="http://map.qq.com/api/js?v=2.exp"></script>
 <%@include file="../common/head.jsp"%>
 <script type="text/javascript" src="${pageContext.servletContext.contextPath }/resources/js/goods/goods.js"></script>
+<style>
+	::-webkit-scrollbar {
+		width: 16px;
+		height: 16px;
+		background-color: #F5F5F5;
+	}
+	/*定义滚动条轨道 内阴影+圆角*/
+	
+	::-webkit-scrollbar-track {
+		-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+		border-radius: 10px;
+		background-color: #F5F5F5;
+	}
+	/*定义滑块 内阴影+圆角*/
+	
+	::-webkit-scrollbar-thumb {
+		border-radius: 10px;
+		-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+		background-color: #555;
+	}
+	
+	.divcss5-a {
+		width: 500px;
+		height: 270px;
+		overflow-y: scroll;
+	}
+</style>
 <title>新增商品</title>
 
 </head>
@@ -177,7 +204,7 @@
 				<!-- 添加商品参数 -->
 			    <div id="edit_goods_param_div">
 			    	<form class="mws-form" action="" method="post">
-		    		<div class="mws-form-inline">
+		    		<div class="mws-form-inline divcss5-a">
 						
 		    		</div>
 		    		</form>

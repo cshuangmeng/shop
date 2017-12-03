@@ -2,7 +2,6 @@ package com.gaoling.admin.goods.service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -42,10 +41,12 @@ public class ShopService extends CommonService{
 	}
 	
 	//审核店铺
-	public void examineShop(int shopId,int state){
-		Shop shop=getShop(shopId);
-		shop.setState(state);
-		updateShop(shop);
+	public void examineShop(String shopIds,int state){
+		Arrays.asList(shopIds.split(",")).stream().forEach(shopId->{
+			Shop shop=getShop(Integer.valueOf(shopId));
+			shop.setState(state);
+			updateShop(shop);
+		});
 	}
 	
 	//加载店铺

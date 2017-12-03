@@ -60,6 +60,7 @@ public class AppConstant {
 	public static String WEIXIN_ORDER_QUERY;// 微信支付查询接口
 	public static String WEIXIN_ORDER_REFUND;// 微信申请退款接口
 	public static String WEIXIN_TEMPLATE_SEND;// 微信模板消息发送接口
+	public static String WEIXIN_TRANSFER_SEND;// 微信企业付款接口
 	
 	public static String PC_SNS_USERINFO_URL;// PC端获取微信用户的昵称
 
@@ -128,6 +129,7 @@ public class AppConstant {
 		WEIXIN_ORDER_QUERY = PropertiesUtil.getProperty("wxapi.weixin_order_query");
 		WEIXIN_ORDER_REFUND = PropertiesUtil.getProperty("wxapi.weixin_order_refund");
 		WEIXIN_TEMPLATE_SEND = PropertiesUtil.getProperty("wxapi.weixin_template_send");
+		WEIXIN_TRANSFER_SEND = PropertiesUtil.getProperty("wxapi.weixin_transfer_send");
 
 		MEMCACHED_ADDR = PropertiesUtil.getProperty("memcached.addr");
 

@@ -1,5 +1,6 @@
 //全局变量
 var addNumsAtOnce=5;
+var pIndex=1;
 
 //加载城市列表
 function loadGoodsTypeList(){
@@ -21,14 +22,15 @@ function loadShopList(){
 
 //动态添加商品参数
 function addGoodsParam(data){
-	var html="<div class=\"mws-form-row\">"+
+	var html="<div p_index="+pIndex+" class=\"mws-form-row\">"+
 				"<div name='param'>"+
 					"参数名：<input name='label' type=\"text\" class=\"mws-textinput\" value='"+(undefined!=data?data.split("=")[0]:"")+"'/>"+
 					"参数值：<input name='value' type=\"text\" class=\"mws-textinput\" value='"+(undefined!=data?data.split("=")[1]:"")+"'/>"+
-					"&nbsp;&nbsp;&nbsp;<a href=\"javascript:void(0)\">删除</a>"+
+					"&nbsp;&nbsp;&nbsp;<a href=\"javascript:delGoodsParam("+pIndex+");\">删除</a>"+
 				"</div>"+
 			 "</div>";
 	$("#edit_goods_param_div div.mws-form-inline").append(html);
+	pIndex=pIndex+1;
 }
 
 //回填商品信息
@@ -52,27 +54,36 @@ function submitNewParams(){
 	$("div[name='param']").each(function(i,v){
 		var label=$(v).find("input[name='label']").val();
 		var value=$(v).find("input[name='value']").val();
+		value=value.replace(/,/g,"，");
 		if(label!=""&&value!=""){
 			params+=params!=""?","+label+"="+value:label+"="+value;
 		}
 	});
 	$(":hidden[name='params']").val(params);
 	$("#edit_goods_param_div").dialog("close");
+	//设置Cookie
+	setCookie("goods_params",params);
 }
 
 //初始化参数
 function initGoodsParams(){
 	var params=$(":hidden[name='params']").val();
+	if(params==''){
+		//设置Cookie
+		params=getCookie("goods_params");
+	}
 	if(undefined!=params&&params!=""){
 		for(var i=0;i<params.split(",").length;i++){
 			addGoodsParam(params.split(",")[i]);
 		}
+	}else{
+		addMoreParam();
 	}
 }
 
 //删除参数
-function delGoodsParam(){
-	$(this).parent().parent().remove();
+function delGoodsParam(index){
+	$("div[p_index='"+index+"']").remove();
 }
 
 //加载符合条件的广告组信息
@@ -238,12 +249,6 @@ $(function(){
 		$("#edit_goods_param_div div.mws-form-inline").empty();
 		initGoodsParams();
 		$("#edit_goods_param_div").dialog("open");
-	});
-	//预设商品参数
-	initGoodsParams();
-	//绑定删除商品参数事件
-	$("#edit_goods_param_div").on("click","a",function(){
-		delGoodsParam();
 	});
 	//回填商品其他信息
 	initGoodsOtherInfo();

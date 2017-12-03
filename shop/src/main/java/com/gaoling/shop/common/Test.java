@@ -1,14 +1,12 @@
 package com.gaoling.shop.common;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.springframework.context.support.GenericXmlApplicationContext;
 
-import com.gaoling.shop.order.service.OrderService;
 import com.gaoling.shop.system.pojo.PayParam;
-import com.gaoling.shop.user.service.UserService;
 
 import net.sf.json.JSONObject;
 
@@ -16,20 +14,14 @@ public class Test {
 	
 	public static void main(String[] args) {
 		try {
-	        
-			/*String[] str={"4003022001201706186275734163"};
-			PayParam pay=new PayParam();
-			for(String no:str){
-				pay.setAmount(59);
-				pay.setRefund(59f);
-				pay.setNonceStr(DataUtil.createLetters(32));
-				pay.setOperator(AppConstant.USERMP_MCH_ID);
-				pay.setTradeType(AppConstant.WEIXIN_TRADE_TYPE_JSAPI);
-				pay.setOutTradeNo(no);
-				pay.setTradeNo(DateUtil.getCurrentTime("yyyyMMddHHmmssSSS")+DataUtil.createNums(3));
-				System.out.println(no+"退款结果:"+weiXinRefundRequest(pay));
-			}*/
-			download();
+			PayParam param=new PayParam();
+			param.setOutTradeNo(String.valueOf(new Date().getTime()));
+			param.setBody("测试企业付款");
+			param.setNonceStr(DataUtil.createNums(6));
+			param.setIp("192.168.0.108");
+			param.setAmount(1f);
+			param.setOpenId("oePMUv1Lh4uTN2MNvGaT4il26Ygg");
+			weiXinTransferRequest(param);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -68,7 +60,37 @@ public class Test {
 				}
 			}
 		}
-	return false;
-}
+		return false;
+	}
+	
+	public static boolean weiXinTransferRequest(PayParam param)throws Exception{
+		//加载用户支付成功的订单
+		HashMap<String,Object> paramMap=new HashMap<String,Object>();
+		paramMap.put("mch_appid",AppConstant.USERMP_APP_ID);
+		paramMap.put("mchid",AppConstant.USERMP_MCH_ID);
+		paramMap.put("nonce_str",param.getNonceStr());
+		paramMap.put("partner_trade_no", param.getOutTradeNo());
+		paramMap.put("openid", param.getOpenId());
+		paramMap.put("check_name", "NO_CHECK");
+		paramMap.put("amount",Math.round(param.getAmount()*100));
+		paramMap.put("desc", param.getBody());
+		paramMap.put("spbill_create_ip", param.getIp());
+		paramMap.put("sign", SignUtil.signValue(paramMap, "MD5",AppConstant.USERMP_PAY_SECRET_KEY).toUpperCase());
+		Logger.getLogger("file").info("<------微信企业支付请求参数----->"+JSONObject.fromObject(paramMap).toString());
+		String response=HttpClientUtil.sendHTTPSWithP12(AppConstant.WEIXIN_TRANSFER_SEND,
+				XMLUtil.createXMLString(paramMap, "xml"), AppConstant.USERMP_MCH_ID,AppConstant.USERMP_PAY_CERT);
+		Logger.getLogger("file").info("<------微信企业支付响应内容----->"+response);
+		//保存订单数据
+		if(response.length()>0){
+			Map<String,Object> responseMap=XMLUtil.readParamsFromXML(response);
+			System.out.println(JSONObject.fromObject(responseMap));
+			if(responseMap.get("return_code").toString().equalsIgnoreCase("SUCCESS")){
+				if(responseMap.get("result_code").toString().equalsIgnoreCase("SUCCESS")){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 	
 }

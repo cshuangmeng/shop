@@ -48,10 +48,10 @@ public class ShopController extends CommonService{
 	//审核商铺
 	@ResponseBody
 	@RequestMapping("/examine")
-	public Result examine(@RequestParam int shopId,@RequestParam int state){
+	public Result examine(@RequestParam String shopIds,@RequestParam int state){
 		Result result=null;
 		try {
-			shopService.examineShop(shopId, state);
+			shopService.examineShop(shopIds, state);
 			result=putResult();
 		} catch (Exception e) {
 			result=putResult(AppConstant.SYSTEM_ERROR_CODE);
