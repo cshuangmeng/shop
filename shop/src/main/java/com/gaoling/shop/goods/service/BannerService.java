@@ -172,7 +172,15 @@ public class BannerService extends CommonService {
 					if(obj.getInt("role")!=ROLE_ADMIN&&!obj.getString("banner").equals(appType)){
 						return putResult(AppConstant.CHECK_CODE_INCORRECT);
 					}
-					String i=dict.get("name").toString().split("_")[dict.get("name").toString().split("_").length-1];
+					List<Map<String,Object>> map=queryDicts(DataUtil.mapOf("parentId",dict.get("parentId"))).stream().filter(a->{
+						String name=a.get("name").toString();
+						return name.startsWith(appType+"_"+platform+"_"+index+"_");
+					}).collect(Collectors.toList());
+					int lastIndex=map.size()>0?map.stream().map(a->{
+						String[] array=a.get("name").toString().split("_");
+						return Integer.valueOf(array[array.length-1]);
+					}).max((a,b)->a-b).get():0;
+					String i=String.valueOf(lastIndex+1);
 					String name=appType+"_"+platform+"_"+index+"_"+i;
 					String img="";
 					JSONObject value=JSONObject.fromObject(dict.get("value").toString());
@@ -201,7 +209,7 @@ public class BannerService extends CommonService {
 				int lastIndex=map.size()>0?map.stream().map(a->{
 					String[] array=a.get("name").toString().split("_");
 					return Integer.valueOf(array[array.length-1]);
-				}).max((a,b)->a-b).get():1;
+				}).max((a,b)->a-b).get():0;
 				String name=appType+"_"+platform+"_"+index+"_"+(lastIndex+1);
 				String img="";
 				if(!file.isEmpty()){
