@@ -78,17 +78,21 @@ public class BannerService extends CommonService {
 	}
 	
 	//加载Banner
-	public Result loadWKBanners(Integer index,String system,String appType) {
-		List<Map<String,Object>> result=getSonDicts("banner_"+appType).stream().filter(d->{
-			String name="banner_"+appType+"_"+system+"_"+index+"_";
-			return Integer.parseInt(d.get("state").toString())==1&&d.get("name").toString().startsWith(name);
-		}).sorted((a,b)->Integer.parseInt(a.get("orderIndex").toString())-Integer.parseInt(b.get("orderIndex").toString())).collect(Collectors.toList());
-		List<JSONObject> banners=result.stream().map(r->{
-			JSONObject json = JSONObject.fromObject(r.get("value"));
-			json.put("img", AppConstant.OSS_CDN_SERVER + json.get("img"));
-			return json;
-		}).collect(Collectors.toList());
-		return putResult(banners);
+	public Result loadWKBanners(Integer index,String platform,String appType) {
+		if(StringUtils.isNotEmpty(platform)){
+			String system=platform.toLowerCase().startsWith("android")?"android":"ios";
+			List<Map<String,Object>> result=getSonDicts("banner_"+appType).stream().filter(d->{
+				String name="banner_"+appType+"_"+system+"_"+index+"_";
+				return Integer.parseInt(d.get("state").toString())==1&&d.get("name").toString().startsWith(name);
+			}).sorted((a,b)->Integer.parseInt(a.get("orderIndex").toString())-Integer.parseInt(b.get("orderIndex").toString())).collect(Collectors.toList());
+			List<JSONObject> banners=result.stream().map(r->{
+				JSONObject json = JSONObject.fromObject(r.get("value"));
+				json.put("img", AppConstant.OSS_CDN_SERVER + json.get("img"));
+				return json;
+			}).collect(Collectors.toList());
+			return putResult(banners);
+		}
+		return putResult();
 	}
 	
 	//加载Banner
