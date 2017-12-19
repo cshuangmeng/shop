@@ -98,12 +98,7 @@ public class WeiXinService extends CommonService{
 			JSONObject json=JSONObject.fromObject(res);
 			if(json.containsKey("openid")){
 				openId=json.getString("openid");
-				unionId=json.getString("unionid");
 				token=json.getString("access_token");
-				//保存code与openId的关系
-				MemcachedUtil.getInstance().setData(code, openId+","+unionId, getInteger("openId_code_save_mins"));
-				//保存openId与accessToken的关系
-				MemcachedUtil.getInstance().setData(openId, token, getInteger("openId_code_save_mins"));
 			}
 		}else{
 			unionId=openId.split(",")[1];
@@ -115,13 +110,13 @@ public class WeiXinService extends CommonService{
 		if(platform==AppConstant.PLATFORM_TYPE_ENUM.PC.getType()){
 			url=AppConstant.PC_SNS_USERINFO_URL+"?access_token="+token+"&openid="+openId;
 		}
-		//查找用户信息
-		User user=userService.getUserByUnionId(unionId);
-		if(null!=user){
-			String response=HttpClientUtil.getNetWorkInfo(url, "");
-			if(StringUtils.isNotEmpty(response)){
-				JSONObject json=JSONObject.fromObject(response);
-				if(!json.containsKey("errcode")){
+		String response=HttpClientUtil.getNetWorkInfo(url, "");
+		if(StringUtils.isNotEmpty(response)){
+			JSONObject json=JSONObject.fromObject(response);
+			if(!json.containsKey("errcode")){
+				//查找用户信息
+				User user=userService.getUserByUnionId(unionId);
+				if(null!=user){
 					//保存用户头像
 					String fileName=StringUtils.isNotEmpty(user.getHeadImg())&&!user.getHeadImg().startsWith("http")
 							?user.getHeadImg():"user/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS"+DataUtil.createNums(6))+".jpg";
@@ -131,9 +126,14 @@ public class WeiXinService extends CommonService{
 					if(!DataUtil.isEmpty(json.get("nickname"))){
 						user.setNickname(json.getString("nickname"));
 					}
+					unionId=json.getString("unionid");
 					user.setHeadImg(fileName);
 					userService.updateUser(user);
 				}
+				//保存code与openId的关系
+				MemcachedUtil.getInstance().setData(code, openId+","+unionId, getInteger("openId_code_save_mins"));
+				//保存openId与accessToken的关系
+				MemcachedUtil.getInstance().setData(openId, token, getInteger("openId_code_save_mins"));
 			}
 		}
 		return putResult(DataUtil.mapOf("openId",openId,"unionId",unionId));
