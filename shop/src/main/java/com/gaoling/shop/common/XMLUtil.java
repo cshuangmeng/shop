@@ -25,15 +25,20 @@ public class XMLUtil {
 	
 	//读取XML
 	@SuppressWarnings("rawtypes")
-	public static Map<String,Object> readParamsFromXML(String xml)throws Exception{
-		Map<String,Object> params=new HashMap<String,Object>();
-		Document doc=DocumentHelper.parseText(xml);
-		Element rootEle=doc.getRootElement();
-		for (Iterator iterator = rootEle.elementIterator(); iterator.hasNext();) {
-			Element e = (Element)iterator.next();
-			params.put(e.getName(), e.getStringValue());
+	public static Map<String,Object> readParamsFromXML(String xml){
+		try {
+			Map<String,Object> params=new HashMap<String,Object>();
+			Document doc=DocumentHelper.parseText(xml);
+			Element rootEle=doc.getRootElement();
+			for (Iterator iterator = rootEle.elementIterator(); iterator.hasNext();) {
+				Element e = (Element)iterator.next();
+				params.put(e.getName(), e.getStringValue());
+			}
+			return params;
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		return params;
+		return null;
 	}
 	
 }

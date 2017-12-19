@@ -11,6 +11,11 @@ public class AppConstant {
 	public static final int COIN_PAY_WAY = 3;
 	public static final int POINT_PAY_WAY = 4;
 
+	// 请求参数存储名
+	public static final String HTTP_PARAM = "http_param";
+	// 请求客户端IP地址
+	public static final String CLIENT_IP = "client_ip";
+
 	// 页面埋点
 	public static final int GOODS_DETAIL_PAGE = 20;// 商品详情页面
 	public static final int SHOP_DETAIL_PAGE = 7;// 商铺详情页面
@@ -47,7 +52,7 @@ public class AppConstant {
 	public static String USERMP_PAY_CERT;// 用户端微信商户付款证书
 	public static String USERMP_ACCESS_TOKEN;//// 用户端微信公众号access_token
 	public static String USERMP_TICKET;// 用户端微信公众号ticket
-	
+
 	public static String USERPC_APP_ID;// 微信网站应用AppID
 	public static String USERPC_SECRET_KEY;// 微信网站应用API调用Secret Key
 
@@ -61,7 +66,7 @@ public class AppConstant {
 	public static String WEIXIN_ORDER_REFUND;// 微信申请退款接口
 	public static String WEIXIN_TEMPLATE_SEND;// 微信模板消息发送接口
 	public static String WEIXIN_TRANSFER_SEND;// 微信企业付款接口
-	
+
 	public static String PC_SNS_USERINFO_URL;// PC端获取微信用户的昵称
 
 	public static String MEMCACHED_ADDR;// Memcached服务器配置
@@ -90,6 +95,9 @@ public class AppConstant {
 	public static final int TRIBE_NOT_EXISTS = 113;
 	public static final int ORDER_STATE_INCORRECT = 114;
 	public static final int OUT_OF_BOUNDS = 115;
+	public static final int COIN_BALANCE_INADEQUATE = 119;
+	public static final int EXCHANGE_RATIO_INCORRECT = 120;
+	public static final int EXCHANGE_CASH_INCORRECT = 121;
 
 	static {
 		ALIDAYU_SMS_URL = PropertiesUtil.getProperty("alidayu_sms_url");
@@ -115,7 +123,7 @@ public class AppConstant {
 		USERMP_PAY_SECRET_KEY = PropertiesUtil.getProperty("usermp.weixin_pay_secret_key");
 		USERMP_PAY_NOTIFY = PropertiesUtil.getProperty("usermp.weixin_pay_notify");
 		USERMP_PAY_CERT = PropertiesUtil.getProperty("usermp.weixin_pay_cert");
-		
+
 		PC_SNS_USERINFO_URL = PropertiesUtil.getProperty("wxapi.pc_sns_userinfo_url");
 		USERPC_APP_ID = PropertiesUtil.getProperty("userpc.weixin_app_id");
 		USERPC_SECRET_KEY = PropertiesUtil.getProperty("userpc.weixin_secret_key");
@@ -153,7 +161,7 @@ public class AppConstant {
 			return state;
 		}
 	}
-	
+
 	// 设备类型
 	public static enum PLATFORM_TYPE_ENUM {
 		MOBILE(1), PC(2);

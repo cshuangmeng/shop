@@ -14,6 +14,8 @@ public class UserTradeLog {
 	private int tradeType;
 	private String tradeNo;
 	private int tradeId;
+	private int coinBalance;
+	private int pointBalance;
 	private Date createTime;
 	private String remark;
 
@@ -95,6 +97,22 @@ public class UserTradeLog {
 
 	public void setTradeId(int tradeId) {
 		this.tradeId = tradeId;
+	}
+
+	public int getCoinBalance() {
+		return coinBalance;
+	}
+
+	public void setCoinBalance(int coinBalance) {
+		this.coinBalance = coinBalance;
+	}
+
+	public int getPointBalance() {
+		return pointBalance;
+	}
+
+	public void setPointBalance(int pointBalance) {
+		this.pointBalance = pointBalance;
 	}
 
 	public Date getCreateTime() {

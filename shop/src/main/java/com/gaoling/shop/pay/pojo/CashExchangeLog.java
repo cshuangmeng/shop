@@ -1,17 +1,19 @@
-package com.gaoling.shop.tribe.pojo;
+package com.gaoling.shop.pay.pojo;
 
 import java.util.Date;
 
-public class Tribe {
+public class CashExchangeLog {
 
 	private int id;
-	private String nickname;
 	private int userId;
-	private String headImg;
+	private int tribeId;
 	private int level;
+	private float cashExchangeRatio;
 	private int coin;
-	private int point;
+	private float cash;
+	private int coinBalance;
 	private int state;
+	private Date operateTime;
 	private Date createTime;
 
 	public int getId() {
@@ -22,14 +24,6 @@ public class Tribe {
 		this.id = id;
 	}
 
-	public String getNickname() {
-		return nickname;
-	}
-
-	public void setNickname(String nickname) {
-		this.nickname = nickname;
-	}
-
 	public int getUserId() {
 		return userId;
 	}
@@ -38,12 +32,12 @@ public class Tribe {
 		this.userId = userId;
 	}
 
-	public String getHeadImg() {
-		return headImg;
+	public int getTribeId() {
+		return tribeId;
 	}
 
-	public void setHeadImg(String headImg) {
-		this.headImg = headImg;
+	public void setTribeId(int tribeId) {
+		this.tribeId = tribeId;
 	}
 
 	public int getLevel() {
@@ -54,6 +48,14 @@ public class Tribe {
 		this.level = level;
 	}
 
+	public float getCashExchangeRatio() {
+		return cashExchangeRatio;
+	}
+
+	public void setCashExchangeRatio(float cashExchangeRatio) {
+		this.cashExchangeRatio = cashExchangeRatio;
+	}
+
 	public int getCoin() {
 		return coin;
 	}
@@ -62,12 +64,20 @@ public class Tribe {
 		this.coin = coin;
 	}
 
-	public int getPoint() {
-		return point;
+	public float getCash() {
+		return cash;
 	}
 
-	public void setPoint(int point) {
-		this.point = point;
+	public void setCash(float cash) {
+		this.cash = cash;
+	}
+
+	public int getCoinBalance() {
+		return coinBalance;
+	}
+
+	public void setCoinBalance(int coinBalance) {
+		this.coinBalance = coinBalance;
 	}
 
 	public int getState() {
@@ -78,6 +88,14 @@ public class Tribe {
 		this.state = state;
 	}
 
+	public Date getOperateTime() {
+		return operateTime;
+	}
+
+	public void setOperateTime(Date operateTime) {
+		this.operateTime = operateTime;
+	}
+
 	public Date getCreateTime() {
 		return createTime;
 	}
@@ -86,9 +104,9 @@ public class Tribe {
 		this.createTime = createTime;
 	}
 
-	// 部落状态
+	// 处理状态
 	public static enum STATE_TYPE_ENUM {
-		INACTIVE(0), ACTIVATED(1), DISABLED(2);
+		DAICHULI(0), YICHULI(1), YIQUXIAO(2);
 		private int state;
 
 		private STATE_TYPE_ENUM(int state) {

@@ -1,6 +1,7 @@
 package com.gaoling.shop.user.service;
 
 import java.net.URL;
+import java.security.InvalidParameterException;
 import java.util.List;
 import java.util.Map;
 
@@ -139,19 +140,23 @@ public class UserService extends CommonService{
 	
 	//扣除/增加用户部落币、部落分
 	@Transactional
-	public boolean operateUserAccount(int userId,int point,int coin)throws Exception{
+	public boolean operateUserAccount(int userId,Integer point,Integer coin){
 		User user=getUser(userId, true);
 		boolean flag=true;
 		if(null!=user){
-			if((point<0&&user.getPoint()+point>=0)||point>=0){
-				user.setPoint(user.getPoint()+point);
-			}else{
-				flag=false;
+			if(null!=point){
+				if((point<0&&user.getPoint()+point>=0)||point>=0){
+					user.setPoint(user.getPoint()+point);
+				}else{
+					flag=false;
+				}
 			}
-			if((coin<0&&user.getCoin()+coin>=0)||coin>=0){
-				user.setCoin(user.getCoin()+coin);
-			}else{
-				flag=false;
+			if(null!=coin){
+				if((coin<0&&user.getCoin()+coin>=0)||coin>=0){
+					user.setCoin(user.getCoin()+coin);
+				}else{
+					flag=false;
+				}
 			}
 		}else{
 			flag=false;
@@ -159,7 +164,7 @@ public class UserService extends CommonService{
 		if(flag){
 			updateUser(user);
 		}else{
-			throw new Exception("User Account Balance Inadequate!");
+			throw new InvalidParameterException("User Account Balance Inadequate!");
 		}
 		return false;
 	}

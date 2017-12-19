@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gaoling.shop.pay.dao.CashExchangeLogDao">
+
+	<sql id="Base_Column_List">
+		t.id as id, t.user_id as userId, t.tribe_id as tribeId,
+		t.level as level,t.cash_exchange_ratio as cashExchangeRatio, t.coin as
+		coin, t.cash as cash,
+		t.coin_balance as coinBalance, t.state as state,
+		t.operate_time as operateTime,t.create_time as createTime
+	</sql>
+
+	<select id="selectCashExchangeLog" parameterType="com.pojo.CashExchangeLogExample" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from cash_exchange_log t
+		<trim prefix="where" prefixOverrides="and">
+			<if test="param.id!=null">
+				and t.id=#{param.id}
+			</if>
+			<if test="param.userId!=null">
+				and t.user_id=#{param.userId}
+			</if>
+			<if test="param.state!=null">
+				and t.state=#{param.state}
+			</if>
+		</trim>
+		<if test="param.orderBy != null">
+			order by ${param.orderBy}
+		</if>
+	</select>
+
+	<insert id="insertCashExchangeLog" parameterType="com.gaoling.shop.pay.pojo.CashExchangeLog" useGeneratedKeys="true" keyProperty="id">
+		insert into cash_exchange_log
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="tribeId != null">
+				tribe_id,
+			</if>
+			<if test="level != null">
+				level,
+			</if>
+			<if test="cashExchangeRatio != null">
+				cash_exchange_ratio,
+			</if>
+			<if test="coin != null">
+				coin,
+			</if>
+			<if test="cash != null">
+				cash,
+			</if>
+			<if test="coinBalance != null">
+				coin_balance,
+			</if>
+			<if test="state != null">
+				state,
+			</if>
+			<if test="operateTime != null">
+				operate_time,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="userId != null">
+				#{userId,jdbcType=INTEGER},
+			</if>
+			<if test="tribeId != null">
+				#{tribeId,jdbcType=INTEGER},
+			</if>
+			<if test="level != null">
+				#{level,jdbcType=INTEGER},
+			</if>
+			<if test="cashExchangeRatio != null">
+				#{cashExchangeRatio,jdbcType=DECIMAL},
+			</if>
+			<if test="coin != null">
+				#{coin,jdbcType=INTEGER},
+			</if>
+			<if test="cash != null">
+				#{cash,jdbcType=DECIMAL},
+			</if>
+			<if test="coinBalance != null">
+				#{coinBalance,jdbcType=INTEGER},
+			</if>
+			<if test="state != null">
+				#{state,jdbcType=INTEGER},
+			</if>
+			<if test="operateTime != null">
+				#{operateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+
+	<update id="updateCashExchangeLog" parameterType="map">
+		update cash_exchange_log t
+		<set>
+			<if test="record.userId != null">
+				t.user_id = #{record.userId,jdbcType=INTEGER},
+			</if>
+			<if test="record.tribeId != null">
+				t.tribe_id = #{record.tribeId,jdbcType=INTEGER},
+			</if>
+			<if test="record.level != null">
+				t.level = #{record.level,jdbcType=INTEGER},
+			</if>
+			<if test="record.cashExchangeRatio != null">
+				t.cash_exchange_ratio =
+				#{record.cashExchangeRatio,jdbcType=DECIMAL},
+			</if>
+			<if test="record.coin != null">
+				t.coin = #{record.coin,jdbcType=INTEGER},
+			</if>
+			<if test="record.cash != null">
+				t.cash = #{record.cash,jdbcType=DECIMAL},
+			</if>
+			<if test="record.coinBalance != null">
+				t.coin_balance = #{record.coinBalance,jdbcType=INTEGER},
+			</if>
+			<if test="record.state != null">
+				t.state = #{record.state,jdbcType=INTEGER},
+			</if>
+			<if test="record.operateTime != null">
+				t.operate_time =
+				#{record.operateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="record.createTime != null">
+				t.create_time = #{record.createTime,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		<trim prefix="where" prefixOverrides="and">
+			<if test="param.id!=null">
+				and t.id=#{param.id}
+			</if>
+		</trim>
+	</update>
+
+</mapper>  

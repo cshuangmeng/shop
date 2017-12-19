@@ -35,7 +35,7 @@ public class PayService {
 		}
 		return null;
 	}
-
+	
 	//处理用户支付请求
 	public Map<String,Object> weiXinPayRequest(PayParam param)throws Exception{
 		HashMap<String,Object> resultMap=new HashMap<String,Object>();
@@ -153,6 +153,43 @@ public class PayService {
 					}
 				}
 			}
+		return false;
+	}
+	
+	//处理用户提现请求
+	public boolean operateUserTransferRequest(PayParam param){
+		if(param.getPayWay()==AppConstant.WEIXIN_PAY_WAY){
+			return weiXinTransferRequest(param);
+		}
+		return false;
+	}
+	
+	public static boolean weiXinTransferRequest(PayParam param){
+		//加载用户支付成功的订单
+		HashMap<String,Object> paramMap=new HashMap<String,Object>();
+		paramMap.put("mch_appid",AppConstant.USERMP_APP_ID);
+		paramMap.put("mchid",AppConstant.USERMP_MCH_ID);
+		paramMap.put("nonce_str",param.getNonceStr());
+		paramMap.put("partner_trade_no", param.getOutTradeNo());
+		paramMap.put("openid", param.getOpenId());
+		paramMap.put("check_name", "NO_CHECK");
+		paramMap.put("amount",Math.round(param.getAmount()*100));
+		paramMap.put("desc", param.getBody());
+		paramMap.put("spbill_create_ip", param.getIp());
+		paramMap.put("sign", SignUtil.signValue(paramMap, "MD5",AppConstant.USERMP_PAY_SECRET_KEY).toUpperCase());
+		Logger.getLogger("file").info("<------微信企业支付请求参数----->"+JSONObject.fromObject(paramMap).toString());
+		String response=HttpClientUtil.sendHTTPSWithP12(AppConstant.WEIXIN_TRANSFER_SEND,
+				XMLUtil.createXMLString(paramMap, "xml"), AppConstant.USERMP_MCH_ID,AppConstant.USERMP_PAY_CERT);
+		Logger.getLogger("file").info("<------微信企业支付响应内容----->"+response);
+		//保存订单数据
+		if(response.length()>0){
+			Map<String,Object> responseMap=XMLUtil.readParamsFromXML(response);
+			if(responseMap.get("return_code").toString().equalsIgnoreCase("SUCCESS")){
+				if(responseMap.get("result_code").toString().equalsIgnoreCase("SUCCESS")){
+					return true;
+				}
+			}
+		}
 		return false;
 	}
 	
