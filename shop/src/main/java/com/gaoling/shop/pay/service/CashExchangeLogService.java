@@ -2,6 +2,7 @@ package com.gaoling.shop.pay.service;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -108,6 +109,7 @@ public class CashExchangeLogService extends CommonService{
 		trade.setCoinBalance(log.getCoinBalance());
 		trade.setPointBalance(user.getPoint());
 		trade.setCreateTime(DateUtil.nowDate());
+		trade.setRemark("");
 		userTradeLogService.addUserTradeLog(trade);
 		return putResult();
 	}
@@ -187,7 +189,12 @@ public class CashExchangeLogService extends CommonService{
 			param.setIp(ThreadCache.getData(AppConstant.CLIENT_IP).toString());
 			param.setAmount(cLog.getCash());
 			param.setOpenId(user.getOpenId());
+			param.setPayWay(AppConstant.WEIXIN_PAY_WAY);
 			if(payService.operateUserTransferRequest(param)){
+				//更新操作状态
+				cLog.setState(CashExchangeLog.STATE_TYPE_ENUM.YICHULI.getState());
+				cLog.setOperateTime(DateUtil.nowDate());
+				updateCashExchangeLogById(cLog);
 				success++;
 			}
 		}
@@ -199,6 +206,25 @@ public class CashExchangeLogService extends CommonService{
 	public JSONObject getCurLevelRatio(int level){
 		JSONObject json=JSONObject.fromObject(getString("tribe_level_cash_mapper"));
 		return DataUtil.isJSONObject(json.get(String.valueOf(level)))?json.getJSONObject(String.valueOf(level)):null;
+	}
+	
+	//重新计算部落等级
+	@SuppressWarnings("unchecked")
+	public int resetTribeLevel(int tribeId){
+		Tribe tribe=tribeService.getTribe(tribeId);
+		int level=0;
+		if(null!=tribe){
+			List<TribeMember> members=tribeMemberService.queryTribeMembers(DataUtil.mapOf("tribeId",tribe.getId()
+					,"state",TribeMember.STATE_TYPE_ENUM.JOINED.getState()));
+			JSONObject json=JSONObject.fromObject(getString("tribe_level_cash_mapper"));
+			for (Iterator<String> iterator = json.keys(); iterator.hasNext();) {
+				String key = iterator.next();
+				if(json.getJSONObject(key).getInt("member")<members.size()&&Integer.valueOf(key)>level){
+					level=Integer.valueOf(key);
+				}
+			}
+		}
+		return level;
 	}
 	
 	//查询提现记录
@@ -214,8 +240,8 @@ public class CashExchangeLogService extends CommonService{
 
 	//更新提现记录
 	@Transactional
-	public int updateCashExchangeLog(CashExchangeLog cashExchangeLog) {
-		return cashExchangeLogDao.updateCashExchangeLog(cashExchangeLog);
+	public int updateCashExchangeLogById(CashExchangeLog cashExchangeLog) {
+		return cashExchangeLogDao.updateCashExchangeLog(cashExchangeLog,DataUtil.mapOf("id",cashExchangeLog.getId()));
 	}
 	
 }

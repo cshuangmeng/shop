@@ -11,7 +11,7 @@ import com.gaoling.shop.system.pojo.Result;
 
 @Controller
 @RequestMapping("/cash")
-public class CashExchangeLogController {
+public class CashExchangeController {
 
 	@Autowired
 	private CashExchangeLogService cashExchangeLogService;

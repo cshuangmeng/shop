@@ -13,6 +13,6 @@ public interface CashExchangeLogDao {
 
 	List<CashExchangeLog> selectCashExchangeLog(@Param("param")Map<String,Object> param);
 	int insertCashExchangeLog(CashExchangeLog cashExchangeLog);
-	int updateCashExchangeLog(CashExchangeLog cashExchangeLog);
+	int updateCashExchangeLog(@Param("record")CashExchangeLog cashExchangeLog,@Param("param")Map<String,Object> param);
 
 }

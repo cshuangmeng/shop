@@ -1,5 +1,6 @@
 package com.gaoling.shop.tribe.service;
 
+import java.security.InvalidParameterException;
 import java.util.List;
 import java.util.Map;
 
@@ -68,7 +69,7 @@ public class TribeService extends CommonService{
 	
 	//扣除/增加部落部落币、部落分
 	@Transactional
-	public boolean operateTribeAccount(int tribeId,int point,int coin)throws Exception{
+	public Tribe operateTribeAccount(int tribeId,int point,int coin){
 		Tribe tribe=getTribe(tribeId);
 		boolean flag=true;
 		if(null!=tribe){
@@ -88,9 +89,9 @@ public class TribeService extends CommonService{
 		if(flag){
 			updateTribe(tribe);
 		}else{
-			throw new Exception("Tribe Account Balance Inadequate!");
+			throw new InvalidParameterException("Tribe Account Balance Inadequate!");
 		}
-		return false;
+		return tribe;
 	}
 	
 	//获取部落信息

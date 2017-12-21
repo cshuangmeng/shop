@@ -8,7 +8,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.http.entity.ContentType;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +28,7 @@ public class PayService {
 	
 	@Autowired
 	private OrderService orderService;
+	private Logger log=LoggerFactory.getLogger(getClass());
 	
 	//处理用户支付请求
 	public Map<String,Object> operateUserPayRequest(PayParam param)throws Exception{
@@ -53,9 +55,9 @@ public class PayService {
 		paramMap.put("openid",param.getOpenId());
 		paramMap.put("notify_url", AppConstant.USERMP_PAY_NOTIFY);
 		paramMap.put("sign", SignUtil.signValue(paramMap, "MD5",AppConstant.USERMP_PAY_SECRET_KEY).toUpperCase());
-		Logger.getLogger("file").info("<------请求参数----->"+JSONObject.fromObject(paramMap).toString());
+		log.info("<------请求参数----->"+JSONObject.fromObject(paramMap).toString());
 		String response=HttpClientUtil.sendHTTPSWithXML(AppConstant.WEIXIN_PAY_UNIFIEDORDER,XMLUtil.createXMLString(paramMap, "xml"), ContentType.APPLICATION_XML);
-		Logger.getLogger("file").info("<------响应内容----->"+response);
+		log.info("<------响应内容----->"+response);
 		//保存订单数据
 		if(null!=response){
 			Map<String,Object> responseMap=XMLUtil.readParamsFromXML(response);
@@ -91,7 +93,7 @@ public class PayService {
 		while((row=reader.readLine())!=null){
 			response.append(row);
 		}
-		Logger.getLogger("file").info("<------接收到数据----->"+response.toString());
+		log.info("<------接收到数据----->"+response.toString());
 		//保存订单数据
 		if(response.toString().length()>0){
 			Map<String,Object> paramMap=XMLUtil.readParamsFromXML(response.toString());
@@ -140,10 +142,10 @@ public class PayService {
 			paramMap.put("refund_fee", Math.round(param.getRefund()*100));//单位为分
 			paramMap.put("op_user_id", param.getOperator());
 			paramMap.put("sign", SignUtil.signValue(paramMap, "MD5",AppConstant.USERMP_PAY_SECRET_KEY).toUpperCase());
-			Logger.getLogger("file").info("<------微信退款请求参数----->"+JSONObject.fromObject(paramMap).toString());
+			log.info("<------微信退款请求参数----->"+JSONObject.fromObject(paramMap).toString());
 			String response=HttpClientUtil.sendHTTPSWithP12(AppConstant.WEIXIN_ORDER_REFUND,
 					XMLUtil.createXMLString(paramMap, "xml"), AppConstant.USERMP_MCH_ID,AppConstant.USERMP_PAY_CERT);
-			Logger.getLogger("file").info("<------微信退款响应内容----->"+response);
+			log.info("<------微信退款响应内容----->"+response);
 			//保存订单数据
 			if(response.length()>0){
 				Map<String,Object> responseMap=XMLUtil.readParamsFromXML(response);
@@ -164,7 +166,7 @@ public class PayService {
 		return false;
 	}
 	
-	public static boolean weiXinTransferRequest(PayParam param){
+	public boolean weiXinTransferRequest(PayParam param){
 		//加载用户支付成功的订单
 		HashMap<String,Object> paramMap=new HashMap<String,Object>();
 		paramMap.put("mch_appid",AppConstant.USERMP_APP_ID);
@@ -177,10 +179,10 @@ public class PayService {
 		paramMap.put("desc", param.getBody());
 		paramMap.put("spbill_create_ip", param.getIp());
 		paramMap.put("sign", SignUtil.signValue(paramMap, "MD5",AppConstant.USERMP_PAY_SECRET_KEY).toUpperCase());
-		Logger.getLogger("file").info("<------微信企业支付请求参数----->"+JSONObject.fromObject(paramMap).toString());
+		log.info("<------微信企业支付请求参数----->"+JSONObject.fromObject(paramMap).toString());
 		String response=HttpClientUtil.sendHTTPSWithP12(AppConstant.WEIXIN_TRANSFER_SEND,
 				XMLUtil.createXMLString(paramMap, "xml"), AppConstant.USERMP_MCH_ID,AppConstant.USERMP_PAY_CERT);
-		Logger.getLogger("file").info("<------微信企业支付响应内容----->"+response);
+		log.info("<------微信企业支付响应内容----->"+response);
 		//保存订单数据
 		if(response.length()>0){
 			Map<String,Object> responseMap=XMLUtil.readParamsFromXML(response);

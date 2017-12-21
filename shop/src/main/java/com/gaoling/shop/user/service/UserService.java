@@ -140,7 +140,7 @@ public class UserService extends CommonService{
 	
 	//扣除/增加用户部落币、部落分
 	@Transactional
-	public boolean operateUserAccount(int userId,Integer point,Integer coin){
+	public User operateUserAccount(int userId,Integer point,Integer coin){
 		User user=getUser(userId, true);
 		boolean flag=true;
 		if(null!=user){
@@ -166,7 +166,7 @@ public class UserService extends CommonService{
 		}else{
 			throw new InvalidParameterException("User Account Balance Inadequate!");
 		}
-		return false;
+		return user;
 	}
 	
 	//查询单一用户

@@ -11,7 +11,7 @@
 		t.operate_time as operateTime,t.create_time as createTime
 	</sql>
 
-	<select id="selectCashExchangeLog" parameterType="com.pojo.CashExchangeLogExample" resultMap="BaseResultMap">
+	<select id="selectCashExchangeLog" parameterType="map" resultType="com.gaoling.shop.pay.pojo.CashExchangeLog">
 		select
 		<include refid="Base_Column_List" />
 		from cash_exchange_log t
@@ -99,7 +99,7 @@
 		</trim>
 	</insert>
 
-	<update id="updateCashExchangeLog" parameterType="map">
+	<update id="updateCashExchangeLog">
 		update cash_exchange_log t
 		<set>
 			<if test="record.userId != null">
@@ -112,8 +112,7 @@
 				t.level = #{record.level,jdbcType=INTEGER},
 			</if>
 			<if test="record.cashExchangeRatio != null">
-				t.cash_exchange_ratio =
-				#{record.cashExchangeRatio,jdbcType=DECIMAL},
+				t.cash_exchange_ratio = #{record.cashExchangeRatio,jdbcType=DECIMAL},
 			</if>
 			<if test="record.coin != null">
 				t.coin = #{record.coin,jdbcType=INTEGER},
@@ -128,8 +127,7 @@
 				t.state = #{record.state,jdbcType=INTEGER},
 			</if>
 			<if test="record.operateTime != null">
-				t.operate_time =
-				#{record.operateTime,jdbcType=TIMESTAMP},
+				t.operate_time = #{record.operateTime,jdbcType=TIMESTAMP},
 			</if>
 			<if test="record.createTime != null">
 				t.create_time = #{record.createTime,jdbcType=TIMESTAMP},
