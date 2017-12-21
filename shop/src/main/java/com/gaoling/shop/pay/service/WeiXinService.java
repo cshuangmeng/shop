@@ -47,7 +47,6 @@ public class WeiXinService extends CommonService{
 	@Autowired
 	private ShopService shopService;
 	
-
 	// 获取ticket,且每隔一小时刷新一次
 	@Scheduled(fixedDelay = 3600 * 1000)
 	public void getTicketSchedule() {
