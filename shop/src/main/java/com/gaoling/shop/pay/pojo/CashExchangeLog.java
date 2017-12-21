@@ -8,6 +8,7 @@ public class CashExchangeLog {
 	private int userId;
 	private int tribeId;
 	private int level;
+	private String tradeNo;
 	private float cashExchangeRatio;
 	private int coin;
 	private float cash;
@@ -46,6 +47,14 @@ public class CashExchangeLog {
 
 	public void setLevel(int level) {
 		this.level = level;
+	}
+
+	public String getTradeNo() {
+		return tradeNo;
+	}
+
+	public void setTradeNo(String tradeNo) {
+		this.tradeNo = tradeNo;
 	}
 
 	public float getCashExchangeRatio() {

@@ -159,14 +159,14 @@ public class PayService {
 	}
 	
 	//处理用户提现请求
-	public boolean operateUserTransferRequest(PayParam param){
+	public JSONObject operateUserTransferRequest(PayParam param){
 		if(param.getPayWay()==AppConstant.WEIXIN_PAY_WAY){
 			return weiXinTransferRequest(param);
 		}
-		return false;
+		return null;
 	}
 	
-	public boolean weiXinTransferRequest(PayParam param){
+	public JSONObject weiXinTransferRequest(PayParam param){
 		//加载用户支付成功的订单
 		HashMap<String,Object> paramMap=new HashMap<String,Object>();
 		paramMap.put("mch_appid",AppConstant.USERMP_APP_ID);
@@ -186,13 +186,9 @@ public class PayService {
 		//保存订单数据
 		if(response.length()>0){
 			Map<String,Object> responseMap=XMLUtil.readParamsFromXML(response);
-			if(responseMap.get("return_code").toString().equalsIgnoreCase("SUCCESS")){
-				if(responseMap.get("result_code").toString().equalsIgnoreCase("SUCCESS")){
-					return true;
-				}
-			}
+			return JSONObject.fromObject(responseMap);
 		}
-		return false;
+		return null;
 	}
 	
 }

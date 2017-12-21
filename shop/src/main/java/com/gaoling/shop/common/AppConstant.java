@@ -99,6 +99,7 @@ public class AppConstant {
 	public static final int COIN_BALANCE_INADEQUATE = 119;
 	public static final int EXCHANGE_RATIO_INCORRECT = 120;
 	public static final int EXCHANGE_CASH_INCORRECT = 121;
+	public static final int OUT_OF_FREQUENCY = 122;
 
 	static {
 		ALIDAYU_SMS_URL = PropertiesUtil.getProperty("alidayu_sms_url");

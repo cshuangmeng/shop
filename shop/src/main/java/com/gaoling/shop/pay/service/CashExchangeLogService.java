@@ -1,10 +1,10 @@
 package com.gaoling.shop.pay.service;
 
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.gaoling.shop.common.AppConstant;
 import com.gaoling.shop.common.DataUtil;
 import com.gaoling.shop.common.DateUtil;
+import com.gaoling.shop.common.SMSUtil;
 import com.gaoling.shop.common.ThreadCache;
 import com.gaoling.shop.pay.dao.CashExchangeLogDao;
 import com.gaoling.shop.pay.pojo.CashExchangeLog;
@@ -84,6 +85,13 @@ public class CashExchangeLogService extends CommonService{
 			log.info("提现金额不满足至少金额,结束流程");
 			return putResult(AppConstant.EXCHANGE_CASH_INCORRECT);
 		}
+		//微信默认每个用户每天最多可付款10次
+		List<CashExchangeLog> logs=selectCashExchangeLog(DataUtil.mapOf("userId",user.getId()
+				,"createTime",DateFormatUtils.format(DateUtil.nowDate(), "yyyy-MM-dd")));
+		if(logs.size()>=getInteger("cash_exchange_frequency")){
+			log.info("已经超过每日最多提现次数,结束流程");
+			return putResult(AppConstant.OUT_OF_FREQUENCY);
+		}
 		//扣除部落币
 		user.setCoin(user.getCoin()-coin);
 		userService.updateUser(user);
@@ -92,6 +100,7 @@ public class CashExchangeLogService extends CommonService{
 		log.setUserId(user.getId());
 		log.setTribeId(tribe.getId());
 		log.setLevel(tribe.getLevel());
+		log.setTradeNo(DateUtil.getCurrentTime("yyyyMMddHHmmssSSS")+DataUtil.createNums(3));
 		log.setCashExchangeRatio(Float.valueOf(config.getString("ratio")));
 		log.setCoin(coin);
 		log.setCash(cash);
@@ -175,30 +184,52 @@ public class CashExchangeLogService extends CommonService{
 	@Transactional
 	public Result executeCashExchangeOntime(){
 		//获取待处理提现申请
-		List<CashExchangeLog> cLogs=selectCashExchangeLog(DataUtil.mapOf("state"
+		List<CashExchangeLog> allLogs=selectCashExchangeLog(DataUtil.mapOf("state"
 				,CashExchangeLog.STATE_TYPE_ENUM.DAICHULI.getState(),"orderBy","create_time"));
+		//为了满足微信的提现要求标准,每次每个用户只处理一次提现
+		List<CashExchangeLog> cLogs=allLogs.stream().filter(c->{
+			Optional<CashExchangeLog> ip=allLogs.stream().filter(i->i.getUserId()==c.getUserId()
+					&&i.getId()!=c.getId()&&c.getId()>i.getId()).findFirst();
+			return !ip.isPresent();
+		}).collect(Collectors.toList());
 		PayParam param=new PayParam();
 		User user=null;
-		int success=0;
+		int success=0,failure=0;
 		for(CashExchangeLog cLog:cLogs){
 			log.info("开始处理id="+cLog.getId()+",cash="+cLog.getCash()+"提现申请");
 			user=userService.getUser(cLog.getUserId(), false);
-			param.setOutTradeNo(String.valueOf(new Date().getTime()));
+			param.setOutTradeNo(cLog.getTradeNo());
 			param.setBody(getString("cash_exchange_pay_title"));
 			param.setNonceStr(DataUtil.createNums(6));
 			param.setIp(ThreadCache.getData(AppConstant.CLIENT_IP).toString());
 			param.setAmount(cLog.getCash());
 			param.setOpenId(user.getOpenId());
 			param.setPayWay(AppConstant.WEIXIN_PAY_WAY);
-			if(payService.operateUserTransferRequest(param)){
-				//更新操作状态
-				cLog.setState(CashExchangeLog.STATE_TYPE_ENUM.YICHULI.getState());
-				cLog.setOperateTime(DateUtil.nowDate());
-				updateCashExchangeLogById(cLog);
-				success++;
+			JSONObject json=payService.operateUserTransferRequest(param);
+			if(null!=json){
+				if(json.getString("return_code").equalsIgnoreCase("SUCCESS")&&json.getString("result_code").equalsIgnoreCase("SUCCESS")){
+					//更新操作状态
+					cLog.setState(CashExchangeLog.STATE_TYPE_ENUM.YICHULI.getState());
+					cLog.setOperateTime(DateUtil.nowDate());
+					updateCashExchangeLogById(cLog);
+					success++;
+				}else if(!json.getString("err_code").equalsIgnoreCase("SYSTEMERROR")){//系统繁忙异常不能重置交易单号
+					cLog.setTradeNo(DateUtil.getCurrentTime("yyyyMMddHHmmssSSS")+DataUtil.createNums(3));
+					updateCashExchangeLogById(cLog);
+					//账户余额不足时发送短信提醒
+					if(json.getString("err_code").equalsIgnoreCase("NOTENOUGH")){
+						String mobiles=getString("exchange_notice_mobile");
+						if(StringUtils.isNotEmpty(mobiles)){
+							for(String mobile:mobiles.split(",")){
+								SMSUtil.sendAccountNotEnoughNotice(mobile);
+							}
+						}
+					}
+					failure++;
+				}
 			}
 		}
-		log.info("本次提现申请处理完成,总数:"+cLogs.size()+",处理成功数:"+success);
+		log.info("本次提现申请处理完成,总数:"+cLogs.size()+",处理成功数:"+success+"，处理失败数:"+failure);
 		return putResult();
 	}
 	

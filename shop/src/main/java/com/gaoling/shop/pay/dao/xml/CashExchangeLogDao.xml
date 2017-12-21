@@ -5,8 +5,8 @@
 
 	<sql id="Base_Column_List">
 		t.id as id, t.user_id as userId, t.tribe_id as tribeId,
-		t.level as level,t.cash_exchange_ratio as cashExchangeRatio, t.coin as
-		coin, t.cash as cash,
+		t.level as level,t.cash_exchange_ratio as cashExchangeRatio, t.coin as coin, 
+		t.cash as cash,t.trade_no as tradeNo,
 		t.coin_balance as coinBalance, t.state as state,
 		t.operate_time as operateTime,t.create_time as createTime
 	</sql>
@@ -25,6 +25,9 @@
 			<if test="param.state!=null">
 				and t.state=#{param.state}
 			</if>
+			<if test="param.createTime!=null">
+				and date_format(t.create_time,'%Y-%m-%d')=#{param.createTime}
+			</if>
 		</trim>
 		<if test="param.orderBy != null">
 			order by ${param.orderBy}
@@ -42,6 +45,9 @@
 			</if>
 			<if test="level != null">
 				level,
+			</if>
+			<if test="tradeNo != null">
+				trade_no,
 			</if>
 			<if test="cashExchangeRatio != null">
 				cash_exchange_ratio,
@@ -74,6 +80,9 @@
 			</if>
 			<if test="level != null">
 				#{level,jdbcType=INTEGER},
+			</if>
+			<if test="tradeNo != null">
+				#{tradeNo,jdbcType=VARCHAR},
 			</if>
 			<if test="cashExchangeRatio != null">
 				#{cashExchangeRatio,jdbcType=DECIMAL},
@@ -110,6 +119,9 @@
 			</if>
 			<if test="record.level != null">
 				t.level = #{record.level,jdbcType=INTEGER},
+			</if>
+			<if test="record.tradeNo != null">
+				t.trade_no = #{record.tradeNo,jdbcType=VARCHAR},
 			</if>
 			<if test="record.cashExchangeRatio != null">
 				t.cash_exchange_ratio = #{record.cashExchangeRatio,jdbcType=DECIMAL},
