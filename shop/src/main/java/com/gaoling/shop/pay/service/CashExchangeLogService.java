@@ -1,6 +1,7 @@
 package com.gaoling.shop.pay.service;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +10,7 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.gaoling.shop.common.AppConstant;
 import com.gaoling.shop.common.DataUtil;
 import com.gaoling.shop.common.DateUtil;
+import com.gaoling.shop.common.MemcachedUtil;
 import com.gaoling.shop.common.SMSUtil;
 import com.gaoling.shop.common.ThreadCache;
 import com.gaoling.shop.pay.dao.CashExchangeLogDao;
@@ -194,7 +197,7 @@ public class CashExchangeLogService extends CommonService{
 		}).collect(Collectors.toList());
 		PayParam param=new PayParam();
 		User user=null;
-		int success=0,failure=0;
+		int success=0,failure=0,sendNotice=0;
 		for(CashExchangeLog cLog:cLogs){
 			log.info("开始处理id="+cLog.getId()+",cash="+cLog.getCash()+"提现申请");
 			user=userService.getUser(cLog.getUserId(), false);
@@ -218,16 +221,38 @@ public class CashExchangeLogService extends CommonService{
 					updateCashExchangeLogById(cLog);
 					//账户余额不足时发送短信提醒
 					if(json.getString("err_code").equalsIgnoreCase("NOTENOUGH")){
-						String mobiles=getString("exchange_notice_mobile");
-						if(StringUtils.isNotEmpty(mobiles)){
-							for(String mobile:mobiles.split(",")){
-								SMSUtil.sendAccountNotEnoughNotice(mobile);
-							}
-						}
+						sendNotice=1;
 					}
 					failure++;
 				}
 			}
+		}
+		//发送余额不足短信提醒
+		JSONObject config=JSONObject.fromObject(getString("exchange_notice_config"));
+		if(sendNotice>0){
+			//检查是否满足发送条件
+			String lastSendTimestamp=MemcachedUtil.getInstance().getData(config.getString("last_timestamp_key"), "");
+			boolean enable=true;
+			if(StringUtils.isNotEmpty(lastSendTimestamp)){
+				enable=DateUtils.addHours(new Date(Long.valueOf(lastSendTimestamp))
+						, config.getInt("effect_hour_duration")).compareTo(DateUtil.nowDate())<0;
+			}
+			if(enable&&!DataUtil.isEmpty(config.get("allow_range"))){
+				String date=DateFormatUtils.format(DateUtil.nowDate(), config.getString("allow_range_pattern"));
+				String beginTime=config.getString("allow_range").split("\\-")[0];
+				String endTime=config.getString("allow_range").split("\\-")[1];
+				enable=date.compareTo(beginTime)>=0&&date.compareTo(endTime)<=0;
+			}
+			if(enable){
+				if(!DataUtil.isEmpty(config.get("mobile"))){
+					for(String mobile:config.getString("mobile").split(",")){
+						SMSUtil.sendAccountNotEnoughNotice(mobile);
+					}
+					MemcachedUtil.getInstance().setData(config.getString("last_timestamp_key"), String.valueOf(DateUtil.nowDate().getTime()));
+				}
+			}
+		}else if(cLogs.size()>0&&cLogs.size()==success){//账户余额不足异常恢复
+			MemcachedUtil.getInstance().delete(config.getString("last_timestamp_key"));
 		}
 		log.info("本次提现申请处理完成,总数:"+cLogs.size()+",处理成功数:"+success+"，处理失败数:"+failure);
 		return putResult();
@@ -262,13 +287,13 @@ public class CashExchangeLogService extends CommonService{
 	public List<CashExchangeLog> selectCashExchangeLog(Map<String, Object> param) {
 		return cashExchangeLogDao.selectCashExchangeLog(param);
 	}
-
+	
 	//保存提现记录
 	@Transactional
 	public int insertCashExchangeLog(CashExchangeLog cashExchangeLog) {
 		return cashExchangeLogDao.insertCashExchangeLog(cashExchangeLog);
 	}
-
+	
 	//更新提现记录
 	@Transactional
 	public int updateCashExchangeLogById(CashExchangeLog cashExchangeLog) {

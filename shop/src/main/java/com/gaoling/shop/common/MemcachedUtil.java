@@ -86,6 +86,17 @@ public class MemcachedUtil {
 		return def;
 	}
 	
+	// 删除
+	public void delete(String key) {
+		try {
+			client.delete(key);
+			Logger.getLogger("file").info(DateUtil.getCurrentTime()+" "+key+" deleted!");
+		} catch (Exception e) {
+			Logger.getLogger("file").info(DateUtil.getCurrentTime()+" "+key+" delete failure! "+e.getMessage());
+			e.printStackTrace();
+		}
+	}
+	
 	public static void main(String[] args) {
 		MemcachedUtil.getInstance().setData("cc_18310137109", "0000", 360);
 	}
