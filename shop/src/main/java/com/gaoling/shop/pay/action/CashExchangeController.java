@@ -2,7 +2,9 @@ package com.gaoling.shop.pay.action;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -12,6 +14,7 @@ import com.gaoling.shop.system.pojo.Result;
 
 @Controller
 @RequestMapping("/cash")
+@CrossOrigin(methods = RequestMethod.POST, origins = AppConstant.TRUST_CROSS_ORIGINS)
 public class CashExchangeController {
 
 	@Autowired
