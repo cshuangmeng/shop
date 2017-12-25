@@ -138,8 +138,8 @@
     				<label>是否可用</label>
     				<div class="mws-form-item small">
     					<select name="state">
-    						<option value="true">可用</option>
-    						<option value="false">不可用</option>
+    						<option value="1">可用</option>
+    						<option value="0">不可用</option>
     					</select>
     				</div>
     			</div>

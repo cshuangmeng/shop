@@ -92,6 +92,7 @@ public class WeiXinService extends CommonService{
 		String openId=MemcachedUtil.getInstance().getData(code,"");
 		String unionId=null;
 		String token=null;
+		//获取用户openId
 		if(StringUtils.isEmpty(openId)){
 			String res=HttpClientUtil.sendHTTPS(AppConstant.WEIXIN_OA_ACCESS_TOKEN_URL+"&appid="+appId+"&secret="+secret+"&code="+code);
 			JSONObject json=JSONObject.fromObject(res);
@@ -114,6 +115,7 @@ public class WeiXinService extends CommonService{
 			JSONObject json=JSONObject.fromObject(response);
 			if(!json.containsKey("errcode")){
 				//查找用户信息
+				unionId=json.getString("unionid");
 				User user=userService.getUserByUnionId(unionId);
 				if(null!=user){
 					//保存用户头像
@@ -125,7 +127,6 @@ public class WeiXinService extends CommonService{
 					if(!DataUtil.isEmpty(json.get("nickname"))){
 						user.setNickname(json.getString("nickname"));
 					}
-					unionId=json.getString("unionid");
 					user.setHeadImg(fileName);
 					userService.updateUser(user);
 				}

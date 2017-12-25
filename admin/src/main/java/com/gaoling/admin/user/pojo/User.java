@@ -1,4 +1,4 @@
-package com.gaoling.shop.user.pojo;
+package com.gaoling.admin.user.pojo;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -9,7 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.gaoling.shop.common.AppConstant;
+import com.gaoling.admin.util.AppConstant;
 
 public class User {
 

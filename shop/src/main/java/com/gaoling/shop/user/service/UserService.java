@@ -176,32 +176,47 @@ public class UserService extends CommonService{
 	
 	//依据openId查询用户
 	public User getUserByOpenId(String openId){
-		List<User> users=queryUsers(DataUtil.mapOf("openId",openId));
-		return users.size()>0?users.get(0):null;
+		if(StringUtils.isNotEmpty(openId)){
+			List<User> users=queryUsers(DataUtil.mapOf("openId",openId));
+			return users.size()>0?users.get(0):null;
+		}
+		return null;
 	}
 	
 	//依据openId查询用户
 	public User getUserByPassword(String cellphone,String password){
-		List<User> users=queryUsers(DataUtil.mapOf("cellphone",cellphone,"password",password));
-		return users.size()>0?users.get(0):null;
+		if(StringUtils.isNotEmpty(cellphone)&&StringUtils.isNotEmpty(password)){
+			List<User> users=queryUsers(DataUtil.mapOf("cellphone",cellphone,"password",password));
+			return users.size()>0?users.get(0):null;
+		}
+		return null;
 	}
 	
 	//依据unionId查询用户
 	public User getUserByUnionId(String unionId){
-		List<User> users=queryUsers(DataUtil.mapOf("unionId",unionId));
-		return users.size()>0?users.get(0):null;
+		if(StringUtils.isNotEmpty(unionId)){
+			List<User> users=queryUsers(DataUtil.mapOf("unionId",unionId));
+			return users.size()>0?users.get(0):null;
+		}
+		return null;
 	}
 	
 	//依据cellphone查询用户
 	public User getUserByCellphone(String cellphone){
-		List<User> users=queryUsers(DataUtil.mapOf("cellphone",cellphone));
-		return users.size()>0?users.get(0):null;
+		if(StringUtils.isNotEmpty(cellphone)){
+			List<User> users=queryUsers(DataUtil.mapOf("cellphone",cellphone));
+			return users.size()>0?users.get(0):null;
+		}
+		return null;
 	}
 	
 	//依据UUID查询用户
 	public User getUserByUUID(String uuid){
-		List<User> users=queryUsers(DataUtil.mapOf("uuid",uuid));
-		return users.size()>0?users.get(0):null;
+		if(StringUtils.isNotEmpty(uuid)){
+			List<User> users=queryUsers(DataUtil.mapOf("uuid",uuid));
+			return users.size()>0?users.get(0):null;
+		}
+		return null;
 	}
 	
 	//查询多用户

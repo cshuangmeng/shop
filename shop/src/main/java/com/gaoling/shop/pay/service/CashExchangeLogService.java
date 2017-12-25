@@ -68,6 +68,11 @@ public class CashExchangeLogService extends CommonService{
 			return putResult(AppConstant.USER_NOT_EXISTS);
 		}
 		user=userService.getUser(user.getId(), true);
+		//检查用户是否具有提现特权
+		if(user.getCashExchangeEnable()!=AppConstant.YES_OR_NO_ENUM.YES.getState()){
+			log.info("用户"+user.getUuid()+"尚未获得提现权限,结束流程");
+			return putResult(AppConstant.HAVE_NO_RIGHT);
+		}
 		//检查部落币是否充足
 		Tribe tribe=tribeService.getTribeByUserId(user.getId());
 		if(null==tribe){
