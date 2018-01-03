@@ -115,11 +115,28 @@ public class UserService extends CommonService{
 	}
 	
 	//用户微信登录
-	public Result login(String unionId){
+	public Result login(String openId,String unionId){
+		//检查参数是否填写
+		if(StringUtils.isEmpty(openId)&&StringUtils.isEmpty(unionId)){
+			Logger.getLogger("file").info("UserService | login | openId="+openId+",unionId="+unionId);
+			return putResult(AppConstant.PARAM_IS_NULL);
+		}
+		//如果已知openId则转换获取unionId
+		if(StringUtils.isNotEmpty(openId)&&StringUtils.isEmpty(unionId)){
+			String url=AppConstant.WEIXIN_SNS_USERINFO_URL+"&access_token="+AppConstant.USERMP_ACCESS_TOKEN+"&openid="+openId;
+			String response=HttpClientUtil.getNetWorkInfo(url, "");
+			if(DataUtil.isJSONObject(response)){
+				JSONObject json=JSONObject.fromObject(response);
+				if(!json.containsKey("errcode")){
+					//查找用户信息
+					unionId=json.getString("unionid");
+				}
+			}
+		}
 		//检查参数是否填写
 		if(StringUtils.isEmpty(unionId)){
-			Logger.getLogger("file").info("UserService | login | unionId="+unionId);
-			return putResult(AppConstant.PARAM_IS_NULL);
+			Logger.getLogger("file").info("UserService | login | 通过openId反查用户的unionId失败");
+			return putResult(AppConstant.USER_NOT_EXISTS);
 		}
 		//检查用户是否存在
 		User user=null;

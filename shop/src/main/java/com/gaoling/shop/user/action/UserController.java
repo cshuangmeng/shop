@@ -56,10 +56,10 @@ public class UserController extends CommonService{
 	
 	//用户登录
 	@RequestMapping("/login")
-	public Result login(@RequestParam(required=false) String unionId){
+	public Result login(@RequestParam(required=false) String openId,@RequestParam(required=false) String unionId){
 		Result result=null;
 		try {
-			result=userService.login(unionId);
+			result=userService.login(openId,unionId);
 		} catch (Exception e) {
 			result=userService.putResult(AppConstant.SYSTEM_ERROR_CODE);
 			e.printStackTrace();
