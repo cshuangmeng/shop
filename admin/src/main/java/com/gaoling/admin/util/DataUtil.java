@@ -28,7 +28,7 @@ public class DataUtil {
 	
 	public static void main(String[] args) {
 		try {
-			System.out.println(encodeWithSalt("yunying","yunying"));
+			System.out.println(encodeWithSalt("tsadmin","admin"));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

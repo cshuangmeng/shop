@@ -80,7 +80,8 @@
 	<!-- 查询订单列表 -->
 	<select id="queryOrderList" resultType="java.util.Map">
 		select t.id orderId,t5.cellphone,t.goods_id goodsId,t4.consigner,t4.mobile,t4.address,t4.area_name areaName
-		,replace(coalesce(t2.trade_no,t.trade_no),'goods_','') tradeNo,t.ref_id refId,t1.head_img headImg
+		,replace((case when t2.trade_no!='' then t2.trade_no else t.trade_no end),'goods_','') tradeNo
+		,case when t2.out_trade_no!='' then t2.out_trade_no else t.out_trade_no end outTradeNo,t.ref_id refId,t1.head_img headImg
 		,t1.name goodsName,t1.price,t.amount,(select `value` from dict_info where `name`=concat('order_state_',t.state)) state
 		,(select `value` from dict_info where `name`=concat('order_payWay_',t.pay_way)) payWay
 		,t.point,t.coin,t3.name typeName,t.list_price listPrice,t.pay_way payWay,date_format(t.create_time,'%Y-%m-%d %H:%i:%s') createTime

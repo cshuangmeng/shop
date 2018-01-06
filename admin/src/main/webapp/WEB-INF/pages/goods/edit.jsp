@@ -116,6 +116,8 @@
 						<form id="update-form" action="submit" enctype="multipart/form-data" method="post" class="mws-form">
 							<input type="hidden" name="id" value="${empty goods.id?0:goods.id }" /> 
 							<input type="hidden" name="state" value="${empty goods.state?0:goods.state }" />
+							<input type="hidden" name="qrcodeImg" value="${goods.qrcodeImg }" />
+							<input type="hidden" name="qrcodeUrl" value="${goods.qrcodeUrl }" />
 							<input type="hidden" name="params" value="${goods.extras.params }" />
 							<div class="mws-form-inline">
 								<div class="mws-form-row">

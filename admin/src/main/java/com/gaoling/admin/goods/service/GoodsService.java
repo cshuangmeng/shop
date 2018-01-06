@@ -155,7 +155,7 @@ public class GoodsService extends CommonService{
 	public String buildQrcode(Integer goodsId){
 		try {
 			//获取商品信息
-			Goods goods=getDetailGoods(goodsId);
+			Goods goods=getGoods(goodsId);
 			if(StringUtils.isEmpty(goods.getQrcodeUrl())||StringUtils.isEmpty(goods.getQrcodeImg())){
 				//组装长链接
 				JSONObject json=JSONObject.fromObject(getString("qrcode_goods_detail_h5"));
