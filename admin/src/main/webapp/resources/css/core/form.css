@@ -570,7 +570,7 @@
 {
 	font-size:11px;
 	display:block;
-	width:auto;
+	/*width:auto;*/
 	float:none;
 	margin:-4px 0 0 0;
 	padding:10px 8px 6px 8px;

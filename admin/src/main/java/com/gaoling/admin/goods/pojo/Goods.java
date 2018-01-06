@@ -21,6 +21,8 @@ public class Goods {
 	private String headImg;
 	private String infoImgs;
 	private String detailImgs;
+	private String qrcodeImg;
+	private String qrcodeUrl;
 	private int coinEnable;
 	private int pointEnable;
 	private int state;
@@ -138,6 +140,22 @@ public class Goods {
 
 	public void setDetailImgs(String detailImgs) {
 		this.detailImgs = detailImgs;
+	}
+
+	public String getQrcodeImg() {
+		return qrcodeImg;
+	}
+
+	public void setQrcodeImg(String qrcodeImg) {
+		this.qrcodeImg = qrcodeImg;
+	}
+
+	public String getQrcodeUrl() {
+		return qrcodeUrl;
+	}
+
+	public void setQrcodeUrl(String qrcodeUrl) {
+		this.qrcodeUrl = qrcodeUrl;
 	}
 
 	public String getFullHeadImg() {

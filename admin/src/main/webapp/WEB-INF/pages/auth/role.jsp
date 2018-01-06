@@ -38,7 +38,7 @@
                 	<img src="${pageContext.servletContext.contextPath }/resources/images/example/scottwills_underwater2.jpg" alt="User Photo" />
                 </div>
                 <div id="mws-user-functions">
-                    <div id="mws-username">您好,${user.username  }</div>
+                    <div id="mws-username">您好,${userData.username  }</div>
                     <ul>
                     	<li><a id="logout" href="javascript:void(0);">退出</a></li>
                     </ul>

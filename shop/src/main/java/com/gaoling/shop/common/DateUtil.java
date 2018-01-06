@@ -1,8 +1,11 @@
 package com.gaoling.shop.common;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+
+import org.apache.commons.lang3.time.DateUtils;
 
 public class DateUtil {
 
@@ -11,7 +14,7 @@ public class DateUtil {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		return format.format(new Date());
 	}
-	
+
 	// 获取系统当前时间
 	public static Date nowDate() {
 		return new Date();
@@ -22,7 +25,7 @@ public class DateUtil {
 		SimpleDateFormat format = new SimpleDateFormat(pattern);
 		return format.format(new Date());
 	}
-	
+
 	// 日期加减
 	public static String getDateOfInterval(String date, int interval, String pattern) throws Exception {
 		SimpleDateFormat sdf = new SimpleDateFormat(pattern);
@@ -63,6 +66,16 @@ public class DateUtil {
 		return format.format(date);
 	}
 
+	// 字符串转换日期
+	public static Date parseDate(String str) {
+		try {
+			return DateUtils.parseDate(str, "yyyy-MM-dd HH:mm:ss");
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	// 格式化时间
 	public static String formatDate(long date) {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -82,7 +95,7 @@ public class DateUtil {
 		}
 		return -1;
 	}
-	
+
 	// 计算两个时间之间的天数
 	public static int getDaysIntervalOfTime(String time1, String time2) {
 		try {
@@ -106,19 +119,19 @@ public class DateUtil {
 		c2.setTime(format.parse(date2));
 		return c1.get(Calendar.MONTH) == c2.get(Calendar.MONTH);
 	}
-	
+
 	// 将分钟转换成文字描述
 	public static String convertMinsToDesc(int mins) {
-		StringBuffer str=new StringBuffer();
-		int days=mins/(24*60);
-		str.append(days+"天");
-		int hours=(mins%(24*60))/60;
-		str.append(hours+"小时");
-		mins=(mins%(24*60))%60;
-		str.append(mins+"分钟");
+		StringBuffer str = new StringBuffer();
+		int days = mins / (24 * 60);
+		str.append(days + "天");
+		int hours = (mins % (24 * 60)) / 60;
+		str.append(hours + "小时");
+		mins = (mins % (24 * 60)) % 60;
+		str.append(mins + "分钟");
 		return str.toString();
 	}
-	
+
 	// 日期比较
 	public static int compareDate(String date1, String date2) throws Exception {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -132,5 +145,5 @@ public class DateUtil {
 			return 0;
 		}
 	}
-	
+
 }

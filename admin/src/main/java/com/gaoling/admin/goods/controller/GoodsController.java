@@ -17,6 +17,7 @@ import com.gaoling.admin.goods.service.GoodsService;
 import com.gaoling.admin.system.pojo.Result;
 import com.gaoling.admin.system.service.CommonService;
 import com.gaoling.admin.util.AppConstant;
+import com.gaoling.admin.util.DataUtil;
 
 @Controller
 @RequestMapping("/goods")
@@ -83,6 +84,20 @@ public class GoodsController extends CommonService{
 			,@RequestParam String params){
 		goodsService.saveOrUpdateGoods(goods, logoImg, infoImg, detailImg, params);
 		return "redirect:/goods/index";
+	}
+	
+	//新增或更新商品
+	@RequestMapping("/qrcode")
+	@ResponseBody
+	public Result qrcode(@RequestParam Integer goodsId){
+		Result result=null;
+		try {
+			result=putResult(DataUtil.mapOf("img",goodsService.buildQrcode(goodsId)));
+		} catch (Exception e) {
+			result=putResult(AppConstant.SYSTEM_ERROR_CODE);
+			e.printStackTrace();
+		}
+		return result;
 	}
 	
 }

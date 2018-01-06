@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.gaoling.shop.common.AppConstant;
 import com.gaoling.shop.common.DataUtil;
 import com.gaoling.shop.common.DateUtil;
-import com.gaoling.shop.common.MemcachedUtil;
+import com.gaoling.shop.common.RedisUtil;
 import com.gaoling.shop.common.SMSUtil;
 import com.gaoling.shop.common.ThreadCache;
 import com.gaoling.shop.pay.dao.CashExchangeLogDao;
@@ -236,7 +236,7 @@ public class CashExchangeLogService extends CommonService{
 		JSONObject config=JSONObject.fromObject(getString("exchange_notice_config"));
 		if(sendNotice>0){
 			//检查是否满足发送条件
-			String lastSendTimestamp=MemcachedUtil.getInstance().getData(config.getString("last_timestamp_key"), "");
+			String lastSendTimestamp=RedisUtil.get(config.getString("last_timestamp_key"));
 			boolean enable=true;
 			if(StringUtils.isNotEmpty(lastSendTimestamp)){
 				enable=DateUtils.addHours(new Date(Long.valueOf(lastSendTimestamp))
@@ -253,11 +253,11 @@ public class CashExchangeLogService extends CommonService{
 					for(String mobile:config.getString("mobile").split(",")){
 						SMSUtil.sendAccountNotEnoughNotice(mobile);
 					}
-					MemcachedUtil.getInstance().setData(config.getString("last_timestamp_key"), String.valueOf(DateUtil.nowDate().getTime()));
+					RedisUtil.set(config.getString("last_timestamp_key"), String.valueOf(DateUtil.nowDate().getTime()));
 				}
 			}
 		}else if(cLogs.size()>0&&cLogs.size()==success){//账户余额不足异常恢复
-			MemcachedUtil.getInstance().delete(config.getString("last_timestamp_key"));
+			RedisUtil.delete(config.getString("last_timestamp_key"));
 		}
 		log.info("本次提现申请处理完成,总数:"+cLogs.size()+",处理成功数:"+success+"，处理失败数:"+failure);
 		return putResult();

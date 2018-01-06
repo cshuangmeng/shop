@@ -13,7 +13,7 @@ import com.aliyun.oss.model.ObjectMetadata;
 public class OSSUtil {
 
 	// 上传本地文件至OSS存储
-	public static void uploadFileToOSS(String file)throws Exception {
+	public static void uploadFileToOSS(String file) throws Exception {
 		OSSClient client = new OSSClient(AppConstant.OSS_ENDPOINT, AppConstant.OSS_ACCESSKEYID,
 				AppConstant.OSS_SECRETACCESSKEY);
 		InputStream is = new FileInputStream(file);
@@ -22,22 +22,32 @@ public class OSSUtil {
 		String fileName = file.substring(file.lastIndexOf("/") + 1);
 		client.putObject(AppConstant.OSS_BUCKETNAME, fileName, is, meta);
 	}
-	
+
 	// 上传文件至OSS存储
-	public static void uploadFileToOSS(String fileName,InputStream is)throws Exception {
+	public static void uploadFileToOSS(String fileName, InputStream is) throws Exception {
 		OSSClient client = new OSSClient(AppConstant.OSS_ENDPOINT, AppConstant.OSS_ACCESSKEYID,
 				AppConstant.OSS_SECRETACCESSKEY);
 		ObjectMetadata meta = new ObjectMetadata();
 		meta.setContentLength(is.available());
 		client.putObject(AppConstant.OSS_BUCKETNAME, fileName, is, meta);
 	}
-	
+
+	// 上传文件至OSS存储
+	public static void uploadFileToOSS(String fileName, File file) throws Exception {
+		OSSClient client = new OSSClient(AppConstant.OSS_ENDPOINT, AppConstant.OSS_ACCESSKEYID,
+				AppConstant.OSS_SECRETACCESSKEY);
+		InputStream is = new FileInputStream(file);
+		ObjectMetadata meta = new ObjectMetadata();
+		meta.setContentLength(is.available());
+		client.putObject(AppConstant.OSS_BUCKETNAME, fileName, is, meta);
+	}
+
 	// 批量上传文件至OSS
 	public static String uploadFileToOSS(MultipartFile[] imgFiles) throws Exception {
 		String imgUrl = "";
-		//创建文件夹
+		// 创建文件夹
 		FileUtil.mkdirs(AppConstant.TEMP_FILE_DIR);
-		if(null!=imgFiles){
+		if (null != imgFiles) {
 			for (MultipartFile imgFile : imgFiles) {
 				if (null != imgFile && !imgFile.isEmpty() && DataUtil.isImgFile(imgFile.getOriginalFilename())) {
 					String imgName = Calendar.getInstance().getTimeInMillis() + DataUtil.createNums(5)
@@ -56,5 +66,5 @@ public class OSSUtil {
 		}
 		return imgUrl;
 	}
-	
+
 }

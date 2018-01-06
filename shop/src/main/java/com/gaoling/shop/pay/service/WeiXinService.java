@@ -19,8 +19,8 @@ import com.gaoling.shop.common.AppConstant;
 import com.gaoling.shop.common.DataUtil;
 import com.gaoling.shop.common.DateUtil;
 import com.gaoling.shop.common.HttpClientUtil;
-import com.gaoling.shop.common.MemcachedUtil;
 import com.gaoling.shop.common.OSSUtil;
+import com.gaoling.shop.common.RedisUtil;
 import com.gaoling.shop.common.SignUtil;
 import com.gaoling.shop.goods.pojo.Goods;
 import com.gaoling.shop.goods.pojo.Shop;
@@ -54,6 +54,8 @@ public class WeiXinService extends CommonService{
 		AppConstant.USERMP_ACCESS_TOKEN=getAccessToken(AppConstant.USERMP_APP_ID, AppConstant.USERMP_SECRET_KEY);
 		// 获取用户端ticket
 		AppConstant.USERMP_TICKET=getTicket(AppConstant.USERMP_ACCESS_TOKEN);
+		RedisUtil.set("usermp_access_token", AppConstant.USERMP_ACCESS_TOKEN);
+		RedisUtil.set("usermp_ticket", AppConstant.USERMP_TICKET);
 	}
 	
 	private String getAccessToken(String appId,String secret){
@@ -89,7 +91,7 @@ public class WeiXinService extends CommonService{
 			appId=AppConstant.USERPC_APP_ID;
 			secret=AppConstant.USERPC_SECRET_KEY;
 		}
-		String openId=MemcachedUtil.getInstance().getData(code,"");
+		String openId=RedisUtil.get(code);
 		String unionId=null;
 		String token=null;
 		//获取用户openId
@@ -103,7 +105,7 @@ public class WeiXinService extends CommonService{
 		}else{
 			unionId=openId.split(",")[1];
 			openId=openId.split(",")[0];
-			token=MemcachedUtil.getInstance().getData(openId, "");
+			token=RedisUtil.get(openId);
 		}
 		//更新用户头像
 		String url=AppConstant.WEIXIN_SNS_USERINFO_URL+"&access_token="+AppConstant.USERMP_ACCESS_TOKEN+"&openid="+openId;
@@ -131,9 +133,9 @@ public class WeiXinService extends CommonService{
 					userService.updateUser(user);
 				}
 				//保存code与openId的关系
-				MemcachedUtil.getInstance().setData(code, openId+","+unionId, getInteger("openId_code_save_mins"));
+				RedisUtil.set(code, openId+","+unionId, getInteger("openId_code_save_mins")*60);
 				//保存openId与accessToken的关系
-				MemcachedUtil.getInstance().setData(openId, token, getInteger("openId_code_save_mins"));
+				RedisUtil.set(openId, token, getInteger("openId_code_save_mins")*60);
 			}
 		}
 		return putResult(DataUtil.mapOf("openId",openId,"unionId",unionId));

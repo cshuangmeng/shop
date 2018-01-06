@@ -1,5 +1,7 @@
 package com.gaoling.admin.goods.service;
 
+import java.io.File;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -16,9 +18,12 @@ import com.gaoling.admin.goods.pojo.Goods;
 import com.gaoling.admin.goods.pojo.GoodsType;
 import com.gaoling.admin.goods.pojo.Shop;
 import com.gaoling.admin.system.service.CommonService;
+import com.gaoling.admin.system.service.WeiXinService;
+import com.gaoling.admin.util.AppConstant;
 import com.gaoling.admin.util.DataUtil;
 import com.gaoling.admin.util.DateUtil;
 import com.gaoling.admin.util.OSSUtil;
+import com.gaoling.admin.util.QRCodeUtil;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -32,6 +37,8 @@ public class GoodsService extends CommonService{
 	private ShopService shopService;
 	@Autowired
 	private GoodsTypeService goodsTypeService;
+	@Autowired
+	private WeiXinService weiXinService;
 	
 	//查询商品信息
 	public List<Map<String,Object>> loadGoods(Map<Object,Object> param){
@@ -142,6 +149,40 @@ public class GoodsService extends CommonService{
 			}
 		}
 		return goods;
+	}
+	
+	//生成商品介绍二维码图片
+	public String buildQrcode(Integer goodsId){
+		try {
+			//获取商品信息
+			Goods goods=getDetailGoods(goodsId);
+			if(StringUtils.isEmpty(goods.getQrcodeUrl())||StringUtils.isEmpty(goods.getQrcodeImg())){
+				//组装长链接
+				JSONObject json=JSONObject.fromObject(getString("qrcode_goods_detail_h5"));
+				String longUrl=json.getString(String.valueOf(goods.getTypeId()));
+				longUrl=String.format(longUrl, goods.getId());
+				longUrl=String.format(getString("weixin_grant_authorization_url"), URLEncoder.encode(longUrl, "UTF-8"));
+				String shortUrl=weiXinService.longUrl2ShortUrl(longUrl);
+				if(StringUtils.isNotEmpty(shortUrl)){
+					//生成二维码图片
+					String file=QRCodeUtil.encode(shortUrl, getString("qrcode_logo_img"), getString("tmp_img_dir"));
+					//上传OSS存储
+					String fileName="other/"+DateUtil.getCurrentTime("yyyyMMddHHmmssSSS")+DataUtil.createNums(6);
+					fileName+=file.substring(file.lastIndexOf("."));
+					OSSUtil.uploadFileToOSS(fileName,new File(file));
+					//保存二维码信息
+					goods.setQrcodeImg(fileName);
+					goods.setQrcodeUrl(shortUrl);
+					updateGoods(goods);
+					//删除临时文件
+					new File(file).delete();
+				}
+			}
+			return AppConstant.OSS_CDN_SERVER+goods.getQrcodeImg();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	//加载商品

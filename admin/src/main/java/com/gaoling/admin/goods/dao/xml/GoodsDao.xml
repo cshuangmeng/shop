@@ -6,7 +6,7 @@
 	<!-- 表头 -->
 	<sql id="goodsHead">
 		select id,`name`,type_id typeId,shop_id shopId,price,cash_discount cashDiscount,details,head_img headImg,info_imgs infoImgs,detail_imgs detailImgs
-		,coin_enable coinEnable,point_enable pointEnable,state,create_time createTime from goods t
+		,qrcode_img qrcodeImg,qrcode_url qrcodeUrl,coin_enable coinEnable,point_enable pointEnable,state,create_time createTime from goods t
 	</sql>
 	
 	<!-- 查询条件 -->
@@ -79,14 +79,16 @@
 	
 	<!-- 保存商品信息 -->
 	<insert id="addGoods" keyProperty="id" useGeneratedKeys="true" parameterType="com.gaoling.admin.goods.pojo.Goods">
-		insert into goods(name,type_id,shop_id,price,cash_discount,details,head_img,info_imgs,detail_imgs,coin_enable,point_enable,state,create_time)
-		values(#{name},#{typeId},#{shopId},#{price},#{cashDiscount},#{details},#{headImg},#{infoImgs},#{detailImgs},#{coinEnable},#{pointEnable},#{state},#{createTime})
+		insert into goods(name,type_id,shop_id,price,cash_discount,details,head_img,info_imgs,detail_imgs,qrcode_img,qrcode_url,coin_enable,point_enable,state,create_time)
+		values(#{name},#{typeId},#{shopId},#{price},#{cashDiscount},#{details},#{headImg},#{infoImgs},#{detailImgs},#{qrcodeImg},#{qrcodeUrl}
+		,#{coinEnable},#{pointEnable},#{state},#{createTime})
 	</insert>
 	
 	<!-- 更新商品信息 -->
 	<update id="updateGoods" parameterType="com.gaoling.admin.goods.pojo.Goods">
-		update goods set `name`=#{name},type_id=#{typeId},price=#{price},cash_discount=#{cashDiscount},details=#{details},head_img=#{headImg}
-		,info_imgs=#{infoImgs},detail_imgs=#{detailImgs},coin_enable=#{coinEnable},point_enable=#{pointEnable},state=#{state} where id=#{id}
+		update goods set `name`=#{name},shop_id=#{shopId},type_id=#{typeId},price=#{price},cash_discount=#{cashDiscount},details=#{details},head_img=#{headImg}
+		,info_imgs=#{infoImgs},detail_imgs=#{detailImgs},qrcode_img=#{qrcodeImg},qrcode_url=#{qrcodeUrl},coin_enable=#{coinEnable}
+		,point_enable=#{pointEnable},state=#{state} where id=#{id}
 	</update>
 	
 </mapper>  

@@ -126,6 +126,7 @@ public class SysUserService extends CommonService {
 		session.setLoginTime(DateUtil.getCurrentTime());
 		session.setUserId(user.getId());
 		session.setMenus(loadMenusOfUser(user.getId()));
+		session.setRoles(sysRoleService.getRolesOfUser(session.getUserId()));
 		currentUser.getSession().setAttribute(AppConstant.SESSION_DATA_NAME, session);
 		//跳转到欢迎页
 		return "redirect:index";

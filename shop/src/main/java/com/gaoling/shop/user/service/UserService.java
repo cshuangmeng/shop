@@ -15,8 +15,8 @@ import com.gaoling.shop.common.AppConstant;
 import com.gaoling.shop.common.DataUtil;
 import com.gaoling.shop.common.DateUtil;
 import com.gaoling.shop.common.HttpClientUtil;
-import com.gaoling.shop.common.MemcachedUtil;
 import com.gaoling.shop.common.OSSUtil;
+import com.gaoling.shop.common.RedisUtil;
 import com.gaoling.shop.common.SMSUtil;
 import com.gaoling.shop.system.pojo.Result;
 import com.gaoling.shop.system.service.CommonService;
@@ -50,7 +50,7 @@ public class UserService extends CommonService{
 		if(SMSUtil.sendCheckCode(mobile, code)){
 			//存储验证码
 			int expireMins=getInteger("sms_code_expire_mins");
-			MemcachedUtil.getInstance().setData(AppConstant.CHECKCODE_PREFIX+mobile, code, expireMins);
+			RedisUtil.set(AppConstant.CHECKCODE_PREFIX+mobile, code, expireMins*60);
 			Logger.getLogger("file").info("UserService | sendCode | mobile="+mobile+" | code="+code);
 			return putResult();
 		}
@@ -66,7 +66,7 @@ public class UserService extends CommonService{
 			return putResult(AppConstant.PARAM_IS_NULL);
 		}
 		//检查验证码是否正确
-		String saveCode=MemcachedUtil.getInstance().getData(AppConstant.CHECKCODE_PREFIX+cellphone,"");
+		String saveCode=RedisUtil.get(AppConstant.CHECKCODE_PREFIX+cellphone);
 		if(!saveCode.equals(code)){
 			return putResult(AppConstant.CHECK_CODE_INCORRECT);
 		}

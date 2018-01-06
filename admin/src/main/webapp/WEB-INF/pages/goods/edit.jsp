@@ -7,6 +7,7 @@
 <script charset="utf-8" src="http://map.qq.com/api/js?v=2.exp"></script>
 <%@include file="../common/head.jsp"%>
 <script type="text/javascript" src="${pageContext.servletContext.contextPath }/resources/js/goods/goods.js"></script>
+<script type="text/javascript" src="${pageContext.servletContext.contextPath }/resources/script/messages_cn.js"></script>
 <style>
 	::-webkit-scrollbar {
 		width: 16px;
@@ -72,7 +73,7 @@
 						alt="User Photo" />
 				</div>
 				<div id="mws-user-functions">
-					<div id="mws-username">您好, ${user.username }</div>
+					<div id="mws-username">您好, ${userData.username }</div>
 					<ul>
 						<li><a id="logout" href="javascript:void(0);">退出</a></li>
 					</ul>
@@ -118,9 +119,9 @@
 							<input type="hidden" name="params" value="${goods.extras.params }" />
 							<div class="mws-form-inline">
 								<div class="mws-form-row">
-									<label>商品名称</label>
+									<label for="name">商品名称</label>
 									<div class="mws-form-item small">
-										<input type="text" name="name" value="${goods.name }" class="mws-textinput"/>
+										<input type="text" id="name" name="name" value="${goods.name }" class="required mws-textinput"/>
 									</div>
 								</div>
 								<div class="mws-form-row">
@@ -151,15 +152,15 @@
 									</div>
 								</div>
 								<div class="mws-form-row">
-									<label>价格</label>
+									<label for="price">价格</label>
 									<div class="mws-form-item small">
-										<input type="text" name="price" value="${goods.price }" class="mws-textinput"/>
+										<input type="text" id="price" name="price" value="${goods.price }" class="required number mws-textinput"/>
 									</div>
 								</div>
 								<div class="mws-form-row">
-									<label>最低现金折扣</label>
+									<label for="cashDiscount">最低现金折扣</label>
 									<div class="mws-form-item small">
-										<input type="text" name="cashDiscount" value="${goods.cashDiscount }" class="mws-textinput"/>
+										<input type="text" id="cashDiscount" name="cashDiscount" value="${goods.cashDiscount }" class="required number mws-textinput"/>
 									</div>
 								</div>
 								<div class="mws-form-row">
@@ -171,15 +172,15 @@
 								<div class="mws-form-row">
 									<label>是否可以使用部落币</label>
 									<div class="mws-form-item small">
-										<input type="radio" name="coinEnable" val="${goods.coinEnable }" value="1" />是
-										<input type="radio" name="coinEnable" value="0"/>否
+										<input type="radio" id="coinEnable_yes" name="coinEnable" val="${goods.coinEnable }" value="1"/>是
+										<input type="radio" id="coinEnable_no" name="coinEnable" value="0"/>否
 									</div>
 								</div>
 								<div class="mws-form-row">
 									<label>是否可以使用部落分</label>
 									<div class="mws-form-item small">
-										<input type="radio" name="pointEnable" val="${goods.pointEnable }" value="1" />是 
-										<input type="radio" name="pointEnable" value="0" />否
+										<input type="radio" id="pointEnable_yes" name="pointEnable" val="${goods.pointEnable }" value="1"/>是 
+										<input type="radio" id="pointEnable_no" name="pointEnable" value="0" />否
 									</div>
 								</div>
 								<div class="mws-form-row">

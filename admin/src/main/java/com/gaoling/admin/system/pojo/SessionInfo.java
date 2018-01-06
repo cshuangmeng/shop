@@ -10,6 +10,7 @@ public class SessionInfo {
 	private String password;
 	private String loginTime;
 	private List<HashMap<String, Object>> menus;
+	private List<HashMap<String, Object>> roles;
 
 	public int getUserId() {
 		return userId;
@@ -49,6 +50,14 @@ public class SessionInfo {
 
 	public void setMenus(List<HashMap<String, Object>> menus) {
 		this.menus = menus;
+	}
+
+	public List<HashMap<String, Object>> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<HashMap<String, Object>> roles) {
+		this.roles = roles;
 	}
 
 }

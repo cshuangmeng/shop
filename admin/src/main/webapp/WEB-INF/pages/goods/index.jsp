@@ -37,7 +37,7 @@
                 	<img src="${pageContext.servletContext.contextPath }/resources/images/example/scottwills_underwater2.jpg" alt="User Photo" />
                 </div>
                 <div id="mws-user-functions">
-                      <div id="mws-username">您好, ${user.username  }</div>
+                      <div id="mws-username">您好, ${userData.username  }</div>
                     <ul>
                     	<li><a id="logout" href="javascript:void(0);">退出</a></li>
                     </ul>
@@ -130,6 +130,14 @@
                         		<li onclick="approveAdInfo('1')"><a href="javascript:void(0);" class="mws-ic-16 ic-accept">通过</a></li>
                             	<li onclick="approveAdInfo('2')"><a href="javascript:void(0);" class="mws-ic-16 ic-arrow-undo">拒绝</a></li>
                             	<li onclick="approveAdInfo('3')"><a href="javascript:void(0);" class="mws-ic-16 ic-cancel">下架</a></li>
+                            	<c:forEach var="role" items="${userData.roles }">
+                            		<c:if test="${role.id==1 }">
+                            			<c:set var="isShow" value="1"/>
+                            		</c:if>
+                            	</c:forEach>
+                            	<c:if test="${isShow==1 }">
+                            		<li onclick="showQrcode()"><a href="javascript:void(0);" class="mws-ic-16 ic-nuclear">二维码</a></li>
+                            	</c:if>
                             </ul>
                         </div>
 						<table id="store-result-table" class="mws-datatable mws-table">
@@ -162,5 +170,6 @@
 	
 	<!-- alert dialog -->
 	<div id="mws-jui-dialog"></div>
+	<div id="show_scan_dialog"><div><img id="showImg"/></div></div>
 </body>
 </html>
