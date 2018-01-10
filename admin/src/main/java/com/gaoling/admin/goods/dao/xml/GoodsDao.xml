@@ -53,6 +53,9 @@
 			<if test="param.shopName!=null and param.shopName!=''">
 				and t1.name like concat('%',#{param.shopName},'%')
 			</if>
+			<if test="param.goodsName!=null and param.goodsName!=''">
+				and t.name like concat('%',#{param.goodsName},'%')
+			</if>
 		</trim>	
 	</sql>
 
