@@ -112,14 +112,6 @@ public class AppConstant {
 		ALIDAYU_TEMPLATE_ACCOUNT_NOTICE = PropertiesUtil.getProperty("alidayu_template_account_notice");
 		CHECKCODE_PREFIX = PropertiesUtil.getProperty("checkcode_prefix");
 
-		XINGE_IOSENV = PropertiesUtil.getInteger("xinge.iosenv");
-		XINGE_MESSAGE_TITLE = PropertiesUtil.getProperty("xinge.message_title");
-		XINGE_ANDROID_ACCESS_ID = PropertiesUtil.getProperty("xinge.android_access_id");
-		XINGE_ANDROID_SECRET_KEY = PropertiesUtil.getProperty("xinge.android_secret_key");
-		XINGE_ANDROID_ACTIVITY = PropertiesUtil.getProperty("xinge.android_activity");
-		XINGE_IOS_ACCESS_ID = PropertiesUtil.getProperty("xinge.ios_access_id");
-		XINGE_IOS_SECRET_KEY = PropertiesUtil.getProperty("xinge.ios_secret_key");
-
 		USERMP_REQUEST_TOKEN = PropertiesUtil.getProperty("usermp.weixin_request_token");
 		USERMP_APP_ID = PropertiesUtil.getProperty("usermp.weixin_app_id");
 		USERMP_SECRET_KEY = PropertiesUtil.getProperty("usermp.weixin_secret_key");

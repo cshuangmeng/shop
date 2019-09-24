@@ -48,7 +48,7 @@ public class WeiXinService extends CommonService{
 	private ShopService shopService;
 	
 	// 获取ticket,且每隔一小时刷新一次
-	@Scheduled(fixedDelay = 3600 * 1000)
+	//@Scheduled(fixedDelay = 3600 * 1000)
 	public void getTicketSchedule() {
 		// 获取用户端access_token
 		AppConstant.USERMP_ACCESS_TOKEN=getAccessToken(AppConstant.USERMP_APP_ID, AppConstant.USERMP_SECRET_KEY);
